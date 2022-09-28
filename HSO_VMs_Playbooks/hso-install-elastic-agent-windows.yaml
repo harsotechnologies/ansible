@@ -49,7 +49,7 @@
         dns_servers:
         - 172.25.10.25
         log_path: C:\dns_log.txt
-        
+
     - name: Ejecutar script powershell instalar elastic-agent
       become: yes
       become_method: runas
