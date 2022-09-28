@@ -57,7 +57,6 @@
       become_method: runas
       become_user: SYSTEM
       ansible.windows.win_powershell:
-        error_action: stop
         script: |
           $ProgressPreference = 'SilentlyContinue'
           cd C:\Temp
