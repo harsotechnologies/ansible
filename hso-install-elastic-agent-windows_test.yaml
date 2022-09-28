@@ -1,0 +1,37 @@
+---
+- name: Instalacion de agente elastic
+  hosts: all
+  tasks:
+    - name: Validar conectividad
+      win_ping:
+    - name: Copiar Certificado en Servidor
+      ansible.windows.win_copy:
+        src: ./Certificado_ELK/ca.crt
+        dest: C:\Temp\
+    - name: Validar CA presente en Servidor
+      ansible.windows.win_certificate_store:
+        path: C:\Temp\ca.crt
+        file_type: pem
+        store_location: LocalMachine
+        store_name: AuthRoot #Validar
+        key_storage: machine
+        state: present
+      #become: yes
+      #become_method: runas
+      #become_user: SYSTEM 
+    - name: Configurar archivo host con fleet_Server
+      community.windows.win_hosts:
+        state: present
+        canonical_name: hso-fleet-server-agent-http.hsoelk.svc
+        ip_address: 10.1.2.209
+    - name: Configurar archivo host con Elastic Search
+      community.windows.win_hosts:
+        state: present
+        canonical_name: hsoescluster-es-http.hsoelk.svc
+        ip_address: 10.1.2.207
+    - name: Configurar DNS
+      ansible.windows.win_dns_client:
+        adapter_names: '*'
+        dns_servers:
+        - 172.25.10.25
+        log_path: C:\dns_log.txt
