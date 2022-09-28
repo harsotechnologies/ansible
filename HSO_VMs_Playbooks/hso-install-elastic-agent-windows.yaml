@@ -4,17 +4,21 @@
   tasks:
     - name: Validar conectividad
       win_ping:
+
     - name: Verificar privilegios de Administrador
+      become: yes
       ansible.windows.win_whoami:
-        become: yes
-        register: whoami
+      register: whoami
+
     - name: Mostrar Privilegios
       debug: # El usuario tiene que tener privilegio HIGH, SeDebugPrivilege: enabled y rights: SeBatchLogonRight | SeNetworkLogonRight
         msg: "Privilegio: {{whoami.label.account_name}} SeDebugPrivilege: {{whoami.privileges.SeDebugPrivilege}} \n Rights: {{whoami.rights}}"
+
     - name: Copiar Certificado en Servidor
       ansible.windows.win_copy:
         src: ./Certificado_ELK/ca.crt
         dest: C:\Temp\
+
     - name: Validar CA presente en Servidor
       ansible.windows.win_certificate_store:
         path: C:\Temp\ca.crt
@@ -26,27 +30,31 @@
       #become: yes
       #become_method: runas
       #become_user: SYSTEM 
+
     - name: Configurar archivo host con fleet_Server
       community.windows.win_hosts:
         state: present
         canonical_name: hso-fleet-server-agent-http.hsoelk.svc
         ip_address: 10.1.2.209
+
     - name: Configurar archivo host con Elastic Search
       community.windows.win_hosts:
         state: present
         canonical_name: hsoescluster-es-http.hsoelk.svc
         ip_address: 10.1.2.207
+
     - name: Configurar DNS
       ansible.windows.win_dns_client:
         adapter_names: '*'
         dns_servers:
         - 172.25.10.25
         log_path: C:\dns_log.txt
+        
     - name: Ejecutar script powershell instalar elastic-agent
+      become: yes
+      become_method: runas
+      #become_user: SYSTEM
       ansible.windows.win_powershell:
-        become: yes
-        become_method: runas
-        #become_user: SYSTEM
         error_action: stop
         script: |
           $ProgressPreference = 'SilentlyContinue'
