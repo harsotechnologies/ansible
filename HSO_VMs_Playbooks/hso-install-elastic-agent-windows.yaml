@@ -8,6 +8,7 @@
     - name: Verificar privilegios de Administrador
       become: yes
       become_method: runas
+      become_user: SYSTEM
       ansible.windows.win_whoami:
       register: whoami
 
@@ -54,7 +55,7 @@
     - name: Ejecutar script powershell instalar elastic-agent
       become: yes
       become_method: runas
-      #become_user: SYSTEM
+      become_user: SYSTEM
       ansible.windows.win_powershell:
         error_action: stop
         script: |
