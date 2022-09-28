@@ -58,6 +58,7 @@
         error_action: stop
         script: |
           $ProgressPreference = 'SilentlyContinue'
+          cd C:\Temp
           Invoke-WebRequest -Uri https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.4.1-windows-x86_64.zip -OutFile elastic-agent-8.4.1-windows-x86_64.zip
           Expand-Archive .\elastic-agent-8.4.1-windows-x86_64.zip -DestinationPath .
           cd elastic-agent-8.4.1-windows-x86_64
