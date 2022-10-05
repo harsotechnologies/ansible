@@ -3,15 +3,15 @@
   hosts: all
   tasks:
     - name: Verificar privilegios de Administrador
-      become: yes
+      become: true
       become_method: runas
       become_user: SYSTEM
       ansible.windows.win_whoami:
       register: whoami
 
     - name: Mostrar Privilegios
-      debug: # El usuario tiene que tener privilegio SYSTEM | HIGH, SeDebugPrivilege: enabled y rights: SeBatchLogonRight | SeNetworkLogonRight
-        msg: "Privilegio: {{whoami.label.account_name}} SeDebugPrivilege: {{whoami.privileges.SeDebugPrivilege}} Rights: {{whoami.rights}}"
+      ansible.builtin.debug: # El usuario tiene que tener privilegio SYSTEM | HIGH, SeDebugPrivilege: enabled y rights: SeBatchLogonRight | SeNetworkLogonRight
+        msg: "Privilegio: {{ whoami.label.account_name }} SeDebugPrivilege: {{ whoami.privileges.SeDebugPrivilege }} Rights: {{ whoami.rights }}"
 
     - name: Validar si elastic agente se encuentra instalado
       ignore_errors: true
@@ -20,7 +20,7 @@
         start_mode: auto
         state: started
       register: elastic
-    
+
     - name: Validar si certificado esta instalado
       community.windows.win_certificate_info:
         store_name: Root
@@ -31,12 +31,12 @@
       ansible.windows.win_copy:
         src: ./Certificado_ELK/ca.crt
         dest: C:\Temp\
-      when: ca.exists != true
+      when: not ca.exists
 
     - name: Instalar CA en Servidor
-      #become: yes
-      #become_method: runas
-      #become_user: SYSTEM      
+      # become: yes
+      # become_method: runas
+      # become_user: SYSTEM
       ansible.windows.win_certificate_store:
         path: C:\Temp\ca.crt
         file_type: pem
@@ -44,26 +44,26 @@
         store_name: Root
         key_storage: machine
         state: present
-      when: ca.exists != true
-  
-    - name: Configurar archivo host con fleet Server y Elastic Search 
+      when: not ca.exists
+
+    - name: Configurar archivo host con fleet Server y Elastic Search
       community.windows.win_hosts:
         state: present
-        canonical_name: "{{item.nombre}}"
-        ip_address: "{{item.ip}}"
+        canonical_name: "{{ item.nombre }}"
+        ip_address: "{{ item.ip }}"
       loop:
         - { nombre: 'hso-fleet-server-agent-http.hsoelk.svc', ip: 10.1.2.209 }
         - { nombre: 'hsoescluster-es-http.hsoelk.svc', ip: 10.1.2.207 }
 
-    #- name: Configurar DNS
-      #ansible.windows.win_dns_client:
-        #adapter_names: '*'
-        #dns_servers:
-        #- 172.25.10.25
-        #log_path: C:\dns_log.txt
+    # - name: Configurar DNS
+      # ansible.windows.win_dns_client:
+        # adapter_names: '*'
+        # dns_servers:
+        # - 172.25.10.25
+        # log_path: C:\dns_log.txt
 
     - name: Ejecutar script powershell instalar elastic-agent
-      become: yes
+      become: true
       become_method: runas
       become_user: SYSTEM
       ansible.windows.win_powershell:
@@ -74,7 +74,7 @@
           Expand-Archive .\elastic-agent-8.4.1-windows-x86_64.zip -DestinationPath .
           cd elastic-agent-8.4.1-windows-x86_64
           .\elastic-agent.exe install --non-interactive --url=https://hso-fleet-server-agent-http.hsoelk.svc:8220 --enrollment-token=bzRMb2dJTUI0by1fTWZSMU8td0k6eVVSX1pDSHBUTnlBQlJIWEtEUDd5UQ==
-      when: elastic.exists != true
+      when: not elastic.exists
 
     - name: Borrar contenido de directorio Temp
       ansible.windows.win_file:
