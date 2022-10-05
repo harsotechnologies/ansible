@@ -1,0 +1,12 @@
+---
+collections:
+  - name: cisco.nxos
+  - name: cisco.ucs
+  - name: cisco.fmcansible
+  - name: community.vmware
+  - name: community.general
+  - name: community.windows
+  - name: ansible.windows
+  - name: community.general.notification
+  - name: community.kubernetes
+    version: 2.0.1

@@ -1,0 +1,75 @@
+---
+- name: Verificacion de status de agente elastic Windows
+  hosts: all
+  vars:
+    status_ok: 'Status: HEALTHY'
+  tasks:
+
+    - name: Validar si elastic agente se encuentra instalado
+      ignore_errors: true
+      ansible.windows.win_service:
+        name: Elastic Agent
+        start_mode: auto
+        state: started
+      register: elastic
+    
+    - name: Validar si certificado esta instalado
+      community.windows.win_certificate_info:
+        store_name: Root
+        thumbprint: 460bac6411726f1fd2a321dffbd976df6a603226
+      register: ca
+
+    - name: Copiar Certificado en Servidor
+      ansible.windows.win_copy:
+        src: ./Certificado_ELK/ca.crt
+        dest: C:\Temp\
+      when: ca.exists != true
+
+    - name: Instalar CA en Servidor
+      #become: yes
+      #become_method: runas
+      #become_user: SYSTEM      
+      ansible.windows.win_certificate_store:
+        path: C:\Temp\ca.crt
+        file_type: pem
+        store_location: LocalMachine
+        store_name: Root
+        key_storage: machine
+        state: present
+      when: ca.exists != true
+  
+    #- name: Verificar reachability a Elastic Search y Fleet Server
+
+    #- name: Configurar DNS
+      #ansible.windows.win_dns_client:
+        #adapter_names: '*'
+        #dns_servers:
+        #- 172.25.10.25
+        #log_path: C:\dns_log.txt
+
+    - name: Revisar status elastic-agent Powershell
+      become: yes
+      become_method: runas
+      become_user: SYSTEM
+      ansible.windows.win_powershell:
+        script: |
+          cd "C:\Program Files\Elastic\Agent\"
+          .\elastic-agent.exe status
+      register: elastic_status
+
+    - name: Reiniciar Servicio de Elastic Agent
+      ansible.windows.win_service:
+        name: Elastic Agent
+        start_mode: auto
+        state: restarted
+      when: elastic_status.output[0] != status_ok
+
+    - name: Enviar alerta de servicio reiniciado en 
+      debug:
+        msg: '{{elastic_status}}'
+      when: elastic_status.output[0] == status_ok # T01MAPPGEBY/B044Y9LL17U/fdfqwOAPckEheGJ68x5Awuni
+ 
+    - name: Send notification message via Slack
+      slack:
+        token: T01MAPPGEBY/B044Y9LL17U/fdfqwOAPckEheGJ68x5Awuni
+        msg: '{{ elastic_status }}'
