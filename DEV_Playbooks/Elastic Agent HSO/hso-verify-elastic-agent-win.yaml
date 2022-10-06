@@ -3,6 +3,8 @@
   hosts: all
   vars:
     status_ok: 'Status: HEALTHY'
+    cert_thumbprint: 460bac6411726f1fd2a321dffbd976df6a603226
+    cert_src_path: ./Certificado_ELK/ca.crt # nombre de certificado MUST be ca.crt
   tasks:
 
     - name: Validar si elastic agente se encuentra instalado
@@ -12,23 +14,23 @@
         start_mode: auto
         state: started
       register: elastic
-    
+
     - name: Validar si certificado esta instalado
       community.windows.win_certificate_info:
         store_name: Root
-        thumbprint: 460bac6411726f1fd2a321dffbd976df6a603226
+        thumbprint: '{{ cert_thumbprint }}'
       register: ca
 
     - name: Copiar Certificado en Servidor
       ansible.windows.win_copy:
-        src: ./Certificado_ELK/ca.crt
+        src: '{{ cert_src_path }}'
         dest: C:\Temp\
-      when: ca.exists != true
+      when: not ca.exists
 
     - name: Instalar CA en Servidor
-      #become: yes
-      #become_method: runas
-      #become_user: SYSTEM      
+      # become: yes
+      # become_method: runas
+      # become_user: SYSTEM
       ansible.windows.win_certificate_store:
         path: C:\Temp\ca.crt
         file_type: pem
@@ -36,19 +38,19 @@
         store_name: Root
         key_storage: machine
         state: present
-      when: ca.exists != true
-  
-    #- name: Verificar reachability a Elastic Search y Fleet Server
+      when: not ca.exists
 
-    #- name: Configurar DNS
-      #ansible.windows.win_dns_client:
-        #adapter_names: '*'
-        #dns_servers:
-        #- 172.25.10.25
-        #log_path: C:\dns_log.txt
+    # - name: Verificar reachability a Elastic Search y Fleet Server
+
+    # - name: Configurar DNS
+      # ansible.windows.win_dns_client:
+        # adapter_names: '*'
+        # dns_servers:
+        # - 172.25.10.25
+        # log_path: C:\dns_log.txt
 
     - name: Revisar status elastic-agent Powershell
-      become: yes
+      become: true
       become_method: runas
       become_user: SYSTEM
       ansible.windows.win_powershell:
@@ -64,12 +66,9 @@
         state: restarted
       when: elastic_status.output[0] != status_ok
 
-    - name: Enviar alerta de servicio reiniciado en 
-      debug:
-        msg: '{{elastic_status}}'
-      when: elastic_status.output[0] == status_ok # T01MAPPGEBY/B044Y9LL17U/fdfqwOAPckEheGJ68x5Awuni
- 
-    - name: Send notification message via Slack
-      slack:
-        token: T01MAPPGEBY/B044Y9LL17U/fdfqwOAPckEheGJ68x5Awuni
-        msg: '{{ elastic_status }}'
+    - name: Send notification message via MS Teams
+      community.general.office_365_connector_card:
+        webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/64881ad2495941928a621ed1c7ce1baa/273ef0d1-397e-469b-b601-0b07a650d12a
+        title: 'Elastic-Agent en {{ inventory_hostname }} {{ elastic_status.output[0]}}'
+        text: '{{ elastic_status.output }}'
+      delegate_to: localhost

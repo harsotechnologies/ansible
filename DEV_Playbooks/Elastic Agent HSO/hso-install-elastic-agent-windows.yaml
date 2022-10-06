@@ -1,6 +1,14 @@
 ---
 - name: Instalacion de agente elastic
   hosts: all
+  vars:
+    status_ok: 'Status: HEALTHY'
+    cert_thumbprint: 460bac6411726f1fd2a321dffbd976df6a603226
+    cert_src_path: ./Certificado_ELK/ca.crt # nombre de certificado MUST be ca.crt
+    elastic_fqdn: hsoescluster-es-http.hsoelk.svc
+    elastic_ip: 10.1.2.207
+    fleetserver_fqdn: hso-fleet-server-agent-http.hsoelk.svc
+    fleetserver_ip: 10.1.2.209
   tasks:
     - name: Verificar privilegios de Administrador
       become: true
@@ -24,12 +32,12 @@
     - name: Validar si certificado esta instalado
       community.windows.win_certificate_info:
         store_name: Root
-        thumbprint: 460bac6411726f1fd2a321dffbd976df6a603226
+        thumbprint: '{{ cert_thumbprint }}'
       register: ca
 
     - name: Copiar Certificado en Servidor
       ansible.windows.win_copy:
-        src: ./Certificado_ELK/ca.crt
+        src: '{{ cert_src_path }}'
         dest: C:\Temp\
       when: not ca.exists
 
@@ -52,8 +60,8 @@
         canonical_name: "{{ item.nombre }}"
         ip_address: "{{ item.ip }}"
       loop:
-        - { nombre: 'hso-fleet-server-agent-http.hsoelk.svc', ip: 10.1.2.209 }
-        - { nombre: 'hsoescluster-es-http.hsoelk.svc', ip: 10.1.2.207 }
+        - { nombre: '{{ elastic_fqdn }}', ip: '{{ elastic_ip }}' }
+        - { nombre: '{{ fleetserver_fqdn }}', ip: '{{ fleetserver_ip }}' }
 
     # - name: Configurar DNS
       # ansible.windows.win_dns_client:

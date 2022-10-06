@@ -5,6 +5,7 @@ collections:
   - name: cisco.fmcansible
   - name: community.vmware
   - name: community.general
+    version: <5.0.0
   - name: community.windows
   - name: ansible.windows
   - name: community.general.notification
