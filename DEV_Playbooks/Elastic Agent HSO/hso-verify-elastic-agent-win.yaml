@@ -2,10 +2,12 @@
 - name: Verificacion de status de agente elastic Windows
   hosts: all
   vars:
-    awx_url: 'http://10.1.2.204/'  
+    awx_url: 'http://10.1.2.204/'
     status_ok: 'Status: HEALTHY'
     cert_thumbprint: 460bac6411726f1fd2a321dffbd976df6a603226
     cert_src_path: ./Certificado_ELK/ca.crt # nombre de certificado MUST be ca.crt
+    msteams_webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/64881ad2495941928a621ed1c7ce1baa/273ef0d1-397e-469b-b601-0b07a650d12a
+
   tasks:
 
     - name: Validar si elastic agente se encuentra instalado
@@ -69,44 +71,44 @@
 
     - name: Send notification message via MS Teams
       community.general.office_365_connector_card:
-        webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/64881ad2495941928a621ed1c7ce1baa/273ef0d1-397e-469b-b601-0b07a650d12a
-        title: 'Elastic-Agent en {{ inventory_hostname }} {{ elastic_status.output[0]}}'
+        webhook: '{{ msteams_webhook }}'
+        title: 'Elastic-Agent en {{ inventory_hostname }} {{ elastic_status.output[0] }}'
         color: E81123
         summary: 'Alerta servidor {{ inventory_hostname }}'
         sections:
-        - title: 'Ansible playbook: **{{ ansible_play_name }}**'
-          start_group: true
-          activity_image: https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png
-          activity_title: 'Server Name: **{{ ansible_facts.hostname }}**'
-          activity_subtitle: 'Server IP: **{{ ansible_host }}**'
-          activity_text: 
-          text: 'Datos del Servidor:' 
-          facts:
-          - name: 'Sistema Operativo:'
-            value: '{{ ansible_facts.os_name }}'
-          - name:  'Dominio:'
-            value: '{{ ansible_facts.domain }}'
-          actions:
-          - "@type": OpenUri
-            name: RDP to Server
-            targets:
-            - os: default
-              uri: 'rdp://{{ ansible_host }}=s:localhost'
-            - os: windows
-              uri: 'rdp://{{ ansible_host }}=s:localhost'
-            - os: iOS
-              uri: 'rdp://{{ ansible_host }}=s:localhost'
-            - os: android
-              uri: 'rdp://{{ ansible_host }}=s:localhost'
-          - "@type": OpenUri
-            name: Entrar a AWX
-            targets:
-            - os: default
-              uri: '{{ awx_url }}'
-        - title: '**Alerta Server {{ ansible_facts.hostname }} -> IP: {{ ansible_host }}**'
-          text: '{{ elastic_status.output | to_nice_yaml }}'
+          - title: 'Ansible playbook: **{{ ansible_play_name }}**'
+            start_group: true
+            activity_image: https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png
+            activity_title: 'Server Name: **{{ ansible_facts.hostname }}**'
+            activity_subtitle: 'Server IP: **{{ ansible_host }}**'
+            activity_text:
+            text: 'Datos del Servidor:'
+            facts:
+              - name: 'Sistema Operativo:'
+                value: '{{ ansible_facts.os_name }}'
+              - name: 'Dominio:'
+                value: '{{ ansible_facts.domain }}'
+            actions:
+              - "@type": OpenUri
+                name: RDP to Server
+                targets:
+                  - os: default
+                    uri: 'rdp://{{ ansible_host }}=s:localhost'
+                  - os: windows
+                    uri: 'rdp://{{ ansible_host }}=s:localhost'
+                  - os: iOS
+                    uri: 'rdp://{{ ansible_host }}=s:localhost'
+                  - os: android
+                    uri: 'rdp://{{ ansible_host }}=s:localhost'
+              - "@type": OpenUri
+                name: Entrar a AWX
+                targets:
+                  - os: default
+                    uri: '{{ awx_url }}'
+          - title: '**Alerta Server {{ ansible_facts.hostname }} -> IP: {{ ansible_host }}**'
+            text: '{{ elastic_status.output | to_nice_yaml }}'
       delegate_to: localhost
-      when: elastic_status.output[0] != status_ok
+      # when: elastic_status.output[0] != status_ok
 
-    #- debug:
+    # - debug:
      #   msg: '{{ ansible_facts }}'
