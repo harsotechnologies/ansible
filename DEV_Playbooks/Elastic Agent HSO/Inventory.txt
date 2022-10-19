@@ -1,2 +1,2 @@
 HSO_AD  ansible_host=172.25.10.25 ansible_connection=winrm ansible_winrm_server_cert_validation=ignore ansible_user=administrator ansible_password=y=L+wgTP}Pqo%^a&
-# HSO_AD_NEW  ansible_host=172.25.10.109 ansible_connection=winrm ansible_winrm_server_cert_validation=ignore ansible_user=administrator ansible_password=Harso.2022!
+HSO_AD_NEW  ansible_host=172.25.10.109 ansible_connection=winrm ansible_winrm_server_cert_validation=ignore ansible_user=administrator ansible_password=Harso.2022!
