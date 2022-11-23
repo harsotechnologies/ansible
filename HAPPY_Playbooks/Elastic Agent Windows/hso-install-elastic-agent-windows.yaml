@@ -1,0 +1,101 @@
+---
+- name: Instalacion de agente elastic
+  hosts: all
+  vars:
+    cert_src_path: ./Certificado_ELK/ca.crt # nombre de certificado MUST be ca.crt
+    elastic_fqdn: hsoescluster-es-http.hsoeck.svc
+    elastic_ip: 10.1.1.5
+    fleetserver_fqdn: hso-fleet-server-agent-http.hsoeck.svc
+    fleetserver_ip: 10.1.1.7
+    elastic_version: '8.5.0'
+    enrollment_token: d0o5Qm9JUUJ0WWFZY3RoTF91NWM6RWZ1WWxpYUpRMnlfcGFCUHFxWkFvdw==
+    msteams_webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/273ef0d1-397e-469b-b601-0b07a650d12a
+    awx_url: 'https://awx.harso.com/'
+  tasks:
+
+    - name: Validar si elastic agente se encuentra instalado
+      ansible.windows.win_service:
+        name: Elastic Agent
+      register: elastic
+
+    - name: Copiar Certificado en Servidor
+      ansible.windows.win_copy:
+        src: '{{ cert_src_path }}'
+        dest: C:\Temp\
+
+    - name: Instalar CA en Servidor
+      ansible.windows.win_certificate_store:
+        path: C:\Temp\ca.crt
+        file_type: pem
+        store_location: LocalMachine
+        store_name: Root
+        key_storage: machine
+        state: present
+
+    - name: Configurar archivo host con fleet Server y Elastic Search
+      community.windows.win_hosts:
+        state: present
+        canonical_name: "{{ item.nombre }}"
+        ip_address: "{{ item.ip }}"
+      loop:
+        - { nombre: '{{ elastic_fqdn }}', ip: '{{ elastic_ip }}' }
+        - { nombre: '{{ fleetserver_fqdn }}', ip: '{{ fleetserver_ip }}' }
+
+    - name: Ejecutar script powershell instalar elastic-agent
+      become: true
+      become_method: runas
+      become_user: SYSTEM
+      ansible.windows.win_powershell:
+        script: |
+          $ProgressPreference = 'SilentlyContinue'
+          cd C:\Temp
+          Invoke-WebRequest -Uri https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-windows-x86_64.zip -OutFile elastic-agent-{{ elastic_version }}-windows-x86_64.zip
+          Expand-Archive .\elastic-agent-{{ elastic_version }}-windows-x86_64.zip -DestinationPath .
+          cd elastic-agent-{{ elastic_version }}-windows-x86_64
+          .\elastic-agent.exe install --non-interactive --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}
+      when: not elastic.exists
+      register: install
+
+    - name: Borrar contenido de directorio Temp
+      ansible.windows.win_file:
+        path: C:\Temp\
+        state: absent
+      register: result
+      until: not result.failed
+      retries: 3
+      delay: 10
+
+    - name: Enviar notificacion por MS Teams
+      community.general.office_365_connector_card:
+        webhook: '{{ msteams_webhook }}'
+        title: 'Resultados de instalacion de agentes en {{ inventory_hostname }}'
+        color: |
+          {% if install.output[1] | default('failed') == 'Elastic Agent has been successfully installed.' %}
+          23E811
+          {% else %}
+          E81123
+          {% endif %}
+        summary: 'Notificacion servidor {{ inventory_hostname }}' # Mensaje en notificacion PopUp
+        sections:
+          - title: 'Ansible playbook: **{{ ansible_play_name }}**'
+            start_group: true
+            activity_image: https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png
+            activity_title: 'Server Name: **{{ ansible_facts.hostname }}**'
+            activity_subtitle: 'Server IP: **{{ ansible_host }}**'
+            activity_text:
+            text: 'Instalacion de agente:'
+            facts:
+              - name: 'Status:'
+                value: "{{ install.output | join(' ') }}"
+            actions:
+              - "@type": OpenUri
+                name: RDP to Server
+                targets:
+                  - os: default
+                    uri: 'rdp://{{ ansible_host }}=s:localhost'
+              - "@type": OpenUri
+                name: Entrar a AWX
+                targets:
+                  - os: default
+                    uri: '{{ awx_url }}'
+      delegate_to: localhost

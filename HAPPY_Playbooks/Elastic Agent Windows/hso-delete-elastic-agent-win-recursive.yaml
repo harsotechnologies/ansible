@@ -1,0 +1,116 @@
+---
+- name: Eliminar agente elastic Windows
+  hosts: all
+  vars:
+    awx_url: 'https://awx.harso.com/'
+    msteams_webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/273ef0d1-397e-469b-b601-0b07a650d12a
+    svc_list: ['Elastic Agent', 'filebeat', 'metricbeat', 'packetbeat', 'winlogbeat']
+    folder_list: ['Elastic', 'Filebeat', 'Metricbeat', 'Packetbeat', 'Winlogbeat']
+
+  tasks:
+
+    - name: Validar existencia de agentes
+      ansible.windows.win_service:
+        name: "{{ item }}"
+      loop: "{{ svc_list }}"
+      register: service
+
+    - name: Desinstalar Agentes
+      ignore_errors: true
+      ansible.windows.win_service:
+        name: "{{ item.item }}"
+        state: absent
+      when: item.exists
+      loop: "{{ service.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+      register: service_status
+
+    - name: Borrar carpetas de instalacion
+      ansible.windows.win_file:
+        path: 'C:\Program Files\{{ folder_list[idx] }}'
+        state: absent
+      when: not (agent.exists | default(false))
+      loop: "{{ service_status.results }}"
+      loop_control:
+        label: "{{ agent.item.item }}"
+        index_var: idx
+        loop_var: agent
+
+    - name: Enviar notificacion por MS Teams
+      community.general.office_365_connector_card:
+        webhook: '{{ msteams_webhook }}'
+        title: 'Resultados de eliminacion de agentes en {{ inventory_hostname }}'
+        color: |
+          {% if service_status.results[0].failed | default(false) or service_status.results[1].failed | default(false) or service_status.results[2].failed | default(false) or service_status.results[3].failed | default(false) or service_status.results[4].failed | default(false) %}
+          E81123
+          {% else %}
+          23E811
+          {% endif %}
+        summary: 'Notificacion servidor {{ inventory_hostname }}' # Mensaje en notificacion PopUp
+        sections:
+          - title: 'Ansible playbook: **{{ ansible_play_name }}**'
+            start_group: true
+            activity_image: https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png
+            activity_title: 'Server Name: **{{ ansible_facts.hostname }}**'
+            activity_subtitle: 'Server IP: **{{ ansible_host }}**'
+            activity_text:
+            text: 'Datos de agentes:'
+            facts:
+              - name: 'Elastic Agent:'
+                value: |
+                  {% if service.results[0].exists and not service_status.results[0].exists %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[0].exists and service_status.results[0].exists %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Filebeat:'
+                value: |
+                  {% if service.results[1].exists and not service_status.results[1].exists %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[1].exists and service_status.results[1].exists %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Metricbeat:'
+                value: |
+                  {% if service.results[2].exists and not service_status.results[2].exists %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[2].exists and service_status.results[2].exists %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Packetbeat:'
+                value: |
+                  {% if service.results[3].exists and not service_status.results[3].exists %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[3].exists and service_status.results[3].exists %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Winlogbeat:'
+                value: |
+                  {% if service.results[4].exists and not service_status.results[4].exists %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[4].exists and service_status.results[4].exists %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+            actions:
+              - "@type": OpenUri
+                name: RDP to Server
+                targets:
+                  - os: default
+                    uri: 'rdp://{{ ansible_host }}=s:localhost'
+              - "@type": OpenUri
+                name: Entrar a AWX
+                targets:
+                  - os: default
+                    uri: '{{ awx_url }}'
+      delegate_to: localhost
