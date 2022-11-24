@@ -4,8 +4,8 @@
   vars:
     awx_url: 'https://awx.harso.com/'
     msteams_webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/273ef0d1-397e-469b-b601-0b07a650d12a
-    svc_list: ['Elastic Agent', 'ElasticEndpoint', 'filebeat', 'metricbeat', 'packetbeat', 'winlogbeat']
-    folder_list: ['Elastic\Agent', 'Elastic\Endpoint', 'Filebeat', 'Metricbeat', 'Packetbeat', 'Winlogbeat']
+    svc_list: ['Elastic Agent', 'ElasticEndpoint', 'filebeat', 'metricbeat', 'packetbeat', 'winlogbeat', 'Zabbix Agent']
+    folder_list: ['Program Files\Elastic\Agent', 'Program Files\Elastic\Endpoint', 'Program Files\Filebeat', 'Program Files\Metricbeat', 'Program Files\Packetbeat', 'Program Files\Winlogbeat', 'zabbix']
 
   tasks:
 
@@ -17,6 +17,9 @@
 
     - name: Desinstalar Agentes
       ignore_errors: true
+      become: true
+      become_method: runas
+      become_user: SYSTEM
       ansible.windows.win_service:
         name: "{{ item.item }}"
         state: absent
@@ -27,10 +30,11 @@
       register: service_status
 
     - name: Borrar carpetas de instalacion
+      ignore_errors: true
       ansible.windows.win_file:
-        path: 'C:\Program Files\{{ folder_list[idx] }}'
+        path: 'C:\{{ folder_list[idx] }}'
         state: absent
-      when: not (agent.exists | default(false))
+      when: not (agent.failed | default(false))
       loop: "{{ service_status.results }}"
       loop_control:
         label: "{{ agent.item.item }}"
@@ -42,7 +46,7 @@
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
         color: |
-          {% if service_status.results[0].failed | default(false) or service_status.results[1].failed | default(false) or service_status.results[2].failed | default(false) or service_status.results[3].failed | default(false) or service_status.results[4].failed | default(false) or service_status.results[5].failed | default(false) %}
+          {% if service_status.results[0].failed | default(false) or service_status.results[1].failed | default(false) or service_status.results[2].failed | default(false) or service_status.results[3].failed | default(false) or service_status.results[4].failed | default(false) or service_status.results[5].failed | default(false) or service_status.results[6].failed | default(false) %}
           E81123
           {% else %}
           23E811
@@ -59,54 +63,63 @@
             facts:
               - name: 'Elastic Agent:'
                 value: |
-                  {% if service.results[0].exists and not service_status.results[0].exists %}
+                  {% if service.results[0].exists and not (service_status.results[0].failed | default(false)) %}
                   Agente desinstalado correctamente
-                  {% elif service.results[0].exists and service_status.results[0].exists %}
+                  {% elif service.results[0].exists and service_status.results[0].failed %}
                   Agente NO desinstalado (ERROR)
                   {% else %}
                   Agente no presente
                   {% endif %}
               - name: 'Elastic Defend:'
                 value: |
-                  {% if service.results[1].exists and not service_status.results[1].exists %}
+                  {% if service.results[1].exists and not (service_status.results[1].failed | default(false)) %}
                   Agente desinstalado correctamente
-                  {% elif service.results[1].exists and service_status.results[1].exists %}
+                  {% elif service.results[1].exists and service_status.results[1].failed %}
                   Agente NO desinstalado (ERROR)
                   {% else %}
                   Agente no presente
                   {% endif %}
               - name: 'Filebeat:'
                 value: |
-                  {% if service.results[2].exists and not service_status.results[2].exists %}
+                  {% if service.results[2].exists and not (service_status.results[2].failed | default(false)) %}
                   Agente desinstalado correctamente
-                  {% elif service.results[2].exists and service_status.results[2].exists %}
+                  {% elif service.results[2].exists and service_status.results[2].failed %}
                   Agente NO desinstalado (ERROR)
                   {% else %}
                   Agente no presente
                   {% endif %}
               - name: 'Metricbeat:'
                 value: |
-                  {% if service.results[3].exists and not service_status.results[3].exists %}
+                  {% if service.results[3].exists and not (service_status.results[3].failed | default(false)) %}
                   Agente desinstalado correctamente
-                  {% elif service.results[3].exists and service_status.results[3].exists %}
+                  {% elif service.results[3].exists and service_status.results[3].failed %}
                   Agente NO desinstalado (ERROR)
                   {% else %}
                   Agente no presente
                   {% endif %}
               - name: 'Packetbeat:'
                 value: |
-                  {% if service.results[4].exists and not service_status.results[4].exists %}
+                  {% if service.results[4].exists and not (service_status.results[4].failed | default(false)) %}
                   Agente desinstalado correctamente
-                  {% elif service.results[4].exists and service_status.results[4].exists %}
+                  {% elif service.results[4].exists and service_status.results[4].failed %}
                   Agente NO desinstalado (ERROR)
                   {% else %}
                   Agente no presente
                   {% endif %}
               - name: 'Winlogbeat:'
                 value: |
-                  {% if service.results[5].exists and not service_status.results[5].exists %}
+                  {% if service.results[5].exists and not (service_status.results[5].failed | default(false)) %}
                   Agente desinstalado correctamente
-                  {% elif service.results[5].exists and service_status.results[5].exists %}
+                  {% elif service.results[5].exists and service_status.results[5].failed %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Zabbix:'
+                value: |
+                  {% if service.results[6].exists and not (service_status.results[6].failed | default(false)) %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[6].exists and service_status.results[6].failed %}
                   Agente NO desinstalado (ERROR)
                   {% else %}
                   Agente no presente
