@@ -4,8 +4,8 @@
   vars:
     awx_url: 'https://awx.harso.com/'
     msteams_webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/273ef0d1-397e-469b-b601-0b07a650d12a
-    svc_list: ['Elastic Agent', 'filebeat', 'metricbeat', 'packetbeat', 'winlogbeat']
-    folder_list: ['Elastic', 'Filebeat', 'Metricbeat', 'Packetbeat', 'Winlogbeat']
+    svc_list: ['Elastic Agent', 'ElasticEndpoint', 'filebeat', 'metricbeat', 'packetbeat', 'winlogbeat']
+    folder_list: ['Elastic\Agent', 'Elastic\Endpoint', 'Filebeat', 'Metricbeat', 'Packetbeat', 'Winlogbeat']
 
   tasks:
 
@@ -40,14 +40,14 @@
     - name: Enviar notificacion por MS Teams
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
-        title: 'Resultados de eliminacion de agentes en {{ inventory_hostname }}'
+        title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
         color: |
-          {% if service_status.results[0].failed | default(false) or service_status.results[1].failed | default(false) or service_status.results[2].failed | default(false) or service_status.results[3].failed | default(false) or service_status.results[4].failed | default(false) %}
+          {% if service_status.results[0].failed | default(false) or service_status.results[1].failed | default(false) or service_status.results[2].failed | default(false) or service_status.results[3].failed | default(false) or service_status.results[4].failed | default(false) or service_status.results[5].failed | default(false) %}
           E81123
           {% else %}
           23E811
           {% endif %}
-        summary: 'Notificacion servidor {{ inventory_hostname }}' # Mensaje en notificacion PopUp
+        summary: 'Notificacion servidor {{ ansible_facts.hostname }}' # Mensaje en notificacion PopUp
         sections:
           - title: 'Ansible playbook: **{{ ansible_play_name }}**'
             start_group: true
@@ -66,7 +66,7 @@
                   {% else %}
                   Agente no presente
                   {% endif %}
-              - name: 'Filebeat:'
+              - name: 'Elastic Defend:'
                 value: |
                   {% if service.results[1].exists and not service_status.results[1].exists %}
                   Agente desinstalado correctamente
@@ -75,7 +75,7 @@
                   {% else %}
                   Agente no presente
                   {% endif %}
-              - name: 'Metricbeat:'
+              - name: 'Filebeat:'
                 value: |
                   {% if service.results[2].exists and not service_status.results[2].exists %}
                   Agente desinstalado correctamente
@@ -84,7 +84,7 @@
                   {% else %}
                   Agente no presente
                   {% endif %}
-              - name: 'Packetbeat:'
+              - name: 'Metricbeat:'
                 value: |
                   {% if service.results[3].exists and not service_status.results[3].exists %}
                   Agente desinstalado correctamente
@@ -93,11 +93,20 @@
                   {% else %}
                   Agente no presente
                   {% endif %}
-              - name: 'Winlogbeat:'
+              - name: 'Packetbeat:'
                 value: |
                   {% if service.results[4].exists and not service_status.results[4].exists %}
                   Agente desinstalado correctamente
                   {% elif service.results[4].exists and service_status.results[4].exists %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Winlogbeat:'
+                value: |
+                  {% if service.results[5].exists and not service_status.results[5].exists %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[5].exists and service_status.results[5].exists %}
                   Agente NO desinstalado (ERROR)
                   {% else %}
                   Agente no presente
