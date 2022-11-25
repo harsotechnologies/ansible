@@ -10,5 +10,5 @@
       become_user: SYSTEM
       ansible.windows.win_powershell:
         script: |
-          iex(iwr https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1).Content
+          iex(iwr -UseBasicParsing https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1).Content
 
