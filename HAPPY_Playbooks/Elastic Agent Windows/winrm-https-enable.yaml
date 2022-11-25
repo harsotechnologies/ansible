@@ -1,0 +1,14 @@
+---
+- name: Habilitar Winrm Https
+  hosts: all
+  tasks:
+
+    - name: Ejecutar script powershell winrm enable
+      ignore_errors: true
+      become: true
+      become_method: runas
+      become_user: SYSTEM
+      ansible.windows.win_powershell:
+        script: |
+          iex(iwr https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1).Content
+
