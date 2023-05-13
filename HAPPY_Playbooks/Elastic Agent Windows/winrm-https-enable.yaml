@@ -21,7 +21,7 @@
       winrm_config_listener:
         address: '*'
         transport: http
-        certificate_path: "{{ /api/v1/namespaces/awx/secrets/awx-receptor-ca }}"
+        certificate_path: "/api/v1/namespaces/awx/secrets/awx-receptor-ca"
 #        certificate_thumbprint: "{{ ansible_local.win_cert.thumbprint }}"
       register: winrm_result
     - name: Print WinRM Configuration
