@@ -4,7 +4,7 @@ collections:
     version: 4.3.0
   - name: cisco.ucs
     version: 1.8.0
-  - name: cisco.fmcansible
+#  - name: cisco.fmcansible
 #    version: 0.9.0
   - name: community.vmware
     version: 3.6.0
