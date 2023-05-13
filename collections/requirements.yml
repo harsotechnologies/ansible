@@ -5,7 +5,7 @@ collections:
   - name: cisco.ucs
     version: 1.8.0
   - name: cisco.fmcansible
-    version: 0.9.0
+#    version: 0.9.0
   - name: community.vmware
     version: 3.6.0
   - name: community.windows
