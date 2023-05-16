@@ -1,9 +1,9 @@
 ---
-- name: Habilitar Winrm Https
-  hosts: all
-  gather_facts: no
-  become: yes
-  tasks:
+#- name: Habilitar Winrm Https
+#  hosts: all
+#  gather_facts: no
+#  become: yes
+#  tasks:
 
 #    - name: Ejecutar script powershell winrm enable
 #     ignore_errors: true
@@ -30,16 +30,22 @@
 #      debug:
 #        var: winrm_result 
 
-    - name: Enable WinRM Service
-      win_service:
-        name: winrm
-        start_mode: auto
-        state: started
-    - name: Configure WinRM Listeners
-      winrm_config_listener:
-        address: '*'
-        transport: http
-        certificate_thumbprint: "/api/v1/namespaces/awx/secrets/awx-receptor-ca"
-      register: winrm_result
-   
+---
+- name: Habilitar WinRM
+  hosts: all
+  gather_facts: no
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_transport: ntlm
+    ansible_winrm_server_cert_validation: ignore
+    winrm_script: 
+      $cert = New-SelfSignedCertificate -DnsName "localhost" -CertStoreLocation cert:\LocalMachine\My
+      $thumbprint = $cert.Thumbprint
+      $cmd = "winrm create winrm/config/Listener?Address=*+Transport=HTTP @{Hostname=`"localhost`";CertificateThumbprint=`"$thumbprint`"}"
+      Invoke-Expression $cmd
+      Set-NetFirewallRule -Name "WINRM-HTTP-In-TCP" -Enabled True
+  tasks:
+    - name: Ejecutar script de PowerShell
+      win_shell: "{{ winrm_script }}"
+
 
