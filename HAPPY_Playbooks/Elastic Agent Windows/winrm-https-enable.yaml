@@ -32,7 +32,7 @@
 
 ---
 - name: Habilitar WinRM en Windows Server
-  hosts: windows_servers
+  hosts: all
   gather_facts: False
   tasks:
     - name: Configurar el servicio WinRM
