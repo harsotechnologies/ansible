@@ -31,7 +31,7 @@
 #        var: winrm_result 
 
 ---
-name: Habilitar WinRM
+- name: Habilitar WinRM
   hosts: all
   gather_facts: no
   vars:
