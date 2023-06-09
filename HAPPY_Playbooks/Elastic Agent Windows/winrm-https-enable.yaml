@@ -25,7 +25,7 @@
         certificate_thumbprint: "{{ ansible_local.win_cert.thumbprint }}"
         register: winrm_result
     - name: Print WinRM Configuration
-       debug:
+      debug:
         var: winrm_result 
 #---
 #- name: Habilitar WinRM en Windows Server
