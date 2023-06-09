@@ -12,9 +12,9 @@
       ansible.windows.win_powershell:
         script: |
           iex(iwr -UseBasicParsing https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1).Content
-    - name: Enable WinRM Service
-       win_service:
-        name: winrm
+    - name: Iniciar el servicio WinRM
+      win_service:
+        name: "winrm"
         start_mode: auto
         state: started
     - name: Configure WinRM Listeners
