@@ -13,19 +13,19 @@
         script: |
           iex(iwr -UseBasicParsing https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1).Content
     - name: Enable WinRM Service
-      win_service:
+       win_service:
         name: winrm
         start_mode: auto
         state: started
     - name: Configure WinRM Listeners
-      winrm_config_listener:
+       winrm_config_listener:
         address: '10.1.1.6'
         transport: http
         certificate_path: "/api/v1/namespaces/awx/secrets/awx-receptor-ca"
         certificate_thumbprint: "{{ ansible_local.win_cert.thumbprint }}"
         register: winrm_result
     - name: Print WinRM Configuration
-      debug:
+       debug:
         var: winrm_result 
 #---
 #- name: Habilitar WinRM en Windows Server
