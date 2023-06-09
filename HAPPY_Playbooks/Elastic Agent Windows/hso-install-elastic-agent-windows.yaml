@@ -13,6 +13,11 @@
       ansible.windows.win_service:
         name: Elastic Agent
       register: elastic
+      
+    - name: Create directory structure
+      ansible.windows.win_file:
+        path: C:\Temp
+        state: directory
 
     - name: Ejecutar script powershell instalar elastic-agent
       become: true
@@ -28,6 +33,15 @@
           .\elastic-agent.exe install --non-interactive --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}
       when: not elastic.exists
       register: install
+
+    - name: Borrar contenido de directorio Temp
+      ansible.windows.win_file:
+        path: C:\Temp\
+        state: absent
+      register: result
+      until: not result.failed
+      retries: 3
+      delay: 10
 
     - name: Enviar notificacion por MS Teams
       community.general.office_365_connector_card:
