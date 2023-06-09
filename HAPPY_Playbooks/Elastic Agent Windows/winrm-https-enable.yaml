@@ -1,52 +1,52 @@
----
-- name: Habilitar Winrm Https
-  hosts: all
-  gather_facts: no
-  become: yes
-  tasks:
-    - name: Ejecutar script powershell winrm enable
-      ignore_errors: true
-      become: true
-      become_method: runas
-      become_user: SYSTEM
-      ansible.windows.win_powershell:
-        script: |
-          iex(iwr -UseBasicParsing https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1).Content
-    - name: Iniciar el servicio WinRM
-      win_service:
-        name: "winrm"
-        start_mode: auto
-        state: started
-    - name: Configure WinRM Listeners
-      winrm_config_listener: |
-        address: "10.1.1.6"
-        transport: http
-        certificate_path: "/api/v1/namespaces/awx/secrets/awx-receptor-ca"
-        certificate_thumbprint: "{{ ansible_local.win_cert.thumbprint }}"
-        register: winrm_result
-    - name: Print WinRM Configuration
-      debug: |
-        var: winrm_result 
 #---
-#- name: Habilitar WinRM en Windows Server
+#- name: Habilitar Winrm Https
 #  hosts: all
-#  gather_facts: False
+#  gather_facts: no
+#  become: yes
 #  tasks:
-#    - name: Configurar el servicio WinRM
-#      win_shell: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\services\WinRM" -Name StartMode -Value "Auto"
-#    
+#    - name: Ejecutar script powershell winrm enable
+#      ignore_errors: true
+#      become: true
+#      become_method: runas
+#      become_user: SYSTEM
+#      ansible.windows.win_powershell:
+#        script: 
+#          iex(iwr -UseBasicParsing https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1).Content
 #    - name: Iniciar el servicio WinRM
 #      win_service:
 #        name: "winrm"
 #        start_mode: auto
 #        state: started
-        
-#    - name: Abrir el puerto del Firewall para WinRM
-#      win_firewall_rule:
-#        name: "Permitir WinRM"
-#        localport: 5985
-#        protocol: tcp
-#        direction: in
-#        action: allow
-#        enabled: yes
+#   - name: Configure WinRM Listeners
+#      winrm_config_listener: 
+#        address: "10.1.1.6"
+#        transport: http
+#        certificate_path: "/api/v1/namespaces/awx/secrets/awx-receptor-ca"
+#        certificate_thumbprint: "{{ ansible_local.win_cert.thumbprint }}"
+#        register: winrm_result
+#    - name: Print WinRM Configuration
+#      debug: 
+#        var: winrm_result 
 
+---
+- name: Habilitar WinRM en Windows Server
+  hosts: all
+  gather_facts: False
+  tasks:
+    - name: Configurar el servicio WinRM
+      win_shell: Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\services\WinRM" -Name StartMode -Value "Auto"
+    
+    - name: Iniciar el servicio WinRM
+      win_service:
+        name: "winrm"
+        start_mode: auto
+        state: started
+       
+    - name: Abrir el puerto del Firewall para WinRM
+      win_firewall_rule:
+        name: "Permitir WinRM"
+        localport: 5985
+        protocol: tcp
+        direction: in
+        action: allow
+        enabled: yes
