@@ -18,7 +18,7 @@
         start_mode: auto
         state: started
     - name: Configure WinRM Listeners
-       winrm_config_listener:
+      winrm_config_listener:
         address: '10.1.1.6'
         transport: http
         certificate_path: "/api/v1/namespaces/awx/secrets/awx-receptor-ca"
