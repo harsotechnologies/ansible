@@ -7,8 +7,8 @@
     elastic_ip: 10.1.1.1
     fleetserver_fqdn: hso-fleet-server-agent-http.hsoeck.svc
     fleetserver_ip: 10.1.1.5
-    elastic_version: '8.5.0'
-    enrollment_token: d0o5Qm9JUUJ0WWFZY3RoTF91NWM6RWZ1WWxpYUpRMnlfcGFCUHFxWkFvdw==
+    elastic_version: '8.8.0'
+    enrollment_token: MG54Wm5vZ0JsUGFYR3QtYUtqTWs6N2xuaDZUX3BRWHF0ODBMWGtZVV9FQQ==
     msteams_webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/273ef0d1-397e-469b-b601-0b07a650d12a
     awx_url: 'https://awx.harso.com/'
   tasks:
