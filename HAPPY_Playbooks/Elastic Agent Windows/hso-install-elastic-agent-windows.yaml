@@ -46,14 +46,14 @@
     - name: Enviar notificacion por MS Teams
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
-        title: 'Resultados de instalacion de agentes en {{ inventory_hostname }}'
+        title: 'Resultados de instalacion de agentes en {{ ansible_facts.hostname }}'
         color: |
           {% if install.output[1] | default('failed') == 'Elastic Agent has been successfully installed.' %}
           23E811
           {% else %}
           E81123
           {% endif %}
-        summary: 'Notificacion servidor {{ inventory_hostname }}' # Mensaje en notificacion PopUp
+        summary: 'Notificacion servidor {{ ansible_facts.hostname }}' # Mensaje en notificacion PopUp
         sections:
           - title: 'Ansible playbook: **{{ ansible_play_name }}**'
             start_group: true
