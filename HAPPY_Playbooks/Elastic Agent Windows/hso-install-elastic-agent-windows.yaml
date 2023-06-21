@@ -42,8 +42,8 @@
       until: not result.failed
       retries: 3
       delay: 10
-
-- name: Enviar notificacion por MS Teams
+      
+    - name: Enviar notificacion por MS Teams
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de instalcion de agentes en {{ ansible_facts.hostname }}'
