@@ -43,10 +43,10 @@
       retries: 3
       delay: 10
 
-    - name: Enviar notificacion por MS Teams
+- name: Enviar notificacion por MS Teams
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
-        title: 'Resultados de instalacion de agentes en {{ ansible_facts.hostname }}'
+        title: 'Resultados de instalcion de agentes en {{ ansible_facts.hostname }}'
         color: |
           {% if install.output[1] | default('failed') == 'Elastic Agent has been successfully installed.' %}
           23E811
