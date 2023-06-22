@@ -64,8 +64,7 @@
             text: 'Instalacion de agente:'
             facts:
               - name: 'Status:'
-                value: |
-                "{{ install.output | join(' ') }}"
+                value: "{{ install.output | join(' ') }}"
             actions:
               - "@type": OpenUri
                 name: RDP to Server
