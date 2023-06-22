@@ -30,7 +30,7 @@
           Invoke-WebRequest -Uri https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-windows-x86_64.zip -OutFile elastic-agent-{{ elastic_version }}-windows-x86_64.zip
           Expand-Archive .\elastic-agent-{{ elastic_version }}-windows-x86_64.zip -DestinationPath .
           cd elastic-agent-{{ elastic_version }}-windows-x86_64
-          .\elastic-agent.exe install --non-interactive --url={{ fleetserver_fqdn }} --enrollment-token={{ enrollment_token }}
+          .\elastic-agent.exe install --non-interactive --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}
       when: not elastic.exists
       register: install
 
