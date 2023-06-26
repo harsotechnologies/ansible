@@ -5,7 +5,7 @@
     fleetserver_fqdn: ''
     elastic_version: ''
     enrollment_token: ''
-    msteams_webhook: https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/273ef0d1-397e-469b-b601-0b07a650d12a
+    msteams_webhook: ''
     awx_url: 'https://awx.harso.com/'
   tasks:
 
