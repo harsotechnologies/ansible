@@ -1,6 +1,3 @@
-He corregido la sintaxis del script YAML. Aquí está el código revisado:
-
-```yaml
 ---
 - name: Instalación de agente Elastic en Linux
   hosts: all
