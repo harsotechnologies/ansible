@@ -1,9 +1,6 @@
 ---
 - name: Instalación de agente Elastic en Linux
   hosts: all
-  become: true
-  become_user: pruebasubuntu
-  become_pass: 1234567890
   vars:
     fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
@@ -17,6 +14,8 @@
       ignore_errors: true
 
     - name: Instalar curl si no está instalado
+      become: true
+      become_user: pruebasubuntu
       command: sudo apt install curl
       when: not curl.stdout
 
@@ -39,6 +38,8 @@
 
     - name: Instalar el agente Elastic
       shell: |
+        become: true
+        become_user: pruebasubuntu
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
       when: not elastic.stdout
