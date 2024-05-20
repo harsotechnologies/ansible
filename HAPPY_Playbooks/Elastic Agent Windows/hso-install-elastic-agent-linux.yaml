@@ -3,6 +3,7 @@
   hosts: all
   become: true
   become_user: pruebasubuntu
+  become_pass: 1234567890
   vars:
     fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
