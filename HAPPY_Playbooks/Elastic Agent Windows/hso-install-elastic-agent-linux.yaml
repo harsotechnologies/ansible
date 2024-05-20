@@ -28,7 +28,7 @@
     - name: Instalar el agente Elastic
       shell: |
       cd elastic-agent-{{elastic_version}}-linux-x86_64
-      sudo ./elastic-agent install --url= "{{ fleetserver_fqdn }}" --enrollment-token="{{ enrollment_token }}"
+      sudo ./elastic-agent install --url= '{{ fleetserver_fqdn }}' --enrollment-token='{{ enrollment_token }}'
       when: not elastic.stdout
 
     - name: Eliminar contenido del directorio temporal
