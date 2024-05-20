@@ -10,7 +10,19 @@
     msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
     awx_url: 'http://10.1.1.15/'
   tasks:
-    - name: Validar si el agente de Elastic está instalado
+
+       - name: Validar si curl esta instalado
+      command: ps -ef | grep -v grep | grep "curl"
+      register: curl
+      ignore_errors: true
+
+        - name: Descargar y extraer el curl
+      shell: |
+        cd /tmp/elastic-agent
+        sudo apt install curl
+      when: not curl.stdout
+      
+       - name: Validar si el agente de Elastic está instalado
       command: ps -ef | grep -v grep | grep "elastic-agent"
       register: elastic
       ignore_errors: true
@@ -19,6 +31,7 @@
       file:
         path: /tmp/elastic-agent
         state: directory
+        
 
     - name: Descargar y extraer el agente Elastic
       shell: |
