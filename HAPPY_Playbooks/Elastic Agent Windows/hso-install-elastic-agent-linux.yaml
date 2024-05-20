@@ -16,9 +16,7 @@
       ignore_errors: true
 
     - name: Instalar curl si no está instalado
-      apt:
-        name: curl
-        state: present
+      command: sudo apt install curl
       when: not curl.stdout
 
     - name: Validar si el agente de Elastic está instalado
