@@ -1,3 +1,6 @@
+He corregido la sintaxis del script YAML. Aquí está el código revisado:
+
+```yaml
 ---
 - name: Instalación de agente Elastic en Linux
   hosts: all
@@ -23,12 +26,12 @@
         cd /tmp/elastic-agent
         curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
         tar xzvf elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
-        when: not elastic.stdout
+      when: not elastic.stdout
 
     - name: Instalar el agente Elastic
       shell: |
-      cd elastic-agent-"{{elastic_version}}"-linux-x86_64
-      sudo ./elastic-agent install --url=https://"{{ fleetserver_fqdn }}":8220 --enrollment-token="{{ enrollment_token }}" --non-interactive 
+        cd elastic-agent-{{ elastic_version }}-linux-x86_64
+        sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
       when: not elastic.stdout
 
     - name: Eliminar contenido del directorio temporal
@@ -36,25 +39,25 @@
         path: /tmp/elastic-agent
         state: absent
 
-    - name: Enviar notificacion por MS Teams
+    - name: Enviar notificación por MS Teams
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
-        title: 'Resultados de instalacion de agentes en {{ inventory_hostname }}'
+        title: 'Resultados de instalación de agentes en {{ inventory_hostname }}'
         color: |
           {% if install.output[1] | default('failed') == 'Elastic Agent has been successfully installed.' %}
           23E811
           {% else %}
           E81123
           {% endif %}
-        summary: 'Notificacion servidor {{ inventory_hostname }}' # Mensaje en notificacion PopUp
+        summary: 'Notificación servidor {{ inventory_hostname }}' # Mensaje en notificación PopUp
         sections:
           - title: 'Ansible playbook: **{{ ansible_play_name }}**'
             start_group: true
             activity_image: https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png
             activity_title: 'Server Name: **{{ ansible_facts.hostname }}**'
             activity_subtitle: 'Server IP: **{{ ansible_host }}**'
-            activity_text:
-            text: 'Instalacion de agente:'
+            activity_text: ''
+            text: 'Instalación de agente:'
             facts:
               - name: 'Status:'
                 value: "{{ install.output | join(' ') }}"
@@ -70,3 +73,4 @@
                   - os: default
                     uri: '{{ awx_url }}'
       delegate_to: localhost
+```
