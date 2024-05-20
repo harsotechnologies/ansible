@@ -2,10 +2,10 @@
 - name: Instalación de agente Elastic en Linux
   hosts: all
   vars:
-    fleetserver_fqdn: 'https://fleetserver.harso.com:8220'
+    fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
     enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
-    msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-   a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
+    msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
     awx_url: 'http://10.1.1.15/'
   tasks:
     - name: Validar si el agente de Elastic está instalado
@@ -21,14 +21,14 @@
     - name: Descargar y extraer el agente Elastic
       shell: |
         cd /tmp/elastic-agent
-        curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{elastic_version}}-linux-x86_64.tar.gz
-        tar xzvf elastic-agent-{{elastic_version}}-linux-x86_64.tar.gz
+        curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
+        tar xzvf elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
         when: not elastic.stdout
 
     - name: Instalar el agente Elastic
       shell: |
-      cd elastic-agent-{{elastic_version}}-linux-x86_64
-      sudo ./elastic-agent install --url='{{ fleetserver_fqdn }}' --enrollment-token='{{ enrollment_token }}'
+      cd elastic-agent-'{{elastic_version}}'-linux-x86_64
+      sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}
       when: not elastic.stdout
 
     - name: Eliminar contenido del directorio temporal
