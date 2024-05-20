@@ -2,6 +2,7 @@
 - name: Instalación de agente Elastic en Linux
   hosts: all
   vars:
+    ansible_become_pass: '1234567890'
     fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
     enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
