@@ -1,6 +1,8 @@
 ---
 - name: Instalación de agente Elastic en Linux
   hosts: all
+  become: true
+  become_user: pruebasubuntu
   vars:
     fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
