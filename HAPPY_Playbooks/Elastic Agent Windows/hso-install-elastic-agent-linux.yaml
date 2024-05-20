@@ -16,10 +16,8 @@
       register: curl
       ignore_errors: true
 
-        - name: Descargar y extraer el curl
-      shell: |
-        cd /tmp/elastic-agent
-        sudo apt install curl
+      - name: Descargar y extraer el curl
+      command: sudo apt install curl
       when: not curl.stdout
       
        - name: Validar si el agente de Elastic está instalado
