@@ -10,17 +10,18 @@
     msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
     awx_url: 'http://10.1.1.15/'
   tasks:
-
-       - name: Validar si curl esta instalado
+    - name: Validar si curl está instalado
       command: ps -ef | grep -v grep | grep "curl"
       register: curl
       ignore_errors: true
 
-      - name: Descargar y extraer el curl
-      command: sudo apt install curl
+    - name: Instalar curl si no está instalado
+      apt:
+        name: curl
+        state: present
       when: not curl.stdout
-      
-       - name: Validar si el agente de Elastic está instalado
+
+    - name: Validar si el agente de Elastic está instalado
       command: ps -ef | grep -v grep | grep "elastic-agent"
       register: elastic
       ignore_errors: true
@@ -29,7 +30,6 @@
       file:
         path: /tmp/elastic-agent
         state: directory
-        
 
     - name: Descargar y extraer el agente Elastic
       shell: |
@@ -40,7 +40,7 @@
 
     - name: Instalar el agente Elastic
       shell: |
-        cd elastic-agent-{{ elastic_version }}-linux-x86_64
+        cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
       when: not elastic.stdout
 
@@ -59,7 +59,7 @@
           {% else %}
           E81123
           {% endif %}
-        summary: 'Notificación servidor {{ inventory_hostname }}' # Mensaje en notificación PopUp
+        summary: 'Notificación servidor {{ inventory_hostname }}'
         sections:
           - title: 'Ansible playbook: **{{ ansible_play_name }}**'
             start_group: true
