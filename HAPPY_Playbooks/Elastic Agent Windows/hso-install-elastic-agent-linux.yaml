@@ -29,7 +29,7 @@
       file:
         path: /tmp/elastic-agent
         state: directory
-        become: true
+        become: yes
 
     - name: Descargar y extraer el agente Elastic
       shell: |
