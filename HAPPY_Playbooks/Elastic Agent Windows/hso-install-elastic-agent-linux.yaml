@@ -2,8 +2,6 @@
 - name: Instalación de agente Elastic en Linux
   hosts: all
   vars:
-    ansible_become: true
-    ansible_become_method: enable
     ansible_become_pass: '1234567890'
     fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
@@ -18,6 +16,7 @@
 
     - name: Instalar curl si no está instalado
       command: sudo apt install curl
+      become: true
       when: not curl.stdout
 
     - name: Validar si el agente de Elastic está instalado
@@ -38,9 +37,9 @@
       when: not elastic.stdout
 
     - name: Instalar el agente Elastic
-      shell: |
-        cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
-        sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}  --non-interactive
+      command: cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
+      command: sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}  --non-interactive
+      become: true
       when: not elastic.stdout
       
     - name: Eliminar contenido del directorio temporal
