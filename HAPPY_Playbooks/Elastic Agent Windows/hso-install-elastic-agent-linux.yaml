@@ -16,7 +16,7 @@
 
     - name: Instalar curl si no está instalado
       command: sudo apt install curl
-      become: true
+      become: yes
       when: not curl.stdout
 
     - name: Validar si el agente de Elastic está instalado
@@ -39,7 +39,7 @@
     - name: Instalar el agente Elastic
       command: cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
       command: sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}  --non-interactive
-      become: true
+      become: yes
       when: not elastic.stdout
       
     - name: Eliminar contenido del directorio temporal
