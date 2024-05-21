@@ -37,8 +37,9 @@
       when: not elastic.stdout
 
     - name: Instalar el agente Elastic
-      command: cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
-      command: sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}  --non-interactive
+      shell: |
+       cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
+       sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}  --non-interactive
       become: yes
       when: not elastic.stdout
       
