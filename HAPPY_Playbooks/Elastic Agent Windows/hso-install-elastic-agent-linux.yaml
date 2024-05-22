@@ -43,6 +43,8 @@
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
       when: not elastic.stdout
+      register: install
+
 
     - name: Eliminar contenido del directorio temporal
       file:
