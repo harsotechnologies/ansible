@@ -43,7 +43,7 @@
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
       when: not elastic.stdout
-      register: install
+      register: install_result
 
 
     - name: Eliminar contenido del directorio temporal
@@ -66,7 +66,7 @@
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de instalación de agentes en {{ inventory_hostname }}'
         color: |
-          {% if install.output[1] | default('failed') == 'Elastic Agent has been successfully installed.' %}
+           {% if install_result is defined and 'Elastic Agent has been successfully installed.' in install_result.stdout %}
           23E811
           {% else %}
           E81123
