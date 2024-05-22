@@ -16,8 +16,9 @@
       ignore_errors: true
 
     - name: Instalar curl si no está instalado
-      command: sudo apt install curl
-      become: yes
+      apt:
+        name: curl
+        state: present
       when: not curl.stdout
 
     - name: Validar si el agente de Elastic está instalado
@@ -29,7 +30,6 @@
       file:
         path: /tmp/elastic-agent
         state: directory
-        become: yes
 
     - name: Descargar y extraer el agente Elastic
       shell: |
@@ -40,20 +40,19 @@
 
     - name: Instalar el agente Elastic
       shell: |
-       cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
-       sudo ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}  --non-interactive
-      become: yes
+        cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
+        ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
       when: not elastic.stdout
-      
+
     - name: Eliminar contenido del directorio temporal
       file:
         path: /tmp/elastic-agent
         state: absent
 
-     - name: Instalar la colección community.general de Ansible Galaxy
+    - name: Instalar la colección community.general de Ansible Galaxy
       ansible.builtin.command:
         cmd: ansible-galaxy collection install community.general
-      become: yes
+      
 
     - name: Actualizar la caché de paquetes de APT (solo para Debian/Ubuntu)
       apt:
@@ -66,7 +65,6 @@
         state: present
       when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
 
-    
     - name: Enviar notificación por MS Teams
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
