@@ -49,11 +49,6 @@
         path: /tmp/elastic-agent
         state: absent
 
-    - name: Actualizar la caché de paquetes de APT (solo para Debian/Ubuntu)
-      apt:
-        update_cache: yes
-      when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
-
     - name: Instalar Ansible en Debian/Ubuntu
       apt:
         name: ansible
