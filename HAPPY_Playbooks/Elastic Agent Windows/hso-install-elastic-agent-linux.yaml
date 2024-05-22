@@ -49,11 +49,6 @@
         path: /tmp/elastic-agent
         state: absent
 
-    - name: Instalar la colección community.general de Ansible Galaxy
-      ansible.builtin.command:
-        cmd: ansible-galaxy collection install community.general
-      
-
     - name: Actualizar la caché de paquetes de APT (solo para Debian/Ubuntu)
       apt:
         update_cache: yes
@@ -64,7 +59,11 @@
         name: ansible
         state: present
       when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
-
+      
+    - name: Instalar la colección community.general de Ansible Galaxy
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install community.general
+      
     - name: Enviar notificación por MS Teams
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
