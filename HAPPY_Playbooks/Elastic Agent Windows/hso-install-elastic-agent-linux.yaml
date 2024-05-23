@@ -1,9 +1,7 @@
 ---
 - name: Instalación de agente Elastic en Linux
   hosts: all
-  become: true
   vars:
-    ansible_become_pass: '1234567890'
     fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
     enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
@@ -11,22 +9,26 @@
     awx_url: 'http://10.1.1.15/'
   tasks:
     - name: Instalar curl si no está instalado
+      become: true
       apt:
         name: curl
         state: present
 
     - name: Crear estructura de directorios
+      become: true
       file:
         path: /tmp/elastic-agent
         state: directory
 
     - name: Descargar y extraer el agente Elastic
+      become: true
       shell: |
         cd /tmp/elastic-agent
         curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
         tar xzvf elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
 
     - name: Instalar el agente Elastic
+      become: true
       shell: |
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
