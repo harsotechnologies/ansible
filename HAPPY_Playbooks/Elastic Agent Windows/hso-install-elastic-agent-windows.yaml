@@ -6,7 +6,7 @@
     elastic_version: ''
     enrollment_token: ''
     msteams_webhook: ''
-    awx_url: 'https://awx.harso.com/'
+    awx_url: 'http://10.1.1.15/'
   tasks:
 
     - name: Validar si elastic agente se encuentra instalado
