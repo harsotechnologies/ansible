@@ -45,7 +45,6 @@
       when: not elastic.stdout
       register: install_result
 
-
     - name: Eliminar contenido del directorio temporal
       file:
         path: /tmp/elastic-agent
@@ -66,7 +65,7 @@
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de instalación de agentes en {{ inventory_hostname }}'
         color: |
-           {% if install_result is defined and 'Elastic Agent has been successfully installed.' in install_result.stdout %}
+          {% if install_result is defined and 'Elastic Agent has been successfully installed.' in install_result.stdout %}
           23E811
           {% else %}
           E81123
@@ -82,7 +81,7 @@
             text: 'Instalación de agente:'
             facts:
               - name: 'Status:'
-                value: "{{ install.output | join(' ') }}"
+                value: "{{ install_result.stdout if install_result is defined else 'Failed' }}"
             actions:
               - "@type": OpenUri
                 name: RDP to Server
@@ -95,3 +94,4 @@
                   - os: default
                     uri: '{{ awx_url }}'
       delegate_to: localhost
+
