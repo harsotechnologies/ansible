@@ -9,37 +9,31 @@
     awx_url: 'http://10.1.1.15/'
   tasks:
     - name: Instalar curl si no está instalado
-      become: true
-      become_method: sudo
-      become_user: root
       apt:
         name: curl
         state: present
 
     - name: Crear estructura de directorios
-      become: true
-      become_method: sudo
-      become_user: root
-      ansible_become_password: ''
       file:
         path: /tmp/elastic-agent
         state: directory
 
     - name: Descargar y extraer el agente Elastic
-      become: true
-      become_method: sudo
-      become_user: root
       shell: |
         cd /tmp/elastic-agent
         curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
         tar xzvf elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
+      become: true
+      become_method: sudo
+      become_user: root
 
     - name: Instalar el agente Elastic
-      become: true
-      ansible_become_password: ''
       shell: |
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
+      become: true
+      become_method: sudo
+      become_user: root
       register: install
 
     - name: Eliminar contenido del directorio temporal
