@@ -1,7 +1,11 @@
 ---
 - name: Instalación de agente Elastic en Linux
   hosts: all
+  become: true
+  become_method: sudo
+  become_user: root
   vars:
+    ansible_become_pasword: ansible_ssh_pass
     fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
     enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
@@ -23,18 +27,11 @@
         cd /tmp/elastic-agent
         curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
         tar xzvf elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
-      become: true
-      become_method: sudo
-      become_user: root
-      become_password: ansible_ssh_pass
 
     - name: Instalar el agente Elastic
       shell: |
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
-      become: true
-      become_method: sudo
-      become_user: root
       register: install
 
     - name: Eliminar contenido del directorio temporal
