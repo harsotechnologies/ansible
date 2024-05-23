@@ -2,6 +2,7 @@
 - name: Instalación de agente Elastic en Linux
   hosts: all
   become: true
+  delegate_to: localhost
   vars:
     ansible_become_pass: '1234567890'
     fleetserver_fqdn: 'fleetserver.harso.com'
@@ -36,10 +37,6 @@
       file:
         path: /tmp/elastic-agent
         state: absent
-
-    - name: Instalar la colección community.general de Ansible Galaxy
-      ansible.builtin.command:
-        cmd: ansible-galaxy collection install community.general
       
     - name: Enviar notificación por MS Teams
       community.general.office_365_connector_card:
@@ -74,4 +71,6 @@
                 targets:
                   - os: default
                     uri: '{{ awx_url }}'
+     
+
   
