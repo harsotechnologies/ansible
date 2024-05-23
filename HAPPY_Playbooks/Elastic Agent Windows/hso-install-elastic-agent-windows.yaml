@@ -17,6 +17,9 @@
       register: elastic
       
     - name: Create directory structure
+      become: true
+      become_method: runas
+      become_user: SYSTEM
       ansible.windows.win_file:
         path: C:\Temp
         state: directory
