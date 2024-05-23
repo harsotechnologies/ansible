@@ -30,7 +30,7 @@
       shell: |
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
-      register: install_result
+      register: install
 
     - name: Eliminar contenido del directorio temporal
       file:
@@ -38,13 +38,11 @@
         state: absent
 
     - name: Enviar notificación por MS Teams
-      delegate_to: localhost
-      become: true
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de instalación de agentes en {{ inventory_hostname }}'
         color: |
-          {% if install_result is defined and 'Elastic Agent has been successfully installed.' in install_result.stdout %}
+          {% if install.stdout is defined and 'Elastic Agent has been successfully installed.' in install.stdout %}
           23E811
           {% else %}
           E81123
@@ -59,7 +57,7 @@
             text: 'Instalación de agente:'
             facts:
               - name: 'Status:'
-                value: "{{ install_result.stdout if install_result is defined else 'Failed' }}"
+                value: "{{ install.stdout if install.stdout is defined else 'Failed' }}"
             actions:
               - "@type": OpenUri
                 name: RDP to Server
@@ -71,3 +69,4 @@
                 targets:
                   - os: default
                     uri: '{{ awx_url }}'
+      delegate_to: localhost
