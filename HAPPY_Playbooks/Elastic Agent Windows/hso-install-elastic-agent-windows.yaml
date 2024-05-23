@@ -1,14 +1,12 @@
 ---
 - name: Instalacion de agente elastic
   hosts: all
-  become: true
   vars:
-    ansible_become_pass: 'Emalacm1pt$'
-    fleetserver_fqdn: 'fleetserver.harso.com'
-    elastic_version: '8.13.4'
-    enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
-    msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
-    awx_url: 'http://10.1.1.15/'
+    fleetserver_fqdn: ''
+    elastic_version: ''
+    enrollment_token: ''
+    msteams_webhook: ''
+    awx_url: 'https://awx.harso.com/'
   tasks:
 
     - name: Validar si elastic agente se encuentra instalado
@@ -17,9 +15,6 @@
       register: elastic
       
     - name: Create directory structure
-      become: true
-      become_method: runas
-      become_user: SYSTEM
       ansible.windows.win_file:
         path: C:\Temp
         state: directory
