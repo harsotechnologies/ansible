@@ -95,4 +95,5 @@
                   - os: default
                     uri: '{{ awx_url }}'
       delegate_to: localhost
+      become: true
 
