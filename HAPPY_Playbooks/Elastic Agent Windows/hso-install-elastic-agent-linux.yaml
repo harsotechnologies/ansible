@@ -1,7 +1,9 @@
 ---
 - name: Instalación de agente Elastic en Linux
   hosts: all
+  become: true
   vars:
+    ansible_become_pass: '1234567890'
     fleetserver_fqdn: 'fleetserver.harso.com'
     elastic_version: '8.13.4'
     enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
@@ -12,7 +14,7 @@
       apt:
         name: curl
         state: present
-
+      
     - name: Crear estructura de directorios
       file:
         path: /tmp/elastic-agent
@@ -23,27 +25,25 @@
         cd /tmp/elastic-agent
         curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
         tar xzvf elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
-      become: true
-      become_method: sudo
-      become_password: '1234567890'
-      
+
     - name: Instalar el agente Elastic
       shell: |
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
-      register: install
+      register: install_result
 
     - name: Eliminar contenido del directorio temporal
       file:
         path: /tmp/elastic-agent
         state: absent
-
+      
     - name: Enviar notificación por MS Teams
+       delegate_to: localhost
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de instalación de agentes en {{ inventory_hostname }}'
         color: |
-          {% if install.stdout is defined and 'Elastic Agent has been successfully installed.' in install.stdout %}
+          {% if install_result is defined and 'Elastic Agent has been successfully installed.' in install_result.stdout %}
           23E811
           {% else %}
           E81123
@@ -55,10 +55,11 @@
             activity_image: https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png
             activity_title: 'Server Name: **{{ ansible_facts.hostname }}**'
             activity_subtitle: 'Server IP: **{{ ansible_host }}**'
+            activity_text: ''
             text: 'Instalación de agente:'
             facts:
               - name: 'Status:'
-                value: "{{ install.stdout if install.stdout is defined else 'Failed' }}"
+                value: "{{ install_result.stdout if install_result is defined else 'Failed' }}"
             actions:
               - "@type": OpenUri
                 name: RDP to Server
@@ -70,4 +71,5 @@
                 targets:
                   - os: default
                     uri: '{{ awx_url }}'
-      delegate_to: localhost
+  
+
