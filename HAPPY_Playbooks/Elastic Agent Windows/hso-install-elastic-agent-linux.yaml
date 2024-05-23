@@ -36,6 +36,7 @@
       register: install_result
 
     - name: Eliminar contenido del directorio temporal
+      become: true
       file:
         path: /tmp/elastic-agent
         state: absent
