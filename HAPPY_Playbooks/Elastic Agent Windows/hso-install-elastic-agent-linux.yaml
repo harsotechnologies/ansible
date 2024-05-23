@@ -11,18 +11,25 @@
   tasks:
     - name: Instalar curl si no está instalado
       become: true
+      become_method: sudo
+      become_user: ansible_user
       apt:
         name: curl
         state: present
       
     - name: Crear estructura de directorios
       become: true
+      become_method: sudo
+      become_user: ansible_user
       file:
         path: /tmp/elastic-agent
         state: directory
 
     - name: Descargar y extraer el agente Elastic
       become: true
+      become_method: sudo
+      become_user: ansible_user
+      
       shell: |
         cd /tmp/elastic-agent
         curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64.tar.gz
@@ -30,6 +37,8 @@
 
     - name: Instalar el agente Elastic
       become: true
+      become_method: sudo
+      become_user: ansible_user
       shell: |
         cd /tmp/elastic-agent/elastic-agent-{{ elastic_version }}-linux-x86_64
         ./elastic-agent install --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }} --non-interactive
@@ -37,6 +46,8 @@
 
     - name: Eliminar contenido del directorio temporal
       become: true
+      become_method: sudo
+      become_user: ansible_user
       file:
         path: /tmp/elastic-agent
         state: absent
