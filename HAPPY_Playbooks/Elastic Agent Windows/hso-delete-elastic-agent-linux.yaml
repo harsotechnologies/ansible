@@ -1,5 +1,5 @@
 ---
-- name: Instalación de agente Elastic en Linux
+- name: Desistalación de agente Elastic en Linux
   hosts: all
   vars:
     uninstall_token: 'ca3b3d9a0f0a81decf58f277fb2646ee'
