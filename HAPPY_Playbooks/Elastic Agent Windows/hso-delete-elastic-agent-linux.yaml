@@ -12,14 +12,14 @@
       register: elastic
       ignore_errors: true
 
- - name: Desistalar agente linux
+    - name: Desistalar agente linux
       become: true
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}}
       register: service_status
       ignore_errors: true
  
  
- - name: Enviar notificacion por MS Teams
+    - name: Enviar notificacion por MS Teams
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
