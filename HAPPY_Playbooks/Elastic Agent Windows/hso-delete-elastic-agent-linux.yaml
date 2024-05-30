@@ -14,7 +14,7 @@
 
     - name: Desistalar agente linux
       become: true
-      command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}}
+      command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force
       register: service_status
       ignore_errors: true
  
