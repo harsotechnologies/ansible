@@ -9,17 +9,16 @@
 
     - name: Validar si el agente de Elastic está instalado
       command: ps -ef | grep -v grep | grep "elastic-agent"
-      register: elastic
+      register: service
       ignore_errors: true
 
     - name: Desistalar agente linux
       become: true
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force
       register: service_status
-      ignore_errors: true
- 
- 
+
     - name: Enviar notificacion por MS Teams
+      delegate_to: localhost
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
@@ -113,4 +112,4 @@
                 targets:
                   - os: default
                     uri: '{{ awx_url }}'
-      delegate_to: localhost
+     
