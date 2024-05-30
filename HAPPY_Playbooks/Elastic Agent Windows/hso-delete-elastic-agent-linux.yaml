@@ -1,0 +1,116 @@
+---
+- name: Instalación de agente Elastic en Linux
+  hosts: all
+  vars:
+    uninstall_token: 'ca3b3d9a0f0a81decf58f277fb2646ee'
+    msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
+    awx_url: 'http://10.1.1.15/'
+  tasks:
+
+    - name: Validar si el agente de Elastic está instalado
+      command: ps -ef | grep -v grep | grep "elastic-agent"
+      register: elastic
+      ignore_errors: true
+
+ - name: Desistalar agente linux
+      become: true
+      command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}}
+      register: service_status
+      ignore_errors: true
+ 
+ 
+ - name: Enviar notificacion por MS Teams
+      community.general.office_365_connector_card:
+        webhook: '{{ msteams_webhook }}'
+        title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
+        color: |
+          {% if service_status.results[0].failed | default(false) or service_status.results[1].failed | default(false) or service_status.results[2].failed | default(false) or service_status.results[3].failed | default(false) or service_status.results[4].failed | default(false) or service_status.results[5].failed | default(false) or service_status.results[6].failed | default(false) %}
+          E81123
+          {% else %}
+          23E811
+          {% endif %}
+        summary: 'Notificacion servidor {{ ansible_facts.hostname }}' # Mensaje en notificacion PopUp
+        sections:
+          - title: 'Ansible playbook: **{{ ansible_play_name }}**'
+            start_group: true
+            activity_image: https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png
+            activity_title: 'Server Name: **{{ ansible_facts.hostname }}**'
+            activity_subtitle: 'Server IP: **{{ ansible_host }}**'
+            activity_text:
+            text: 'Datos de agentes:'
+            facts:
+              - name: 'Elastic Agent:'
+                value: |
+                  {% if service.results[0].exists and not (service_status.results[0].failed | default(false)) %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[0].exists and service_status.results[0].failed %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Elastic Defend:'
+                value: |
+                  {% if service.results[1].exists and not (service_status.results[1].failed | default(false)) %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[1].exists and service_status.results[1].failed %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Filebeat:'
+                value: |
+                  {% if service.results[2].exists and not (service_status.results[2].failed | default(false)) %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[2].exists and service_status.results[2].failed %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Metricbeat:'
+                value: |
+                  {% if service.results[3].exists and not (service_status.results[3].failed | default(false)) %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[3].exists and service_status.results[3].failed %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Packetbeat:'
+                value: |
+                  {% if service.results[4].exists and not (service_status.results[4].failed | default(false)) %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[4].exists and service_status.results[4].failed %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Winlogbeat:'
+                value: |
+                  {% if service.results[5].exists and not (service_status.results[5].failed | default(false)) %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[5].exists and service_status.results[5].failed %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+              - name: 'Zabbix:'
+                value: |
+                  {% if service.results[6].exists and not (service_status.results[6].failed | default(false)) %}
+                  Agente desinstalado correctamente
+                  {% elif service.results[6].exists and service_status.results[6].failed %}
+                  Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
+                  {% endif %}
+            actions:
+              - "@type": OpenUri
+                name: RDP to Server
+                targets:
+                  - os: default
+                    uri: 'rdp://{{ ansible_host }}=s:localhost'
+              - "@type": OpenUri
+                name: Entrar a AWX
+                targets:
+                  - os: default
+                    uri: '{{ awx_url }}'
+      delegate_to: localhost
