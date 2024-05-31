@@ -20,7 +20,7 @@
 
     - name: Imprimir resultado
       ansible.builtin.debug:
-      var: resultado.stat.exists  
+       var: resultado.stat.exists  
 
     - name: Desistalar agente linux
       become: true
@@ -34,7 +34,7 @@
 
     - name: Imprimir resultado
       ansible.builtin.debug:
-      var: resultado.stat.exists
+       var: resultado.stat.exists
  
     - name: Enviar notificacion por MS Teams
       delegate_to: localhost
