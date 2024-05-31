@@ -20,7 +20,7 @@
     - name: Imprimir contenido de la variable registrada
       debug:
       var: service_status.stdout
-      S
+      
     - name: Enviar notificacion por MS Teams
       delegate_to: localhost
       community.general.office_365_connector_card:
