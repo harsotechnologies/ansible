@@ -49,7 +49,7 @@
             facts:
               - name: 'Elastic Agent:'
                 value: |
-                  {% if service.exists and not (service_status.failed | default(false)) %}
+                  {% if  resultado.stat.exists %}
                   Agente desinstalado correctamente
                   {% else %}
                   Agente NO desinstalado (ERROR)
