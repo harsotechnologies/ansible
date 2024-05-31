@@ -19,7 +19,7 @@
 
     - name: Imprimir contenido de la variable registrada
       debug:
-      var: service_status.stdout
+       var: service_status.stdout
       
     - name: Enviar notificacion por MS Teams
       delegate_to: localhost
