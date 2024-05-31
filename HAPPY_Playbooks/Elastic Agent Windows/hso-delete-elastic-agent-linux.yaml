@@ -17,6 +17,10 @@
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force
       register: service_status
 
+    - name: Imprimir contenido de la variable registrada
+      debug:
+      var: service_status.stdout
+      S
     - name: Enviar notificacion por MS Teams
       delegate_to: localhost
       community.general.office_365_connector_card:
