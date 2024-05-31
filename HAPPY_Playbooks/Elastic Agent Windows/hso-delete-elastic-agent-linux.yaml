@@ -12,17 +12,7 @@
       register: service
       ignore_errors: true
 
-    - name: Verificar si el archivo existe
-      become: true
-      ansible.builtin.stat:
-        path: /opt/Elastic/Agent
-      register: resultado
-
-    - name: Imprimir resultado
-      ansible.builtin.debug:
-       var: resultado.stat.exists  
-
-    - name: Desistalar agente linux
+    - name: Desinstalar agente linux
       become: true
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force
 
@@ -42,7 +32,7 @@
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
         color: |
-          {% if service_status.failed | default(false) or service_status.failed | default(false) or service_status.failed | default(false) or service_status.failed | default(false) or service_status.failed | default(false) or service_status.failed | default(false) or service_status.failed | default(false) %}
+          {% if resultado.stat.exists  %}
           E81123
           {% else %}
           23E811
@@ -61,10 +51,8 @@
                 value: |
                   {% if service.exists and not (service_status.failed | default(false)) %}
                   Agente desinstalado correctamente
-                  {% elif service.exists and service_status.failed %}
-                  Agente NO desinstalado (ERROR)
                   {% else %}
-                  Agente no presente
+                  Agente NO desinstalado (ERROR)
                   {% endif %}
             actions:
               - "@type": OpenUri
