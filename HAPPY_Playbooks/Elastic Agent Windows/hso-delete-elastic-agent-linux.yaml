@@ -12,15 +12,30 @@
       register: service
       ignore_errors: true
 
+    - name: Verificar si el archivo existe
+      become: true
+      ansible.builtin.stat:
+        path: /opt/Elastic/Agent
+      register: resultado
+
+    - name: Imprimir resultado
+      ansible.builtin.debug:
+      var: resultado.stat.exists  
+
     - name: Desistalar agente linux
       become: true
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force
-      register: service_status
 
-    - name: Imprimir contenido de la variable registrada
-      debug:
-       var: service_status.stdout
-      
+    - name: Verificar si el archivo existe
+      become: true
+      ansible.builtin.stat:
+        path: /opt/Elastic/Agent
+      register: resultado
+
+    - name: Imprimir resultado
+      ansible.builtin.debug:
+      var: resultado.stat.exists
+ 
     - name: Enviar notificacion por MS Teams
       delegate_to: localhost
       community.general.office_365_connector_card:
