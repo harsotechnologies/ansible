@@ -15,7 +15,7 @@
     
     - name: Imprimir resultado
       ansible.builtin.debug:
-       var: ansible_facts.services['name']
+       var: ansible_facts.services
          
 
    # - name: Cargar elementos
