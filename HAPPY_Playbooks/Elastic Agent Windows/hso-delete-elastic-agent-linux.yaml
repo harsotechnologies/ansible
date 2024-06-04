@@ -12,8 +12,9 @@
 #Se recuperan los servicios dentro en el sistema
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
-       name: "{{item}}"
-      loop: "{{service_name}}"
+       ansible_facts.services:
+         name: "{{ item }}"
+       loop: "{{ service_name }}"
       register: services
     
     
