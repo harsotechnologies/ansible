@@ -5,12 +5,18 @@
     uninstall_token: 'ca3b3d9a0f0a81decf58f277fb2646ee'
     msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
     awx_url: 'http://10.1.1.15/'
-    service_name: 'elastic-agent'
+    service_name: 'elastic-agent.service'
   tasks:
 
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
-    
+      register: hola 
+
+     
+    - name: Imprimir resultado1
+      ansible.builtin.debug:
+       var: resultado.stat.exists
+
     - name: Verificar si el servicio existe
       debug:
        msg: "El servicio  elastic-agent  existe"
