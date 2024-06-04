@@ -15,7 +15,9 @@
     
     - name: Imprimir resultado
       ansible.builtin.debug:
-       var: ansible_facts.services['elastic-agent.service']['state']
+       var: ansible_facts.services[item]['state']
+      when: item in ansible_facts.services
+      loop: "{{ ansible_facts.services }}"
          
 
    # - name: Cargar elementos
