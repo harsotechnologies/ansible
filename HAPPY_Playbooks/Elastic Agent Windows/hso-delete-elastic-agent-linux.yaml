@@ -19,6 +19,9 @@
       when: item in ansible_facts.services
       loop: "{{ service_name }}"
 
+    - name: Obtener detalles del servicio
+      ansible.builtin.service_facts:
+      
     - name: Guardar datos en un arreglo
       set_fact:
         array: "{{ array | default([]) + [ ansible_facts.services.[item].['name'] ]  + [ ansible_facts.services.[item].['state'] ] }}"
