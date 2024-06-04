@@ -5,13 +5,16 @@
     uninstall_token: 'ca3b3d9a0f0a81decf58f277fb2646ee'
     msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
     awx_url: 'http://10.1.1.15/'
+    service:name: 'elastic-agent'
   tasks:
 
-    - name: Validar si el agente de Elastic está instalado
-      command: ps -ef | grep -v grep | grep "elastic-agent"
-      register: service
-      ignore_errors: true
-
+    - name: Obtener detalles del servicio
+      ansible.builtin.service_facts:
+    - name: Verificar si el servicio existe
+      debug:
+       msg: "El servicio {{ service_name }} existe"
+      when: "'{{ service_name }}' in ansible_facts.services"
+ 
     - name: Desinstalar agente linux
       become: true
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force
