@@ -15,13 +15,13 @@
     
     - name: Imprimir resultado
       ansible.builtin.debug: 
-       var: ansible_facts.services.['item'].state #Se hizo un cambio notecion dot, esta notacion no permite caracteres especiales --> []
+       var: ansible_facts.services.[item].state #Se hizo un cambio notecion dot, esta notacion no permite caracteres especiales --> []
       when: item in ansible_facts.services
       loop: "{{ service_name }}"
 
     - name: Guardar datos en un arreglo
       set_fact:
-        array: "{{ array | default([]) + [ ansible_facts.services.['item'].name ]  + [ ansible_facts.services.['item'].state ] }}"
+        array: "{{ array | default([]) + [ ansible_facts.services.[item].name }} ]  + [ ansible_facts.services.['item'].state ] }}"
       when: item in ansible_facts.services
       loop: "{{ service_name  }}"
 
