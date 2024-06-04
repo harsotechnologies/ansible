@@ -7,16 +7,11 @@
     awx_url: 'http://10.1.1.15/'
     service_name: 'elastic-agent.service'
   tasks:
-
+    #Se recuperan los servicios dentro en el sistema
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
-      register: hola 
 
-     
-    - name: Imprimir resultado1
-      ansible.builtin.debug:
-       var: resultado.stat.exists
-
+   #Si encuentra el servcicio manda un mensaje
     - name: Verificar si el servicio existe
       debug:
        msg: "El servicio  elastic-agent  existe"
@@ -26,6 +21,7 @@
     - name: Desinstalar agente linux
       become: true
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force
+      when: not service_name in ansible_facts.services
 
     - name: Verificar si el archivo existe
       become: true
