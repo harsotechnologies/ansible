@@ -13,8 +13,7 @@
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
        ansible_facts.services:
-         name: "{{ item }}"
-       loop: "{{ service_name }}"
+         name: 
       register: services
     
     
