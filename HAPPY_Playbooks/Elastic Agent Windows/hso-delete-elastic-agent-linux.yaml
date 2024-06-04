@@ -15,7 +15,7 @@
     
     - name: Imprimir resultado
       ansible.builtin.debug: 
-      var: ansible_facts.services.item.state #Se hizo un cambio notecion dot, esta notacion no permite caracteres especiales --> []
+       var: ansible_facts.services.item.state #Se hizo un cambio notecion dot, esta notacion no permite caracteres especiales --> []
       when: item in ansible_facts.services
       loop: "{{ service_name }}"
 
@@ -27,7 +27,7 @@
 
     - name: Imprimir resultado array
       ansible.builtin.debug:
-      var: array
+       var: array
          
 
    # - name: Cargar elementos
