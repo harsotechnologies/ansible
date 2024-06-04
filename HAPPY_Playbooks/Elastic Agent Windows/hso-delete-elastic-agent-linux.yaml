@@ -14,10 +14,20 @@
       ansible.builtin.service_facts:
     
     - name: Imprimir resultado
-      ansible.builtin.debug:
-       var: ansible_facts.services[item]['state']
+      ansible.builtin.debug: 
+      var: ansible_facts.services.item.state #Se hizo un cambio notecion dot, esta notacion no permite caracteres especiales --> []
       when: item in ansible_facts.services
       loop: "{{ service_name }}"
+
+    - name: Guardar datos en un arreglo
+      set_fact:
+        array: "{{ array | default([]) +[item]+ [item.state] }}"
+      loop: "{{ ansible_facts.services }}"
+      when: item.name in service_name
+
+    - name: Imprimir resultado array
+      ansible.builtin.debug:
+       var: array
          
 
    # - name: Cargar elementos
