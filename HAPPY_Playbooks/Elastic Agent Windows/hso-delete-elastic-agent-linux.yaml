@@ -10,10 +10,12 @@
 
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
+    
     - name: Verificar si el servicio existe
       debug:
-       msg: "El servicio {{ service_name }} existe"
-      when: "{{ service_name }} in ansible_facts.services"
+       msg: "El servicio  elastic-agent  existe"
+      when: service_name in ansible_facts.services
+
  
     - name: Desinstalar agente linux
       become: true
