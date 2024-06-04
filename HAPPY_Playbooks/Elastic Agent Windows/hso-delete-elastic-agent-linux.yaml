@@ -12,7 +12,7 @@
 #Se recuperan los servicios dentro en el sistema
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
-       ansible_facts.services:
+       services:
          name: 
       register: services
     
