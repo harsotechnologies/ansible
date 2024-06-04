@@ -12,16 +12,25 @@
 #Se recuperan los servicios dentro en el sistema
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
-      register: service
-
+       name: "{{item}}"
+      loop: "{{service_name}}"
+      register: services
+    
+    
     - name: Imprimir resultado
       ansible.builtin.debug:
-       var: service["name"]
+       var: services
 
-    - name: Desinstalar agente linux
-      become: true
-      command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force
-      when: service_name in ansible_facts.services
+    - name: Cargar elementos
+      when: item in ansible_facts.services
+      register: 
+      loop: "{{ service_name }}"
+
+
+   
+  # - name: Desinstalar agente linux
+  #  become: true
+  #   command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
 
     - name: Verificar si el archivo existe
       become: true
