@@ -21,10 +21,10 @@
       ansible.builtin.debug:
        var: services
 
-    - name: Cargar elementos
-      when: item in ansible_facts.services
-      register: 
-      loop: "{{ service_name }}"
+   # - name: Cargar elementos
+    #  when: item in ansible_facts.services
+     # register: 
+     # loop: "{{ service_name }}"
 
 
    
