@@ -16,7 +16,7 @@
 
     - name: Imprimir resultado
       ansible.builtin.debug:
-       var: service
+       var: service["name"]
 
     - name: Desinstalar agente linux
       become: true
