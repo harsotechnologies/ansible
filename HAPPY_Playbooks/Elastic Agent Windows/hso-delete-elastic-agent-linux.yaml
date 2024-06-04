@@ -15,7 +15,7 @@
     
     - name: Imprimir resultado
       ansible.builtin.debug:
-       var: ansible_facts.services.[item].state
+       var: ansible_facts.services[item].state
       when: item in ansible_facts.services
       loop: "{{ service_name }}"
 
