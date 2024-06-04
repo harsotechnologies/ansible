@@ -12,14 +12,11 @@
 #Se recuperan los servicios dentro en el sistema
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
-       services:
-         name: 
-      register: services
-    
     
     - name: Imprimir resultado
       ansible.builtin.debug:
-       var: services
+       var: ansible_facts.services.name
+         
 
    # - name: Cargar elementos
     #  when: item in ansible_facts.services
