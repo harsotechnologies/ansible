@@ -13,7 +13,7 @@
     - name: Verificar si el servicio existe
       debug:
        msg: "El servicio {{ service_name }} existe"
-      when: "'{{ service_name }}' in ansible_facts.services"
+      when: "{{ service_name }} in ansible_facts.services"
  
     - name: Desinstalar agente linux
       become: true
