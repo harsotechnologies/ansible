@@ -27,7 +27,7 @@
 
     - name: Imprimir resultado array
       ansible.builtin.debug:
-       var: array
+      var: array
          
 
    # - name: Cargar elementos
