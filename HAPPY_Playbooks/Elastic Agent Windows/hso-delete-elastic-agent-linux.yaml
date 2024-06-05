@@ -25,7 +25,7 @@
          
     - name: Desinstalar Elastic Defend
       become: true
-      shell: >
+      shell: |
        cd /tmp
        cp /opt/Elastic/Endpoint/elastic-endpoint elastic-endpoint
        sudo ./elastic-endpoint uninstall
