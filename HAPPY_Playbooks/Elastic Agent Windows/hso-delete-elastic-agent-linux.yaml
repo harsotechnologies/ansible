@@ -8,12 +8,11 @@
     service_name: ['elastic-agent.service' , 'ElasticEndpoint.service', 'hola']
  
   tasks:
-  
 #Se recuperan los servicios dentro en el sistema
     - name: Obtener detalles del servicio
       ansible.builtin.service_facts:
 
-    - name: Guardar datos en un arreglo
+    - name: Guardar Servicios existentes
       set_fact:
         servicios: "{{ servicios | default({}) | combine( { item: ansible_facts.services[item]  }   )    }}"
       when: item in ansible_facts.services
@@ -23,13 +22,11 @@
       ansible.builtin.debug:
        var: servicios
          
-
-   # - name: Cargar elementos
-    #  when: item in ansible_facts.services
-     # register: 
-     # loop: "{{ service_name }}"
-
-
+    - name: Desistalar Elastic Agent
+      debug: msg = "nombre" + servicios[item].name
+      become: true
+      command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
+      when: service_name[0] in servicios
    
   # - name: Desinstalar agente linux
   #  become: true
