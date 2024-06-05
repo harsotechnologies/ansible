@@ -21,15 +21,22 @@
     - name: Imprimir resultado array
       ansible.builtin.debug:
        var: servicios
+
          
-    - name: Desistalar Elastic Agent
+    - name: Desinstalar Elastic Defend
       become: true
-      command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
-      when: service_name[0] in servicios
-   
-  # - name: Desinstalar agente linux
-  #  become: true
-  #   command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
+      shell: >
+       cd /tmp
+       cp /opt/Elastic/Endpoint/elastic-endpoint elastic-endpoint
+       sudo ./elastic-endpoint uninstall
+       rm elastic-endpoint
+      when: service_name[1] in servicios 
+
+         
+     #- name: Desinstalar Elastic Agent
+     # become: true
+    # command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
+    # when: service_name[0] in servicios
 
     - name: Verificar si el archivo existe
       become: true
