@@ -30,7 +30,14 @@
        cp /opt/Elastic/Endpoint/elastic-endpoint elastic-endpoint
        sudo ./elastic-endpoint uninstall
        rm elastic-endpoint
-      when: service_name[0] in servicios 
+      when: service_name[1] in servicios 
+
+
+    - name: Desinstalar Elastic Agent
+      become: true
+      command: sudo /opt/Elastic/Agent/elastic-agent uninstall
+      when: service_name[0] in servicios
+
 
          
      #- name: Desinstalar Elastic Agent
