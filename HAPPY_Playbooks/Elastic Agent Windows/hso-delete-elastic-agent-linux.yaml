@@ -35,7 +35,7 @@
 
     - name: Desinstalar Elastic Agent
       become: true
-      command: sudo /opt/Elastic/Agent/elastic-agent uninstall
+      command: sudo /opt/Elastic/Agent/elastic-agent uninstall --force
       when: service_name[0] in servicios
 
 
