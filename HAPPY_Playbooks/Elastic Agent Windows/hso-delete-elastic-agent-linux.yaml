@@ -23,7 +23,6 @@
        var: servicios
          
     - name: Desistalar Elastic Agent
-      debug: msg = "nombre" + servicios[item].name
       become: true
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
       when: service_name[0] in servicios
