@@ -29,6 +29,10 @@
         label: "{{ item.item }}"
       register: service_status
 
+    - name: Imprimir resultado_win
+      ansible.builtin.debug:
+       var: service_status
+
     - name: Borrar carpetas de instalacion
       ignore_errors: true
       ansible.windows.win_file:

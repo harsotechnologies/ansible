@@ -22,7 +22,8 @@
       ansible.builtin.debug:
        var: servicios
 
-         
+   
+   #Solo borrara agente elastic endpoint      
    # - name: Desinstalar Elastic Defend
    #   become: true
    #   shell: |
@@ -32,12 +33,11 @@
    #    rm elastic-endpoint
    #   when: service_name[1] in servicios 
 
-
+  #Borra todo los servicios que esten ligados a elastic agent
     - name: Desinstalar Elastic Agent
       become: true
       command: sudo /opt/Elastic/Agent/elastic-agent uninstall --force
       when: service_name[0] in servicios
-
 
          
      #- name: Desinstalar Elastic Agent
@@ -61,7 +61,7 @@
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
         color: |
-          {% if resultado.stat.exists  %}
+          {% if service_name[0] in servicios | service_name[1] in servicios    %}
           E81123
           {% else %}
           23E811
@@ -78,10 +78,12 @@
             facts:
               - name: 'Elastic Agent:'
                 value: |
-                  {% if  resultado.stat.exists %}
+                 {% if service.results[0].exists and not (service_status.results[0].failed | default(false)) %}
                   Agente desinstalado correctamente
-                  {% else %}
+                  {% elif service.results[0].exists and service_status.results[0].failed %}
                   Agente NO desinstalado (ERROR)
+                  {% else %}
+                  Agente no presente
                   {% endif %}
             actions:
               - "@type": OpenUri
