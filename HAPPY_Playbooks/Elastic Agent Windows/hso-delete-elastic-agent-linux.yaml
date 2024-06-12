@@ -61,7 +61,7 @@
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
         color: |
-          {% if service_name[0] in servicios | service_name[1] in servicios    %}
+          {% if service_name[0] in servicios %}
           E81123
           {% else %}
           23E811
@@ -81,9 +81,8 @@
                  {% if service_name[0] in servicios %}
                   Agente desinstalado correctamente
                   {% elif service.results[0].exists and service_status.results[0].failed %}
-                  Agente NO desinstalado (ERROR)
                   {% else %}
-                  Agente no presente
+                  Agente NO desinstalado (ERROR)
                   {% endif %}
             actions:
               - "@type": OpenUri
