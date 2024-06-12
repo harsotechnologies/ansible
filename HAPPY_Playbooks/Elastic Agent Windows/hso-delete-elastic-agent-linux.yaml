@@ -40,20 +40,16 @@
       when: service_name[0] in servicios
 
          
-     #- name: Desinstalar Elastic Agent
-     # become: true
-    # command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
-    # when: service_name[0] in servicios
+    - name: Desinstalar Elastic Agent
+      become: true
+      command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
+      when: service_name[0] in servicios
 
     - name: Verificar si el archivo existe
       become: true
       ansible.builtin.stat:
         path: /opt/Elastic/Agent
       register: resultado
-
-    - name: Imprimir resultado
-      ansible.builtin.debug:
-       var: resultado.stat.exists
  
     - name: Enviar notificacion por MS Teams
       delegate_to: localhost
@@ -61,7 +57,7 @@
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de eliminacion de agentes en {{ ansible_facts.hostname }}'
         color: |
-          {% if service_name[0] in servicios %}
+          {% if resultado.stat.exists %}
           E81123
           {% else %}
           23E811
