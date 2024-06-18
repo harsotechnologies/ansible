@@ -1,6 +1,6 @@
 ---
 - name: Verificar la instalación y estado del servicio Cisco Secure Endpoint en PCs Windows
-  hosts: windows_servers
+  hosts: all
   gather_facts: no
 
   tasks:
