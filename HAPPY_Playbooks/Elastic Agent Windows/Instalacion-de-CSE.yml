@@ -14,7 +14,7 @@
         url: "{{ url_installer }}"
         dest: "{{ local_installer_path }}"
         force: yes
-        checksum: "sha1:acabce40e8f88474a792033524dffb80cf2b119f"
+        #checksum: "sha1:acabce40e8f88474a792033524dffb80cf2b119f"
 
     - name: Instalar Cisco Security Endpoint
       win_command: "{{ local_installer_path }} {{ installer_arguments }}"
