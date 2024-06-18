@@ -43,7 +43,7 @@
     - name: Desinstalar Elastic Agent
       become: true
       command: sudo elastic-agent uninstall --uninstall-token {{uninstall_token}} --force    
-      when: service_name[0] in servicios
+      swhen: service_name[0] in servicios
 
     - name: Verificar si el archivo existe
       become: true

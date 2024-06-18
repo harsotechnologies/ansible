@@ -1,0 +1,25 @@
+---
+- name: Descargar e instalar Cisco Security Endpoint en PCs Windows
+  hosts: windows_servers
+  gather_facts: no
+
+  vars:
+    url_installer: 'https://drive.google.com/file/d/1hEPT-UDNfQ80n3JaxXspsE-DHSpqZ8AQ/view?usp=sharing'
+    local_installer_path: 'C:\\Temp\\CiscoSecurityAgent.exe'
+    installer_arguments: '/S /quiet /norestart'
+
+  tasks:
+    - name: Descargar el instalador de Cisco Security Endpoint
+      win_get_url:
+        url: "{{ url_installer }}"
+        dest: "{{ local_installer_path }}"
+        force: yes
+        checksum: "sha256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+    - name: Instalar Cisco Security Endpoint
+      win_command: "{{ local_installer_path }} {{ installer_arguments }}"
+      register: installation_result
+
+    - name: Mostrar el resultado de la instalación
+      debug:
+        var: installation_result.stdout_lines
