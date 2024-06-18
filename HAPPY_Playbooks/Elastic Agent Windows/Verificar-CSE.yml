@@ -1,0 +1,21 @@
+---
+- name: Verificar la instalación y estado del servicio Cisco Secure Endpoint en PCs Windows
+  hosts: windows_servers
+  gather_facts: no
+
+  tasks:
+    - name: Verificar si el servicio Cisco Secure Endpoint está instalado
+      win_service:
+        name: "CiscoAMP"
+      register: service_status
+      ignore_errors: yes
+
+    - name: Mostrar el estado del servicio Cisco Secure Endpoint
+      debug:
+        msg: "El servicio Cisco Secure Endpoint está instalado y su estado actual es {{ service_status.state }}"
+      when: service_status.exists
+
+    - name: Mostrar mensaje si el servicio Cisco Secure Endpoint no está instalado
+      debug:
+        msg: "El servicio Cisco Secure Endpoint no está instalado en este sistema."
+      when: not service_status.exists
