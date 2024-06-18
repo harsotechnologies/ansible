@@ -23,3 +23,9 @@
     - name: Mostrar el resultado de la instalación
       debug:
         var: installation_result.stdout_lines
+
+    - name: Eliminar el archivo instalador
+      win_file:
+        path: "{{ local_installer_path }}"
+        state: absent
+      when: installation_result is succeeded
