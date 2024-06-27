@@ -10,3 +10,9 @@
     - name: Ejecutar el script de PowerShell
       win_shell: |
         powershell.exe -ExecutionPolicy Bypass -File C:\\Users\\eugen\\Desktop\\script.ps1
+    
+    - name: Eliminar el archivo instalador
+      win_file:
+        path: "C:\\Users\\eugen\\Desktop\\script.ps1"
+        state: absent
+      when: installation_result is succeeded
