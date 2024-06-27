@@ -13,6 +13,6 @@
     
     - name: Eliminar el archivo instalador
       win_file:
-        path: "C:\\Users\\eugen\\Desktop\\script.ps1"
+        path: C:\\Users\\eugen\\Desktop\\script.ps1
         state: absent
       when: installation_result is succeeded
