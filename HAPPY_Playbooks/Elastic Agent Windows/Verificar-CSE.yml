@@ -1,6 +1,6 @@
 ---
 - name: Descargar y ejecutar script de PowerShell
-  hosts: all
+  hosts: '172.25.10.20'
   tasks:
     - name: Descargar el script desde GitHub
       win_get_url:
