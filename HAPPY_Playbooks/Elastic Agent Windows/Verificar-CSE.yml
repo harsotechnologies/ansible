@@ -1,6 +1,6 @@
 ---
 - name: Descargar y ejecutar script de PowerShell
-  hosts: 172.25.10.20
+  hosts: HSOMXNLSVMESDP0_564d7957-9606-6005-9be3-f116b2b86158
   tasks:
     - name: Descargar el script desde GitHub
       win_get_url:
