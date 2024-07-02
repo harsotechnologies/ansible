@@ -5,7 +5,7 @@
 
   vars:
     url_installer: 'https://console.amp.cisco.com/install_packages/1bc3f358-6b87-416a-9276-cde601d25d60/download?product=WindowsProduct'
-    local_installer_path: 'C:\\Users\\eugen\\Desktop\\amp_HSO_Group.exe'
+    local_installer_path: 'C:\\Users\\Administrator\\Desktop\\amp_HSO_Group.exe'
     installer_arguments: '/S /quiet /norestart'
 
   tasks:
