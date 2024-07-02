@@ -40,7 +40,7 @@
     - name: Mostrar el resultado de la instalación
       debug:
         var: installation_result.stdout_lines
-      when: service_status.exists
+      when: not service_status.exists
 
     - name: Eliminar el archivo instalador
       win_file:
