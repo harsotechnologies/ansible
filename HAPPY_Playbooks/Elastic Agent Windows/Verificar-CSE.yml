@@ -8,7 +8,7 @@
 
     - name: Distribucion  del sistema
       debug:
-        msg: "Es sitama operativo que  está instalado es {{ key}}"
+        msg: "Es sitama operativo que  está instalado es {{ansible_distribution }}"
     
     - name: Descargar el script desde GitHub
       win_get_url:
