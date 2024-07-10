@@ -10,42 +10,49 @@
     os_type:  ["RedHat", "Debian", "Windows"]
 
   tasks:
-    - name: Verificar si el servicio Cisco Secure Endpoint está instalado
-      win_service:
-        name: "CiscoAMP"
-      register: service_status
-      ignore_errors: yes
+          - name: create groups based on distro
+            group_by: 
+                key: "{{ ansible_os_family }}"
 
-    - name: Mostrar mensaje si el servicio Cisco Secure Endpoint no está instalado
-      debug:
-        msg: "El servicio Cisco Secure Endpoint no está instalado en este sistema."
-      when: not service_status.exists  and  ansible_distribution in os_type
+- name: Distribuciones basadas en windows
+  hosts: Windows
+  tasks:
+        - name: Verificar si el servicio Cisco Secure Endpoint está instalado
+          win_service:
+            name: "CiscoAMP"
+          register: service_status
+          ignore_errors: yes
 
-    - name: Mostrar el estado del servicio Cisco Secure Endpoint
-      debug:
-        msg: "El servicio Cisco Secure Endpoint está instalado y su estado actual es {{ service_status.state }}"
-      when: service_status.exists
+        - name: Mostrar mensaje si el servicio Cisco Secure Endpoint no está instalado
+          debug:
+            msg: "El servicio Cisco Secure Endpoint no está instalado en este sistema."
+          when: not service_status.exists  and  ansible_distribution in os_type
 
-    - name: Descargar el instalador de Cisco Security Endpoint
-      win_get_url:
-        url: "{{ url_installer }}"
-        dest: "{{ local_installer_path }}"
-        force: yes
-      when: not service_status.exists
+        - name: Mostrar el estado del servicio Cisco Secure Endpoint
+          debug:
+            msg: "El servicio Cisco Secure Endpoint está instalado y su estado actual es {{ service_status.state }}"
+          when: service_status.exists
 
-    - name: Instalar Cisco Security Endpoint
-      win_command: "{{ local_installer_path }} {{ installer_arguments }}"
-      register: installation_result
-      when: not service_status.exists
+        - name: Descargar el instalador de Cisco Security Endpoint
+          win_get_url:
+            url: "{{ url_installer }}"
+            dest: "{{ local_installer_path }}"
+            force: yes
+          when: not service_status.exists
 
-    - name: Mostrar el resultado de la instalación
-      debug:
-        var: installation_result.stdout_lines
-      when: not service_status.exists
+        - name: Instalar Cisco Security Endpoint
+          win_command: "{{ local_installer_path }} {{ installer_arguments }}"
+          register: installation_result
+          when: not service_status.exists
 
-    - name: Eliminar el archivo instalador
-      win_file:
-        path: "{{ local_installer_path }}"
-        state: absent
-      when: installation_result is succeeded
+        - name: Mostrar el resultado de la instalación
+          debug:
+            var: installation_result.stdout_lines
+          when: not service_status.exists
+
+        - name: Eliminar el archivo instalador
+          win_file:
+            path: "{{ local_installer_path }}"
+            state: absent
+          when: installation_result is succeeded
 
