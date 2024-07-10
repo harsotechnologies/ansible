@@ -1,6 +1,6 @@
 ---
 - name: Descargar y ejecutar script de PowerShell
-  hosts: HSOMXNLSVADDC01_4232af34-2fd7-9b99-69d6-68a58332e677
+  hosts: all
   tasks:
     
     - name: create groups based on distro
@@ -9,8 +9,7 @@
     - name: Distribucion  del sistema
       debug:
         msg: "Es sitama operativo que  está instalado es {{ key}}"
-      when: service_status.exists
-
+    
     - name: Descargar el script desde GitHub
       win_get_url:
         url: "https://raw.githubusercontent.com/AlbanAndrieu/ansible-windows/master/files/ConfigureRemotingForAnsible.ps1"
