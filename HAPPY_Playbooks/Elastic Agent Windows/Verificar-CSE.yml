@@ -7,7 +7,7 @@
 
   tasks:
        - name: create groups based on distro
-         group_by: key={{ ansible_distribution }}
+         group_by: key= {{ ansible_facts['os_family'] }}
 
     
 - name: Distribuciones basadas en windows
