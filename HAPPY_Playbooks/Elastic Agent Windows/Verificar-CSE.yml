@@ -1,14 +1,19 @@
 ---
 - name: Descargar y ejecutar script de PowerShell
   hosts: all
+
+  vars: 
+     os_type:  ["RedHat", "Debian", "Microsoft Windows Server 2016 Datacenter"]
+
+
   tasks:
-    
     - name: create groups based on distro
       group_by: key={{ ansible_distribution }}
 
     - name: Distribucion  del sistema
       debug:
-        msg: "Es sitama operativo que  está instalado es {{ansible_distribution }}"
+        msg: "Es sitama operativo que  está instalado es {{ansible_distribution}}"
+      when:  ansible_distribution in os_type
     
     - name: Descargar el script desde GitHub
       win_get_url:
