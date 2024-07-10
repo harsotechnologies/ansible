@@ -54,5 +54,5 @@
           win_file:
             path: "{{ local_installer_path }}"
             state: absent
-          when: installation_result is succeeded and not service_status.exists
+          when: installation_result is succeeded and service_status.exists
 
