@@ -5,14 +5,14 @@
   vars: 
      os_type:  ["RedHat", "Debian", "Windows"]
 
-  #tasks:
+  tasks:
     #   - name: create groups based on distro
      #    group_by: key= {{ ansible_os_family }}
 
     
 - name: Distribuciones basadas en windows
- # hosts: Windows
-  tasks:
-   - name: Mostras sistema
-     debug:
-       msg: "Es sitama operativo que  está instalado es {{ ansible_os_family }}"
+   # hosts: Windows
+   #tasks:
+   #- name: Mostras sistema
+  debug:
+    msg: "Es sitama operativo que  está instalado es {{ ansible_os_family }}"
