@@ -26,7 +26,7 @@
         - name: Mostrar mensaje si el servicio Cisco Secure Endpoint no está instalado
           debug:
             msg: "El servicio Cisco Secure Endpoint no está instalado en este sistema."
-          when: not service_status.exists  and  ansible_distribution in os_type
+          when: not service_status.exists 
 
         - name: Mostrar el estado del servicio Cisco Secure Endpoint
           debug:
@@ -54,5 +54,5 @@
           win_file:
             path: "{{ local_installer_path }}"
             state: absent
-          when: installation_result is succeeded
+          when: installation_result is succeeded and not service_status.exists
 
