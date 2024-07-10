@@ -15,4 +15,4 @@
   tasks:
    - name: Mostras sistema
      debug:
-       msg: "Es sitama operativo que  está instalado es {{ ansible_facts['os_family'] }}"
+       msg: "Es sitama operativo que  está instalado es {{ ansible_os_family }}"
