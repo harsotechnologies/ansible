@@ -27,7 +27,7 @@
             msg: "El servicio Cisco Secure Endpoint no está instalado en este sistema."
           when: not service_status.exists 
 
-        - name: Mostrar el estado del servicio Cisco Secure Endpoint
+        - name: Mostrar el estado del servicio Cisco Secure Endpoint si esta instalado
           debug:
             msg: "El servicio Cisco Secure Endpoint está instalado y su estado actual es {{ service_status.state }}"
           when: service_status.exists
@@ -53,5 +53,5 @@
           win_file:
             path: "{{ local_installer_path }}"
             state: absent
-          when: installation_result is succeeded and service_status.exists
+          when: installation_result is succeeded and not service_status.exists
 
