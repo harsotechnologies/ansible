@@ -3,12 +3,6 @@
   hosts: all
   gather_facts: yes
 
-  vars:
-    url_installer: 'https://console.amp.cisco.com/install_packages/1bc3f358-6b87-416a-9276-cde601d25d60/download?product=WindowsProduct'
-    local_installer_path: 'C:\\Users\\Administrator\\Desktop\\amp_HSO_Group.exe'
-    installer_arguments: '/S /quiet /norestart'
-    os_type:  ["RedHat", "Debian", "Windows"]
-
   tasks:
           - name: create groups based on distro
             group_by: 
@@ -16,6 +10,11 @@
 
 - name: Distribuciones basadas en windows
   hosts: Windows
+  gather_facts: no
+  vars:
+    url_installer: 'https://console.amp.cisco.com/install_packages/1bc3f358-6b87-416a-9276-cde601d25d60/download?product=WindowsProduct'
+    local_installer_path: 'C:\\Users\\Administrator\\Desktop\\amp_HSO_Group.exe'
+    installer_arguments: '/S /quiet /norestart'
   tasks:
         - name: Verificar si el servicio Cisco Secure Endpoint está instalado
           win_service:
