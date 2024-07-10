@@ -5,13 +5,13 @@
   vars: 
      os_type:  ["RedHat", "Debian", "Windows"]
 
-  tasks:
-       - name: create groups based on distro
-         group_by: key= {{ ansible_os_family }}
+  #tasks:
+    #   - name: create groups based on distro
+     #    group_by: key= {{ ansible_os_family }}
 
     
 - name: Distribuciones basadas en windows
-  hosts: Windows
+ # hosts: Windows
   tasks:
    - name: Mostras sistema
      debug:
