@@ -7,7 +7,7 @@
     url_installer: 'https://console.amp.cisco.com/install_packages/1bc3f358-6b87-416a-9276-cde601d25d60/download?product=WindowsProduct'
     local_installer_path: 'C:\\Users\\Administrator\\Desktop\\amp_HSO_Group.exe'
     installer_arguments: '/S /quiet /norestart'
-    os_type:  ["RedHat", "Debian", "Microsoft Windows Server 2016 Datacenter"]
+    os_type:  ["RedHat", "Debian", "Windows"]
 
   tasks:
     - name: Verificar si el servicio Cisco Secure Endpoint está instalado
@@ -19,7 +19,7 @@
     - name: Mostrar mensaje si el servicio Cisco Secure Endpoint no está instalado
       debug:
         msg: "El servicio Cisco Secure Endpoint no está instalado en este sistema."
-      when: not service_status.exists  and  ansible_distribution not in os_type
+      when: not service_status.exists  and  ansible_distribution in os_type
 
     - name: Mostrar el estado del servicio Cisco Secure Endpoint
       debug:

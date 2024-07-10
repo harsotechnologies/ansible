@@ -3,7 +3,7 @@
   hosts: all
 
   vars: 
-     os_type:  ["RedHat", "Debian", "Microsoft Windows Server 2016 Datacenter"]
+     os_type:  ["RedHat", "Debian", "Windows"]
 
 
   tasks:
@@ -11,21 +11,6 @@
       group_by: key={{ ansible_distribution }}
 
     - name: Distribucion  del sistema
+      hosts: Windows
       debug:
-        msg: "Es sitama operativo que  está instalado es {{ansible_distribution}}"
-      when:  ansible_distribution in os_type
-    
-    - name: Descargar el script desde GitHub
-      win_get_url:
-        url: "https://raw.githubusercontent.com/AlbanAndrieu/ansible-windows/master/files/ConfigureRemotingForAnsible.ps1"
-        dest: "C:\\Users\\eugen\\Desktop\\script.ps1"
-
-    - name: Ejecutar el script de PowerShell
-      win_shell: |
-        powershell.exe -ExecutionPolicy Bypass -File C:\\Users\\eugen\\Desktop\\script.ps1
-    
-    - name: Eliminar el archivo instalador
-      win_file:
-        path: C:\\Users\\eugen\\Desktop\\script.ps1
-        state: absent
-  
+        msg: "Es sistema operativo que  está instalado es {{ansible_distribution}}"
