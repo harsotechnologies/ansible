@@ -1,8 +1,8 @@
 - name: Configure FortiGate with Ansible
-  hosts: fortigate
+  hosts: all
   gather_facts: no
-
-
+  collections:
+    - fortinet.fortios
   tasks:
     - name: Retrieve FortiGate system status
       fortios_system_status:
