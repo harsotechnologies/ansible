@@ -1,6 +1,6 @@
 - name: Configure FortiGate with Ansible
   hosts: all
-  gather_facts: yes
+  gather_facts: no
   collections:
     - fortinet.fortios
   tasks:
