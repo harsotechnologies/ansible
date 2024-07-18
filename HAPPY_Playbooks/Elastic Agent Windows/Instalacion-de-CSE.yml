@@ -2,7 +2,6 @@
 - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
   hosts: all
   gather_facts: true
-
   tasks:
           - name: create groups based on distro
             group_by: 

@@ -1,0 +1,15 @@
+- name: Configure FortiGate with Ansible
+  hosts: fortigate
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+
+  tasks:
+    - name: Retrieve FortiGate system status
+      fortios_system_status:
+        vdom: "root"
+      register: result
+
+    - name: Print the system status
+      debug:
+        var: result
