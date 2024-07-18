@@ -2,7 +2,7 @@
   hosts: all
   gather_facts: no
   collections:
-    - name: fortinet.fortios
+    - fortinet.fortios
   tasks:
     - name: Retrieve FortiGate system status
       fortios_system_status:
