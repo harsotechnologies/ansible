@@ -2,8 +2,8 @@
   hosts: all
   gather_facts: no
   tasks:
-    -- name: Configure API users.
-  fortinet.fortios.fortios_system_api_user:
+  - name: Configure API users.
+    fortinet.fortios.fortios_system_api_user:
       vdom: "{{ vdom }}"
       state: "present"
       access_token: "<your_own_value>"
