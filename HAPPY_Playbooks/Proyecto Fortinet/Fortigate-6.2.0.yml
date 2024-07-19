@@ -5,7 +5,7 @@
     - fortinet.fortios
   tasks:
     - name: Retrieve FortiGate system status
-      fortios_application_name:
+      application_name:
       register: result
     - name: Print the system status
       debug:
