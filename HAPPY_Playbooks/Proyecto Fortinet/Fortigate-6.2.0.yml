@@ -1,6 +1,8 @@
 - name: Configure FortiGate with Ansible
   hosts: all
   gather_facts: no
+  collections:
+    - fortinet.fortios
   tasks:
   - name: Configure API users.
     fortinet.fortios.fortios_system_api_user:
