@@ -8,7 +8,6 @@
     msteams_webhook: ''
     awx_url: 'https://awx.harso.com/'
   tasks:
-
     - name: Validar si elastic agente se encuentra instalado
       ansible.windows.win_service:
         name: Elastic Agent

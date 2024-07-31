@@ -2,17 +2,36 @@
 - name: Descargar y ejecutar script de PowerShell
   hosts: all
   gather_facts: yes
-  vars: 
-     os_type:  ["RedHat", "Debian", "Windows"]
+
 
   tasks:
        - name: create groups based on distro
          group_by: 
           key: "{{ ansible_os_family }}"
 
+
+- name: Distribuciones basadas en windows
+  ansible_connection: winrm
+  ansible_winrm_server_cert_validation: ignore
+  tasks:
+   - name: Mostras sistema
+     debug:
+       msg: "Es sitama operativo que  está instalado es {{ ansible_os_family }}"
+
     
 - name: Distribuciones basadas en windows
   hosts: Windows
+  ansible_connection: winrm
+  ansible_winrm_server_cert_validation: ignore
+  tasks:
+   - name: Mostras sistema
+     debug:
+       msg: "Es sitama operativo que  está instalado es {{ ansible_os_family }}"
+
+
+    
+- name: Distribuciones basadas en linux
+  hosts: 
   tasks:
    - name: Mostras sistema
      debug:
