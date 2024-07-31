@@ -8,12 +8,8 @@
        - name: create groups based on distro
          group_by: 
           key: "{{ ansible_os_family }}"
-    
-- name: Distribuciones basadas en linux
-  tasks:
-   - name: Mostras sistema
-     debug:
-       msg: "Es sitama operativo que  está instalado es {{ ansible_os_family }}"
+          debug:
+           msg: "Es sitama operativo que  está instalado es {{ ansible_os_family }}"
     
 - name: Distribuciones basadas en windows
   hosts: Windows
@@ -23,6 +19,6 @@
   tasks:
    - name: Mostras sistema
      debug:
-       msg: "Es sitama operativo que  está instalado es {{ ansible_os_family }}"
+       msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
 
   
