@@ -17,8 +17,9 @@
     
 - name: Distribuciones basadas en windows
   hosts: Windows
-  ansible_connection: winrm
-  ansible_winrm_server_cert_validation: ignore
+  vars:
+   ansible_connection: winrm
+   ansible_winrm_server_cert_validation: ignore
   tasks:
    - name: Mostras sistema
      debug:
