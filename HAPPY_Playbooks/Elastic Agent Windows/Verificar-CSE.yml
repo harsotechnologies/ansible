@@ -2,13 +2,11 @@
 - name: Descargar y ejecutar script de PowerShell
   hosts: all
   gather_facts: true
- 
-  tasks:
-  - name: Establecer conexión basada en el sistema operativo
-    set_fact:
-      ansible_connection: "{{ 'winrm' if ansible_facts['os_family'] == 'Windows' else 'ssh' }}"
-      ansible_winrm_server_cert_validation: "{{ 'ignore' if ansible_facts['os_family'] == 'Windows' else omit }}"
-          
+  vars:
+    ansible_connection: "{{ 'winrm' if ansible_facts['os_family'] == 'Windows' else 'ssh' }}"
+    ansible_winrm_server_cert_validation: "{{ 'ignore' if ansible_facts['os_family'] == 'Windows' else omit }}"
+
+  tasks:          
   - name: create groups based on distro
     group_by: 
         key: "{{ ansible_os_family }}"
