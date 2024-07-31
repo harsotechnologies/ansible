@@ -3,22 +3,17 @@
   hosts: all
   gather_facts: true
   vars:
-    ansible_connection: "{{ 'winrm' if ansible_facts['os_family'] == 'Windows' else 'ssh' }}"
-    ansible_winrm_server_cert_validation: "{{ 'ignore' if ansible_facts['os_family'] == 'Windows' else omit }}"
-
+  ansible_connection: "{{ 'winrm' if ansible_facts['os_family'] == 'Windows' else 'ssh' }}"
+  ansible_winrm_server_cert_validation: "{{ 'ignore' if ansible_facts['os_family'] == 'Windows' else omit }}"
   tasks:          
-  - name: create groups based on distro
-    group_by: 
-        key: "{{ ansible_os_family }}"
-          
-  - name: Mostras sistema
-    debug:
-      msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
+          - name: create groups based on distro
+            group_by: 
+              key: "{{ ansible_os_family }}"
 
-      
-  - name: Distribuciones basadas en windows
-    hosts: Windows
-    tasks:
+
+- name: Distribuciones basadas en windows
+  hosts: all
+  tasks:
     - name: Mostras sistema
       debug:
         msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
