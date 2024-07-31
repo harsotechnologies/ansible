@@ -1,27 +1,19 @@
+---
 - name: Configure FortiGate with Ansible
   hosts: all
-  gather_facts: no
+  gather_facts: yes
+  collections:
+   - fortinet.fortios
+  connection: httpapi
+  vars:
+   vdom: "root"
+   ansible_httpapi_use_ssl: no
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 80
   tasks:
   - name: Configure API users.
-    fortinet.fortios.fortios_system_api_user:
-      vdom: "{{ vdom }}"
-      state: "present"
-      access_token: "<your_own_value>"
-      system_api_user:
-          accprofile: "<your_own_value> (source system.accprofile.name)"
-          api_key: "<your_own_value>"
-          comments: "<your_own_value>"
-          cors_allow_origin: "<your_own_value>"
-          name: "default_name_7"
-          peer_auth: "enable"
-          peer_group: "<your_own_value>"
-          schedule: "<your_own_value>"
-          trusthost:
-              -
-                  id: "12"
-                  ipv4_trusthost: "myhostname"
-                  ipv6_trusthost: "myhostname"
-                  type: "ipv4-trusthost"
-          vdom:
-              -
-                  name: "default_name_17 (source system.vdom.name)"
+    fortios_system_global:
+       vdom: "{{vdom}}"
+       system_global:
+         admintimeout: "23"
+         hostname: "FortigateMilton1"
