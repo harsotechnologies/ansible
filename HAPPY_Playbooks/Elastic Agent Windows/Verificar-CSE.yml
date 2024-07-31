@@ -3,8 +3,8 @@
   hosts: all
   gather_facts: true
   vars:
-  ansible_connection: "{{ 'winrm' if ansible_facts['os_family'] == 'Windows' else 'ssh' }}"
-  ansible_winrm_server_cert_validation: "{{ 'ignore' if ansible_facts['os_family'] == 'Windows' else omit }}"
+    ansible_connection: "{{ 'winrm' if ansible_facts['os_family'] == 'Windows' else 'ssh' }}"
+    ansible_winrm_server_cert_validation: "{{ 'ignore' if ansible_facts['os_family'] == 'Windows' else omit }}"
   tasks:          
           - name: create groups based on distro
             group_by: 
