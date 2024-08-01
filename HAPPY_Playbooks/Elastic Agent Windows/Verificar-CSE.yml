@@ -1,6 +1,9 @@
 ---
 - name: Descargar y ejecutar script de PowerShell
   hosts: all
+  vars:
+    ansible_connection: "{{ 'winrm' if ansible_facts['os_family'] == 'Windows' else 'ssh' }}"
+    ansible_winrm_server_cert_validation: "{{ 'ignore' if ansible_facts['os_family'] == 'Windows' else omit }}"
   gather_facts: true
 
   tasks:          
