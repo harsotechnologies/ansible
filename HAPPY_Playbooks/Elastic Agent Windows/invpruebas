@@ -1,5 +1,5 @@
 [win_os]
-windows01 ansible_host=172.25.10.29 ansible_user="Administrator" ansible_password="Harso1234"
+windows01 ansible_host=172.25.10.33 ansible_user="Administrator" ansible_password="Harso1234"
 
 [win_os:vars]
 ansible_connection= winrm
