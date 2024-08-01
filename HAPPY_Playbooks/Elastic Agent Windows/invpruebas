@@ -9,7 +9,7 @@ ansible_winrm_server_cert_validation= ignore
 [lin_os]
 linux01 ansible_host=172.25.10.32 ansible_user="pruebasubuntu" ansible_password="Emalacm1pt$"
 
-[win_os:vars]
+[lin_os:vars]
 ansible_connection= ssh
 
 
