@@ -3,6 +3,7 @@ windows01 ansible_host=172.25.10.29 ansible_user="Administrator" ansible_passwor
 
 [win_os:vars]
 ansible_connection= winrm
+ansible_winrm_server_cert_validation= ignore
 
 
 [lin_os]
