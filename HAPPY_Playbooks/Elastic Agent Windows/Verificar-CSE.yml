@@ -1,5 +1,5 @@
 ---
----
+
 - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
   hosts: all
   gather_facts: true
@@ -7,7 +7,6 @@
           - name: create groups based on distro
             group_by: 
                 key: "{{ ansible_os_family }}"       
-
 
 - name: Distribuciones basadas en windows
   hosts: Windows
