@@ -6,7 +6,7 @@ ansible_connection= winrm
 
 
 [lin_os]
-windows01 ansible_host: 172.25.10.32 ansible_user="pruebasubuntu" ansible_password="Emalacm1pt$"
+linux01 ansible_host= 172.25.10.32 ansible_user="pruebasubuntu" ansible_password="Emalacm1pt$"
 
 [win_os:vars]
 ansible_connection= ssh
