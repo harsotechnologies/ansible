@@ -1,7 +1,7 @@
 ---
 
 - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
-  hosts: win_os
+  hosts: HARSO_win_os
   gather_facts: true
   tasks:
           - name: create groups based on distro
