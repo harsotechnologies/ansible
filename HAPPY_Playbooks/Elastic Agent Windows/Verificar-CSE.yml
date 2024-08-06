@@ -5,7 +5,10 @@
   tasks:
     - name: ansible version
       #become: true
-      command: apt install net-tools
+      shell: |
+       apt update
+       apt install net-tools
+       ifconfig
       register: msg_out
 
     - name: Salida comando
