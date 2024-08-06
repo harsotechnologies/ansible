@@ -1,5 +1,5 @@
 ---
-- name: playbook1
+- name: playbook2
   hosts: lin_os
   gather_facts: true
   tasks:
