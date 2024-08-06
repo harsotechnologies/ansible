@@ -6,9 +6,9 @@
     condition2: false
   tasks:
     - name: Incluir playbook1 si condition1 es true
-      import_playbook: playbook1.yml
+      import_tasks: playbook1.yml
       when: condition1
 
     - name: Incluir playbook2 si condition2 es true
-      import_playbook: playbook2.yml
+      import_tasks: playbook2.yml
       when: condition2

@@ -1,7 +1,4 @@
 ---
-- name: Playbook 2
-  hosts: all
-  tasks:
     - name: Tarea en Playbook 2
       debug:
         msg: "Ejecutando Playbook 2"
