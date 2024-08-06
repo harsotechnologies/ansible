@@ -5,7 +5,7 @@
   tasks:
     - name: ansible version
       #become: true
-      command: ifconfig
+      command: apt install net-tools
       register: msg_out
 
     - name: Salida comando
