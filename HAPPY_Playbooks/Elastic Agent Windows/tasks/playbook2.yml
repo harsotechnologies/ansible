@@ -1,8 +1,12 @@
 ---
 - name: playbook1
-  hosts: win_os
+  hosts: lin_os
   gather_facts: true
   tasks:
+    - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
+      debug:
+        msg: "Es sistema operativo que  está instalado es  {{ ansible_os_family }}"
+
     - name: Instalar curl si no está instalado
       become: true
       apt:

@@ -21,7 +21,7 @@
         ansible_user: "Administrator"
         ansible_password: "Harso1234"
       import_playbook: tasks/playbook1.yml 
-      when: condition1 and config in win_os
+      when: config in win_os
 
     - name: Incluir playbook2 si condition2 es true
       vars:
@@ -31,4 +31,4 @@
           lin_os:  ['centos7_64Guest', 'centos8_64Guest', 'debian10_64Guest', 'debian11_64Guest', 'freebsd13_64Guest', 'other26xLinux64Guest' ,
                     'other3xLinux64Guest' , 'other4xLinux64Guest' , 'otherLinux64Guest' , 'ubuntu64Guest']
       import_playbook: tasks/playbook2.yml 
-      when: condition2 and config in lin_os
+      when: config in lin_os

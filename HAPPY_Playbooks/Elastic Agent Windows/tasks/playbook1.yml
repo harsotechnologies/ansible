@@ -5,7 +5,7 @@
   tasks:
     - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
       debug:
-        msg: "Es sistema operativo que  está instalado es windows"
+        msg: "Es sistema operativo que  está instalado es  {{ ansible_os_family }}"
 
     - name: Validar si elastic agente se encuentra instalado
       ansible.windows.win_service:
