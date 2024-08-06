@@ -1,6 +1,7 @@
 ---
     - name: Playbook Principal
       hosts: all
+      gather_facts: false
       vars:
         condition1: true
         condition2: false
