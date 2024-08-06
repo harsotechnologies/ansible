@@ -5,36 +5,36 @@
       vars:
         condition1: true
         condition2: false
-      tasks:     
-          - name: Incluir playbook1 si condition1 es true
-            vars:
-              win_os: ['windows2019srv_64Guest', 'windows2019srvNext_64Guest', 'windows7_64Guest',
-                      'windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
-              ansible_connection: winrm
-              ansible_winrm_server_cert_validation: ignore
-              ansible_winrm_transport: basic
-              ansible_winrm_scheme: http
-              ansible_user: "Administrator"
-              ansible_password: "Harso1234"
-              fleetserver_fqdn: 'fleetserver.harso.com'
-              elastic_version: '8.13.4' 
-              enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
-              msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
-              awx_url: 'http://10.1.1.15/'
-            import_playbook: tasks/ejemplo1.yml 
-            when: config in win_os
+       
+    - name: Incluir playbook1 si condition1 es true
+      vars:
+        win_os: ['windows2019srv_64Guest', 'windows2019srvNext_64Guest', 'windows7_64Guest',
+                'windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
+        ansible_connection: winrm
+        ansible_winrm_server_cert_validation: ignore
+        ansible_winrm_transport: basic
+        ansible_winrm_scheme: http
+        ansible_user: "Administrator"
+        ansible_password: "Harso1234"
+        fleetserver_fqdn: 'fleetserver.harso.com'
+        elastic_version: '8.13.4' 
+        enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
+        msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
+        awx_url: 'http://10.1.1.15/'
+      import_playbook: tasks/ejemplo1.yml 
+      when: config in win_os
 
-          - name: Incluir playbook2 si condition2 es true
-            vars:
-                ansible_connection: ssh
-                ansible_user: "pruebasubuntu"
-                ansible_password: "Emalacm1pt$"
-                fleetserver_fqdn: 'fleetserver.harso.com'
-                elastic_version: '8.13.4' 
-                enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
-                msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
-                awx_url: 'http://10.1.1.15/'
-                lin_os:  ['centos7_64Guest', 'centos8_64Guest', 'debian10_64Guest', 'debian11_64Guest', 'freebsd13_64Guest', 'other26xLinux64Guest' ,
-                          'other3xLinux64Guest' , 'other4xLinux64Guest' , 'otherLinux64Guest' , 'ubuntu64Guest']
-            import_playbook: tasks/ejemplo2.yml 
-            when: config in lin_os
+    - name: Incluir playbook2 si condition2 es true
+      vars:
+          ansible_connection: ssh
+          ansible_user: "pruebasubuntu"
+          ansible_password: "Emalacm1pt$"
+          fleetserver_fqdn: 'fleetserver.harso.com'
+          elastic_version: '8.13.4' 
+          enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
+          msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
+          awx_url: 'http://10.1.1.15/'
+          lin_os:  ['centos7_64Guest', 'centos8_64Guest', 'debian10_64Guest', 'debian11_64Guest', 'freebsd13_64Guest', 'other26xLinux64Guest' ,
+                    'other3xLinux64Guest' , 'other4xLinux64Guest' , 'otherLinux64Guest' , 'ubuntu64Guest']
+      import_playbook: tasks/ejemplo2.yml 
+      when: config in lin_os
