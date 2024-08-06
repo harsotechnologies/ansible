@@ -5,7 +5,7 @@
   tasks:
     - name: ansible version
       #become: true
-      command: ansible --version
+      command: ifconfig
       register: msg_out
 
     - name: Salida comando
