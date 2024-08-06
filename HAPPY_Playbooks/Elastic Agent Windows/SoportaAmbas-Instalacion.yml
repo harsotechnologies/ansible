@@ -1,7 +1,7 @@
 ---
 - name: Playbook Principal
   hosts: all
-  gather_facts: false
+  gather_facts: true
   vars:
     condition1: true
     condition2: false
@@ -21,7 +21,6 @@
         ansible_winrm_scheme: http
         ansible_user: "Administrator"
         ansible_password: "Harso1234"
-      gather_facts: true
       import_tasks: playbook1.yml
       when: condition1 and config in win_os
 
