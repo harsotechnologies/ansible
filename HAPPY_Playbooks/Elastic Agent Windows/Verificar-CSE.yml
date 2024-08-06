@@ -1,7 +1,7 @@
 ---
 
 - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
-  delegate_to: localhost
+  hosts: localhost
   tasks:
     - name: ansible version
       become: true
