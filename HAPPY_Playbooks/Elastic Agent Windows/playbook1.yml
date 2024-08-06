@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
     - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
       hosts: all
       gather_facts: true
@@ -6,6 +7,15 @@
            - name: Mostrar sistema
              debug:
                 msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
+=======
+- name: Descargar e instalar Cisco Security Endpoint en PCs Windows
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Mostrar sistema
+      debug:
+          msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
+>>>>>>> af2b72339f99c28e1b91e4dc0ae784345f82f38f
 
     - name: Validar si elastic agente se encuentra instalado
       ansible.windows.win_service:
