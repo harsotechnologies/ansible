@@ -1,48 +1,34 @@
 ---
 #Hola
-- name: Descargar e instalar Cisco Security Endpoint en PCs Windows
-  hosts: win_os, lin_os
-  vars:
-    usr_os:  ['Administrator' , 'pruebasubuntu']
-    pass_os: ['Harso1234' , 'Emalac1pt$']
-    win_os_: ['windows2019srv_64Guest', '	windows2019srvNext_64Guest', '	windows7_64Guest', '	windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
-    lin_os:  ['	centos7_64Guest', 'centos8_64Guest', 'debian10_64Guest', 'debian11_64Guest', 'freebsd13_64Guest', 'other26xLinux64Guest' , 
-             'other3xLinux64Guest' , 'other4xLinux64Guest' , '	otherLinux64Guest' , 'ubuntu64Guest']
-
-  tasks:
-          - name: create groups based on distro
-            vars:
-             ansible_connection: winrm
-             ansible_user: usr_os[0]
-             ansible_password: pass_os[0]
-            group_by: 
-              key: "{{ ansible_os_family }}" 
-            when:  config.guestId in win_os
-
-          - name: create groups based on distro
-            vars:
-             ansible_connection: ssh
-            group_by: 
-              key: "{{ ansible_os_family }}" 
-            when:  config.guestId in lin_os
-
-
 - name: Distribuciones basadas en windows
-  hosts: Windows
+  hosts: win_os
+  vars:
+    win_os: ['windows2019srv_64Guest', 'windows2019srvNext_64Guest', 'windows7_64Guest',
+            'windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_transport: basic
+    ansible_winrm_scheme: http
+    ansible_user: "Administrator"
+    ansible_password: "Harso1234"
   tasks:
       - name: Mostras sistema
         debug:
           msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
-
+        when: config in win_os
+        
 
 - name: Distribuciones basadas en Debian
-  hosts: Debian
+  hosts: lin_os
+  vars:
+      ansible_connection: ssh
+      ansible_user: "pruebasubuntu"
+      ansible_password: "Emalacm1pt$"
+      lin_os:  ['centos7_64Guest', 'centos8_64Guest', 'debian10_64Guest', 'debian11_64Guest', 'freebsd13_64Guest', 'other26xLinux64Guest' ,
+                'other3xLinux64Guest' , 'other4xLinux64Guest' , 'otherLinux64Guest' , 'ubuntu64Guest']
   tasks:
       - name: Mostras sistema
         debug:
           msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
+        when: config in lin_os
 
-
-  
-
-    

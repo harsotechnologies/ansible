@@ -1,15 +1,16 @@
 [win_os]
-windows01 ansible_host=172.25.10.33 ansible_user="Administrator" ansible_password="Harso1234"
+windows01 ansible_host=172.25.10.25 ansible_port=5985
+windows02 ansible_host=172.25.10.37 ansible_port=5985
 
 [win_os:vars]
-ansible_connection= winrm
-ansible_winrm_server_cert_validation= ignore
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+ansible_winrm_transport=basic
+ansible_winrm_scheme=http
+config.guestId=windows2019srv_64Guest
 
+#[lin_os]
+#linux01 ansible_host=172.25.10.32 ansible_user="pruebasubuntu" ansible_password="Emalacm1pt$"
 
-[lin_os]
-linux01 ansible_host=172.25.10.32 ansible_user="pruebasubuntu" ansible_password="Emalacm1pt$"
-
-[lin_os:vars]
-ansible_connection= ssh
-
-
+#[lin_os:vars]
+#ansible_connection=ssh
