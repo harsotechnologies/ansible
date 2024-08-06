@@ -1,6 +1,13 @@
 ---
 
 - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
+  delegate_to: localhost
+  tasks:
+    - name: Descargar y extraer el agente Elastic
+      become: true
+      command: ansible --version
+      
+- name: Descargar e instalar Cisco Security Endpoint en PCs Windows
   hosts: HARSO_win_os
   gather_facts: true
   tasks:
