@@ -1,5 +1,6 @@
 ---
     - name: Playbook Principal
+      hosts: all
       vars:
         condition1: true
         condition2: false
