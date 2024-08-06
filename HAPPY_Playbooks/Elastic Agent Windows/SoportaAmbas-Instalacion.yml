@@ -21,7 +21,7 @@
         enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
         msteams_webhook: 'https://harsomx.webhook.office.com/webhookb2/bf693546-8702-4185-9fbe-2ea27a6b65d7@40b6f753-6e95-4c0a-bd92-a9fcb653746a/IncomingWebhook/ed378f885ded4004ad39cc313f896e94/acaf0036-6402-4a6d-a50d-252ae0cbc883'
         awx_url: 'http://10.1.1.15/'
-      import_playbook: tasks/playbook1.yml 
+      #import_playbook: tasks/playbook1.yml 
       when: config in win_os
 
     - name: Incluir playbook2 si condition2 es true
@@ -36,5 +36,5 @@
           awx_url: 'http://10.1.1.15/'
           lin_os:  ['centos7_64Guest', 'centos8_64Guest', 'debian10_64Guest', 'debian11_64Guest', 'freebsd13_64Guest', 'other26xLinux64Guest' ,
                     'other3xLinux64Guest' , 'other4xLinux64Guest' , 'otherLinux64Guest' , 'ubuntu64Guest']
-      import_playbook: tasks/playbook2.yml 
+      #import_playbook: tasks/playbook2.yml 
       when: config in lin_os
