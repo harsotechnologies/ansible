@@ -4,16 +4,22 @@
   hosts: localhost
   tasks:
     - name: ansible version
-      become: true
+      #become: true
       command: ansible --version
+      register: msg_out
+
+    - name: Salida comando
+      debug:
+        msg: "{{msg_out}}"
+
 
 - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
   hosts: HARSO_win_os
   gather_facts: true
   tasks:
           - name: create groups based on distro
-            group_by: 
-                key: "{{ ansible_os_family }}"       
+            group_by:
+                key: "{{ ansible_os_family }}"
 
 - name: Distribuciones basadas en windows
   hosts: Windows
@@ -29,8 +35,5 @@
       - name: Mostras sistema
         debug:
           msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
-
-
-  
 
     
