@@ -1,28 +1,31 @@
 ---
 
 - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
-  hosts: localhost
-  tasks:
-    - name: ansible version
-      #become: true
-      shell: |
-       apt update
-       apt install net-tools
-       ifconfig
-      register: msg_out
+  hosts: win_os, lin_os
+  vars:
+    usr_os:  ['Administrator' , 'pruebasubuntu']
+    pass_os: ['Harso1234' , 'Emalac1pt$']
+    win_os_: ['windows2019srv_64Guest', '	windows2019srvNext_64Guest', '	windows7_64Guest', '	windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
+    lin_os:  ['	centos7_64Guest', 'centos8_64Guest', 'debian10_64Guest', 'debian11_64Guest', 'freebsd13_64Guest', 'other26xLinux64Guest' , 
+             'other3xLinux64Guest' , 'other4xLinux64Guest' , '	otherLinux64Guest' , 'ubuntu64Guest']
 
-    - name: Salida comando
-      debug:
-        msg: "{{msg_out}}"
-
-
-- name: Descargar e instalar Cisco Security Endpoint en PCs Windows
-  hosts: HARSO_win_os
-  gather_facts: true
   tasks:
           - name: create groups based on distro
-            group_by:
-                key: "{{ ansible_os_family }}"
+            vars:
+             ansible_connection: winrm
+             ansible_user: usr_os[0]
+             ansible_password: pass_os[0]
+            group_by: 
+              key: "{{ ansible_os_family }}" 
+            when:  config.guestId in win_os
+
+          - name: create groups based on distro
+            vars:
+             ansible_connection: ssh
+            group_by: 
+              key: "{{ ansible_os_family }}" 
+            when:  config.guestId in lin_os
+
 
 - name: Distribuciones basadas en windows
   hosts: Windows
@@ -38,5 +41,8 @@
       - name: Mostras sistema
         debug:
           msg: "Es sistema operativo que  está instalado es {{ ansible_os_family }}"
+
+
+  
 
     
