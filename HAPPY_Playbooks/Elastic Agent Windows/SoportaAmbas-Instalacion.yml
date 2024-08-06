@@ -1,5 +1,6 @@
 ---
 - name: Playbook Principal
+  hosts: all
   gather_facts: true
   vars:
     condition1: true
@@ -11,7 +12,6 @@
     awx_url: 'http://10.1.1.15/'
   tasks:
     - name: Incluir playbook1 si condition1 es true
-      hosts: win_os
       vars:
         win_os: ['windows2019srv_64Guest', 'windows2019srvNext_64Guest', 'windows7_64Guest',
                 'windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
@@ -25,7 +25,6 @@
       when: condition1 and config in win_os
 
     - name: Incluir playbook2 si condition2 es true
-      hosts: lin_os
       vars:
           ansible_connection: ssh
           ansible_user: "pruebasubuntu"
