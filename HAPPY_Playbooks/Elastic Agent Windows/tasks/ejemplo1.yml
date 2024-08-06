@@ -1,0 +1,7 @@
+---
+- name: Playbook 1
+  hosts: all
+  tasks:
+    - name: Tarea en Playbook 1
+      debug:
+        msg: "Ejecutando Playbook 1"
