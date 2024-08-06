@@ -1,0 +1,72 @@
+---
+- name: Playbook 1
+  hosts: win_os
+  tasks:
+          - name: Validar si elastic agente se encuentra instalado
+            ansible.windows.win_service:
+              name: Elastic Agent
+            register: elastic
+            
+          - name: Create directory structure
+            ansible.windows.win_file:
+              path: C:\Temp
+              state: directory
+
+          - name: Ejecutar script powershell instalar elastic-agent
+            become: true
+            become_method: runas
+            become_user: SYSTEM
+            ansible.windows.win_powershell:
+              script: |
+                $ProgressPreference = 'SilentlyContinue'
+                cd C:\Temp
+                Invoke-WebRequest -Uri https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-{{ elastic_version }}-windows-x86_64.zip -OutFile elastic-agent-{{ elastic_version }}-windows-x86_64.zip
+                Expand-Archive .\elastic-agent-{{ elastic_version }}-windows-x86_64.zip -DestinationPath .
+                cd elastic-agent-{{ elastic_version }}-windows-x86_64
+                .\elastic-agent.exe install --non-interactive --url=https://{{ fleetserver_fqdn }}:8220 --enrollment-token={{ enrollment_token }}
+            when: not elastic.exists
+            register: install
+
+          - name: Borrar contenido de directorio Temp
+            ansible.windows.win_file:
+              path: C:\Temp\
+              state: absent
+            register: result
+            until: not result.failed
+            retries: 3
+            delay: 10
+
+          - name: Enviar notificacion por MS Teams
+            community.general.office_365_connector_card:
+              webhook: '{{ msteams_webhook }}'
+              title: 'Resultados de instalacion de agentes en {{ inventory_hostname }}'
+              color: |
+                {% if install.output[1] | default('failed') == 'Elastic Agent has been successfully installed.' %}
+                23E811
+                {% else %}
+                E81123
+                {% endif %}
+              summary: 'Notificacion servidor {{ inventory_hostname }}' # Mensaje en notificacion PopUp
+              sections:
+                - title: 'Ansible playbook: **{{ ansible_play_name }}**'
+                  start_group: true
+                  activity_image: https://docs.microsoft.com/en-us/media/logos/logo-ms-social.png
+                  activity_title: 'Server Name: **{{ ansible_facts.hostname }}**'
+                  activity_subtitle: 'Server IP: **{{ ansible_host }}**'
+                  activity_text:
+                  text: 'Instalacion de agente:'
+                  facts:
+                    - name: 'Status:'
+                      value: "{{ install.output | join(' ') }}"
+                  actions:
+                    - "@type": OpenUri
+                      name: RDP to Server
+                      targets:
+                        - os: default
+                          uri: 'rdp://{{ ansible_host }}=s:localhost'
+                    - "@type": OpenUri
+                      name: Entrar a AWX
+                      targets:
+                        - os: default
+                          uri: '{{ awx_url }}'
+            delegate_to: localhost
