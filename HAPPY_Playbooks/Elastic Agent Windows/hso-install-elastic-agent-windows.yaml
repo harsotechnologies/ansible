@@ -1,12 +1,4 @@
 ---
-- name: Instalacion de agente elastic
-  hosts: all
-  vars:
-    fleetserver_fqdn: ''
-    elastic_version: ''
-    enrollment_token: ''
-    msteams_webhook: ''
-    awx_url: 'https://awx.harso.com/'
   tasks:
     - name: Validar si elastic agente se encuentra instalado
       ansible.windows.win_service:
