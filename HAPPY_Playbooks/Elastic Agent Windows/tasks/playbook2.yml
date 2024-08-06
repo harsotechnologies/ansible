@@ -1,4 +1,8 @@
 ---
+- name: playbook1
+  hosts: win_os
+  gather_facts: true
+  tasks:
     - name: Instalar curl si no está instalado
       become: true
       apt:
