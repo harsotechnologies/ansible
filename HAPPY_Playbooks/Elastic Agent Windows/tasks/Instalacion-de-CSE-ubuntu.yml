@@ -3,11 +3,11 @@
 - name: playbook1
   hosts: all
   gather_facts: true
-  ansible_user: pruebasubuntu
-  ansible_password: Emalacm1pt$
   vars: 
     url_installer: 'https://console.amp.cisco.com/install_packages/9c8c009f-99e8-40c2-8b05-ab03551e80ae/download?product=LinuxProduct&product_variant_id=a1ef784e-3aea-41ae-8725-9d4ad08eb4ea'
     local_installer_path: '/tmp/cse-agent/amp_Monitoreo_Semanal_ubuntu-20-04-amd64.deb'
+    ansible_user: pruebasubuntu
+    ansible_password: Emalacm1pt$
   tasks:
     - name: Verificar sistema operativo
       debug:
