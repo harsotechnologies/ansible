@@ -1,9 +1,9 @@
 ---
 - name: playbook1
-  hosts: win_os
+  hosts: all
   gather_facts: true
   tasks:
-    - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
+    - name: Descargar e instalar Agente Elastic en PCs Windows
       debug:
         msg: "Es sistema operativo que  está instalado es  {{ ansible_os_family }}"
 
@@ -42,6 +42,7 @@
       delay: 10
 
     - name: Enviar notificacion por MS Teams
+      delegate_to: localhost
       community.general.office_365_connector_card:
         webhook: '{{ msteams_webhook }}'
         title: 'Resultados de instalacion de agentes en {{ inventory_hostname }}'
@@ -74,4 +75,4 @@
                 targets:
                   - os: default
                     uri: '{{ awx_url }}'
-      delegate_to: localhost
+      

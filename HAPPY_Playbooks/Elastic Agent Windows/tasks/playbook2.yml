@@ -1,6 +1,6 @@
 ---
 - name: playbook2
-  hosts: lin_os
+  hosts: all
   gather_facts: true
   tasks:
     - name: Descargar e instalar Cisco Security Endpoint en PCs Windows

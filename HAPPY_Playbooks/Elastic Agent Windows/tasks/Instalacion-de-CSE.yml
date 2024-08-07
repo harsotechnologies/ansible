@@ -1,11 +1,11 @@
 ---
-- name: Descargar e instalar Cisco Security Endpoint en PCs Windows
+- name: playbook1
   hosts: all
   gather_facts: true
   tasks:
-          - name: create groups based on distro
-            group_by: 
-                key: "{{ ansible_os_family }}"
+    - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
+      debug:
+        msg: "Es sistema operativo que  está instalado es  {{ ansible_os_family }}"
 
 - name: Distribuciones basadas en windows
   hosts: Windows
