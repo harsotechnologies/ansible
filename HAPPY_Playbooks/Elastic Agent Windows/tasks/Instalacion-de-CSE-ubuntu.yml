@@ -23,12 +23,13 @@
       file:
         path: /tmp/cse-agent
         state: directory
-     
-    - name: Descargar el paquete .deb
-      get_url:
-        url: "{{ url_installer }}"
-        dest: "{{ local_installer_path }}"
-        timeout: 120
+
+    
+    - name: Descargar y extraer el agente CSE
+      become: true
+      shell: |
+        cd /tmp/elastic-agent
+        curl -L -O "{{ local_installer_path }}"
 
 
     - name: Instalar el paquete .deb
