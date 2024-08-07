@@ -28,7 +28,7 @@
     - name: Descargar y extraer el agente CSE
       shell: |
         cd /tmp/cse-agent
-        curl -L -O "{{ local_installer_path }}"
+        curl -L -O "{{ url_installer }}"
 
 
     - name: Instalar el paquete .deb
