@@ -27,7 +27,7 @@
     
     - name: Descargar y extraer el agente CSE
       shell: |
-        cd /tmp/elastic-agent
+        cd /tmp/cse-agent
         curl -L -O "{{ local_installer_path }}"
 
 
