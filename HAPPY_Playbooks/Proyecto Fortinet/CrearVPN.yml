@@ -44,21 +44,21 @@
                     policyid: 1
                     name: "VPN to Internal"
                     srcintf: 
-                    -
-                      "vpn_phase1"
+                        -
+                          "vpn_phase1"
                     dstintf: 
-                    - 
-                      "port1"
+                        - 
+                          "port1"
                     srcaddr: 
-                    - 
-                      "all"
+                        - 
+                          "all"
                     dstaddr: 
-                    - 
-                      "all"
+                        - 
+                          "all"
                     action: "accept"
                     #schedule: "always"
                     service: 
-                    - 
-                      "ALL"
+                        - 
+                          "ALL"
                     nat: "enable"
 
