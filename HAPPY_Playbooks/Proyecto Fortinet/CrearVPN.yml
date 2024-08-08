@@ -39,7 +39,7 @@
       fortios_firewall_policy:
         vdom: "root"
         state: "present"
-        #access_token: "your_generated_access_token" cx
+        #access_token: "your_generated_access_token" 
         firewall_policy:
           policyid: 1
           name: "VPN to Internal"
