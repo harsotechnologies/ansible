@@ -41,7 +41,8 @@
           state: "present"
           #access_token: "your_generated_access_token"
           firewall_policy:
-                    policyid: 1
+                    action: "accept"
+                    policyid: "1"
                     name: "VPN to Internal"
                     srcintf: 
                         - "vpn_phase1"
@@ -51,7 +52,6 @@
                         - "all"
                     dstaddr: 
                         - "all"
-                    action: "accept"
                     #schedule: "always"
                     service: 
                         - "ALL"
