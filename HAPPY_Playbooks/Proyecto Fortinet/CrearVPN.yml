@@ -37,9 +37,9 @@
 
     - name: Create a firewall policy to allow VPN traffic
       fortios_firewall_policy:
-      vdom: "root"
-      state: "present"
-      firewall_policy:
+        vdom: "root"
+        state: "present"
+        firewall_policy:
         action: "accept"
         nat: "enable"
         policyid: 1
