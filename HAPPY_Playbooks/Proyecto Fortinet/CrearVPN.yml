@@ -37,24 +37,23 @@
 
     - name: Create a firewall policy to allow VPN traffic
       fortios_firewall_policy:
-          vdom: "root"
-          state: "present"
-          #access_token: "your_generated_access_token"
-          firewall_policy:
-            action: "accept"
-            nat: "enable"
-            policyid: "1"
-            name: "VPN to Internal"
-            #schedule: "always"
-            srcintf: 
-             - "vpn_phase1"
-            dstintf: 
-             - "port1"
-            srcaddr: 
-             - "all"
-            dstaddr: 
-             - "all"
-            service: 
-             - "ALL"
+      vdom: "root"
+      state: "present"
+      firewall_policy:
+        action: "accept"
+        nat: "enable"
+        policyid: 1
+        name: "VPN to Internal"
+        srcintf: 
+          - "vpn_phase1"
+        dstintf: 
+          - "port1"
+        srcaddr: 
+          - "all"
+        dstaddr: 
+          - "all"
+        service: 
+          - "ALL"
+
                      
 
