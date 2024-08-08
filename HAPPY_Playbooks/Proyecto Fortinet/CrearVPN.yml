@@ -43,16 +43,16 @@
          action: "accept"
          nat: "enable"
          policyid: 5
-        name: "VPN to Internal"
-        srcintf: 
+         name: "VPN to Internal"
+         srcintf: 
           - "vpn_phase1"
-        dstintf: 
+         dstintf: 
           - "port1"
-        srcaddr: 
+         srcaddr: 
           - "all"
-        dstaddr: 
+         dstaddr: 
           - "all"
-        service: 
+         service: 
           - "ALL"
 
                      
