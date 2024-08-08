@@ -43,17 +43,12 @@
         firewall_policy:
           policyid: 1
           name: "VPN to Internal"
-          srcintf: 
-            - "vpn_phase1"
-          dstintf: 
-            - "port1"
-          srcaddr:
-            - "all"
-          dstaddr:
-            - "all"
+          srcintf: "vpn_phase1"
+          dstintf: "port1"
+          srcaddr: "all"
+          dstaddr: "all"
           action: "accept"
           schedule: "always"
-          service:
-            - "ALL"
+          service: "ALL"
           nat: "enable"
 
