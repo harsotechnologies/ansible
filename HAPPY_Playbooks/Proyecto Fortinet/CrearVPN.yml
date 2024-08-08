@@ -1,5 +1,5 @@
 ---
-- name: Configure VPN on FortiGate
+- name: Configure VPN on FortiGate using HTTPAPI
   hosts: fortigates
   gather_facts: no
   collections:
@@ -10,6 +10,7 @@
       fortios_vpn_ipsec_phase1_interface:
         vdom: "root"
         state: "present"
+        access_token: "your_access_token"
         vpn_ipsec_phase1_interface:
           name: "vpn_phase1"
           type: "static"
@@ -26,6 +27,7 @@
       fortios_vpn_ipsec_phase2_interface:
         vdom: "root"
         state: "present"
+        access_token: "your_access_token"
         vpn_ipsec_phase2_interface:
           phase1name: "vpn_phase1"
           name: "vpn_phase2"
@@ -37,6 +39,7 @@
       fortios_firewall_policy:
         vdom: "root"
         state: "present"
+        access_token: "your_access_token"
         firewall_policy:
           policyid: "1"
           srcintf: "vpn_phase1"
