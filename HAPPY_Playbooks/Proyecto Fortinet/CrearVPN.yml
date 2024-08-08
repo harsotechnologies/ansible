@@ -36,11 +36,11 @@
           keylifeseconds: "3600"
 
     - name: Create a firewall policy to allow VPN traffic
-      fortios_firewall_policy6:
+      fortios_firewall_policy:
         vdom: "root"
         state: "present"
         #access_token: "your_generated_access_token"
-        firewall_policy6:
+        firewall_policy:
         policyid: 1
         name: "VPN to Internal"
         srcintf: 
