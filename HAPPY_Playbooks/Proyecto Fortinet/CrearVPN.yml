@@ -40,7 +40,7 @@
         vdom: "root"
         state: "present"
         firewall_policy:
-        action: "accept"
+         action: "accept"
         nat: "enable"
         policyid: 1
         name: "VPN to Internal"
