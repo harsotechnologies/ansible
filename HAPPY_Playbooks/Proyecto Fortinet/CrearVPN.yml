@@ -10,12 +10,12 @@
       fortios_vpn_ipsec_phase1_interface:
         vdom: "root"
         state: "present"
-        access_token: "your_access_token"
+        #access_token: "your_access_token"
         vpn_ipsec_phase1_interface:
           name: "vpn_phase1"
           type: "static"
           interface: "port1"
-          local_gw: "192.168.1.11"
+          local_gw: "192.168.1.12"
           remote_gw: "203.0.113.1"
           keylife: "28800"
           peertype: "any"
@@ -27,7 +27,7 @@
       fortios_vpn_ipsec_phase2_interface:
         vdom: "root"
         state: "present"
-        access_token: "your_access_token"
+       # access_token: "your_access_token"
         vpn_ipsec_phase2_interface:
           phase1name: "vpn_phase1"
           name: "vpn_phase2"
@@ -39,7 +39,7 @@
       fortios_firewall_policy:
         vdom: "root"
         state: "present"
-        access_token: "your_access_token"
+        #access_token: "your_access_token"
         firewall_policy:
           policyid: "1"
           srcintf: "vpn_phase1"
