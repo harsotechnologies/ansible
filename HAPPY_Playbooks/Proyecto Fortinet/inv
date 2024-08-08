@@ -4,10 +4,10 @@ fortigate01 ansible_host=192.168.1.12 ansible_user="admin" ansible_password="adm
 [fortigates:vars]
 ansible_network_os= fortinet.fortios.fortios
 ansible_connection=httpapi
- ansible_httpapi_use_ssl=yes
- ansible_httpapi_validate_certs=no
- ansible_python_interpreter=/usr/bin/python3 
-ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+ansible_httpapi_use_ssl=yes
+ansible_httpapi_validate_certs=no
+#ansible_python_interpreter=/usr/bin/python3 
+#ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
 
 
