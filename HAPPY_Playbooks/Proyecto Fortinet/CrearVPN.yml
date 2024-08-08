@@ -14,7 +14,7 @@
           name: "vpn_phase1"
           type: "static"
           interface: "port1"
-          local_gw: "192.168.1.1"
+          local_gw: "192.168.1.11"
           remote_gw: "203.0.113.1"
           keylife: "28800"
           peertype: "any"
