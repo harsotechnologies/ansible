@@ -42,7 +42,7 @@
         firewall_policy:
          action: "accept"
         nat: "enable"
-        policyid: "5"
+        policyid: 5
         name: "VPN to Internal"
         srcintf: 
           - "vpn_phase1"
