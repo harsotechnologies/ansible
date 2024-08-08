@@ -45,15 +45,20 @@
          policyid: 5
          name: "VPN to Internal"
          srcintf: 
-          - "vpn_phase1"
+           - 
+            "vpn_phase1"
          dstintf: 
-          - "port1"
+           - 
+            "port1"
          srcaddr: 
-          - "all"
+           - 
+            "all"
          dstaddr: 
-          - "all"
+           - 
+            "all"
          service: 
-          - "ALL"
+           - 
+            "ALL"
 
                      
 
