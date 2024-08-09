@@ -41,7 +41,7 @@
         state: "present"
         firewall_policy:
           policyid: "3"
-          name: "Poltica pruebas automatizacion"
+          #name: "Poltica pruebas automatizacion"
           nat: "enable"
           action: "accept"
           schedule: "always"
