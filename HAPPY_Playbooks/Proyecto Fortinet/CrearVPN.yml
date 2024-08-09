@@ -41,7 +41,7 @@
         state: "present"
         firewall_policy:
           policyid: "3"
-          #name: "Poltica pruebas automatizacion"
+          name: "Poltica pruebas automatizacion"
           nat: "enable"
           action: "accept"
           schedule: "always"
@@ -51,7 +51,7 @@
            - name: "port1"
           srcaddr:
            - 
-             name: "red-harso-local"  # name: "red-corpo-remota"
+             name: "red-harso-local"  # name: "red-corpo-remota" algo esta causando el any
           dstaddr: 
            - 
             name: "red-corpo-remota"  # name: "red-harso-remota"
