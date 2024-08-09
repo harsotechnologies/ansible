@@ -51,10 +51,10 @@
            - name: "port1"
           srcaddr:
            - 
-             name: "red-harso-local"  # name: "red-corpo-remota" algo esta causando el any
+             name: "redes-locales"  # name: "red-corpo-remota" algo esta causando el any
           dstaddr: 
            - 
-            name: "red-corpo-remota"  # name: "red-harso-remota"
+            name: "redes-remotas"  # name: "red-harso-remota"
           service: 
            - name: "ALL"
 #Crear ruta estatica entre las lans    
