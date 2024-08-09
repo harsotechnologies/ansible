@@ -51,10 +51,10 @@
            - name: "port1"
           srcaddr:
            - 
-             name: "redes-locales"  # name: "red-corpo-remota"
+             name: "red-harso-local"  # name: "red-corpo-remota"
           dstaddr: 
            - 
-            name: "redes-remotas"  # name: "red-harso-remota"
+            name: "red-corpo-remota"  # name: "red-harso-remota"
           service: 
            - name: "ALL"
 #Crear ruta estatica entre las lans    
