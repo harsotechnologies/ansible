@@ -41,16 +41,20 @@
         state: "present"
         firewall_policy:
           policyid: "1"
-          srcintf: 
-           - 
-             "vpn_phase1"
-          dstintf: "port1"
-          srcaddr: "all"
-          dstaddr: "all"
+          nat: "enable"
           action: "accept"
           schedule: "always"
-          service: "ALL"
-          nat: "enable"
+          srcintf: 
+           - name: "vpn_phase1"
+          dstintf: 
+           - name: "port1"
+          srcaddr:
+           - name: "all"
+          dstaddr: 
+           - name: "all"
+          service: 
+            - name: "ALL"
+          
 
                      
 
