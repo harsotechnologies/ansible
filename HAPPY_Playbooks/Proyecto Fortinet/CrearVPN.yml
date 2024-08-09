@@ -53,7 +53,7 @@
           dstaddr: 
            - name: "all"
           service: 
-            - name: "ALL"
+           - name: "ALL"
           
 
                      
