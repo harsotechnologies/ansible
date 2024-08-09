@@ -16,12 +16,12 @@
           type: "static"
           interface: "port1"
           local_gw: "192.168.1.12"
-          remote_gw: "203.0.113.1"
+          remote_gw: "192.168.1.13"
           keylife: "28800"
           peertype: "any"
           net_device: "enable"
           proposal: "aes256-sha1"
-          psksecret: "yourPresharedKey"
+          psksecret: "PruebasMilton123"
 
     - name: Configure IPsec Phase 2 Interface
       fortios_vpn_ipsec_phase2_interface:
