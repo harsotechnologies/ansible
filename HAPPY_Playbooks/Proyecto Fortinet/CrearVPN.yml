@@ -50,9 +50,11 @@
           dstintf: 
            - name: "port1"
           srcaddr:
-           - name: "redes-locales"  # name: "red-corpo-remota"
+           - 
+             name: "redes-locales"  # name: "red-corpo-remota"
           dstaddr: 
-           - name: "redes-remotas"  # name: "red-harso-remota"
+           - 
+            name: "redes-remotas"  # name: "red-harso-remota"
           service: 
            - name: "ALL"
 #Crear ruta estatica entre las lans    
