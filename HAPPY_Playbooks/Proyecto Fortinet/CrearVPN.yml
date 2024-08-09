@@ -41,7 +41,9 @@
         state: "present"
         firewall_policy:
           policyid: "1"
-          srcintf: "vpn_phase1"
+          srcintf: 
+           - 
+             "vpn_phase1"
           dstintf: "port1"
           srcaddr: "all"
           dstaddr: "all"
