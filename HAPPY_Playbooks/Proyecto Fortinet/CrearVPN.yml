@@ -40,7 +40,8 @@
         vdom: "root"
         state: "present"
         firewall_policy:
-          policyid: "1"
+          policyid: "3"
+          name: "Poltica pruebas automatizacion"
           nat: "enable"
           action: "accept"
           schedule: "always"
