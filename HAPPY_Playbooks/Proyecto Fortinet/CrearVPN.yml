@@ -4,37 +4,178 @@
   gather_facts: no
   collections:
     - fortinet.fortios
+  vars: 
+   local_gw: "192.168.1.13"
+   remote_gw: "192.168.2.11"
+   psksecret: "PruebasMilton123"
+   name_phase1: "vpn_phase1"
+   int_id: "port1"
+   name_phase2: "vpn_phase2"
+   lan_subnet1: "192.168.3.0/24"
+   lan_subnet2: "192.168.4.0/24" 
+   objects_name1: "red-harso"
+   objects_name2: "red-corpo"
+  
 
   tasks:
+
+  #Configura los peers
     - name: Configure IPsec Phase 1 Interface
       fortios_vpn_ipsec_phase1_interface:
         vdom: "root"
         state: "present"
-        #access_token: "your_access_token"
         vpn_ipsec_phase1_interface:
-          name: "vpn_phase1"
+          name: "{{ name_phase1 }}"
+          interface: "{{ int_id }}"
+          local_gw:   "{{ local_gw }}"                
+          remote_gw: "{{ remote_gw }}"
+          psksecret: "{{ psksecret }}"
           type: "static"
-          interface: "port1"
-          local_gw: "192.168.2.11"   #"192.168.1.13" 
-          remote_gw: "192.168.1.13"  #"192.168.2.11"  
           keylife: "28800"
           peertype: "any"
           net_device: "enable"
           proposal: "aes256-sha1"
-          psksecret: "PruebasMilton123"
+      when: ansible_host == local_gateway
 
+    - name: Configure IPsec Phase 1 Interface
+      fortios_vpn_ipsec_phase1_interface:
+        vdom: "root"
+        state: "present"
+        vpn_ipsec_phase1_interface:
+          name: "{{ name_phase1 }}"
+          interface: "{{ int_id }}"
+          local_gw:   "{{ remote_gw }}"                
+          remote_gw: "{{ local_gw }}"
+          psksecret: "{{ psksecret }}"
+          type: "static"
+          keylife: "28800"
+          peertype: "any"
+          net_device: "enable"
+          proposal: "aes256-sha1"
+      when: not  ansible_host == local_gateway         
+
+#Configura la vpn
     - name: Configure IPsec Phase 2 Interface
       fortios_vpn_ipsec_phase2_interface:
         vdom: "root"
         state: "present"
-       # access_token: "your_access_token"
         vpn_ipsec_phase2_interface:
-          phase1name: "vpn_phase1"
-          name: "vpn_phase2"
+          phase1name: "{{ name_phase1 }}"
+          name: "{{ name_phase2 }}"
+          src_name: "redes-locales"
+          dst_name: "redes-remotas"
           proposal: "aes256-sha1"
           pfs: "enable"
           keylifeseconds: "3600"
+
+
+  #Crea objetos de las redes locales y remotas 
+    - name: Create multiple subnet and IP address objects
+      fortios_firewall_address:
+        vdom: "root"
+        state: "present"
+      firewall_address: "{{ item }}"
+      with_items:
+        - name: "{{ objects_name1 }}-local1"
+          subnet: "{{ lan_subnet1 }}"
+          type: "subnet"
+          comment: "Subred local para Harso"
+
+        - name: "{{ objects_name2}}-remota1"
+          subnet: "{{ lan_subnet2 }}"
+          type: "subnet"
+          comment: "Dirección para la lan remota del corporativo"
+      when: ansible_host == local_gateway
+
+
+    - name: Create multiple subnet and IP address objects
+      fortios_firewall_address:
+        vdom: "root"
+        state: "present"
+      firewall_address: "{{ item }}"
+      with_items:
+        - name: "{{ objects_name2 }}-local1"
+          subnet: "{{ lan_subnet2 }}"
+          type: "subnet"
+          comment: "Subred local para Harso"
+
+        - name: "{{ objects_name2 }}-remota1"
+          subnet:  "{{ lan_subnet1 }}"
+          type: "subnet"
+          comment: "Dirección para la lan remota del corporativo"
+      when: not ansible_host == local_gateway
+
+
+  #Crea objetos de las redes locales y remotas y las meta a un grupo
+    - name: Create multiple address groups
+      fortios_firewall_addrgrp:
+        vdom: "root"
+        state: "present"
+        firewall_addrgrp:
+          name: "{{ item.name }}"
+          member: "{{ item.member }}"
+          comment: "{{ item.comment }}"
+      with_items:
+        - name: "redes-locales1"
+          member:
+            - "{{objects_name1}}-local1"
+          comment: "Grupo que incluye la subred local"
+
+        - name: "redes-remotas"
+          member:
+            - "{{objects_name2}}-remota1"
+          comment: "Grupo que incluye la subred corporativa"
+      when: ansible_host ==  local_gateway
+
+    - name: Create multiple address groups
+      fortios_firewall_addrgrp:
+        vdom: "root"
+        state: "present"
+        firewall_addrgrp:
+          name: "{{ item.name }}"
+          member: "{{ item.member }}"
+          comment: "{{ item.comment }}"
+      with_items:
+        - name: "redes-locales1"
+          member:
+            - "{{objects_name2}}-local1"
+          comment: "Grupo que incluye la subred local"
+
+        - name: "redes-remotas"
+          member:
+            - "{{objects_name1}}-remota1"
+          comment: "Grupo que incluye la subred corporativa"
+      when: not ansible_host ==  local_gateway
+
+
+#Crear ruta estatica entre las lans  (una que vaya haci la red-lan remota usando la vpn)
+# y otra la por defecto para que el trafico lo mande a internet
+    - name: Configure a static route
+      fortios_router_static:
+        vdom: "root"
+        state: "present"
+        router_static:
+          seq_num: 10  
+          dst: "{{ lan_subnet1 }}" 
+          #gateway: "192.168.1.1"  
+          device: "{{ name_phase1 }}"  
+          comment: "Ruta estática a la red 192.168.2.0/24" 
+      when: ansible_host == local_gateway
     
+    - name: Configure a static route
+      fortios_router_static:
+        vdom: "root"
+        state: "present"
+        router_static:
+          seq_num: 10  
+          dst: "{{ lan_subnet2 }}" 
+          #gateway: "{{ name_phase1  }}"  
+          device: "{{ name_phase1 }}"  
+          comment: "Ruta estática a la red 192.168.2.0/24" 
+      when: not ansible_host == local_gateway
+         
+
+ #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT   
     - name: Create a firewall policy to allow VPN traffic
       fortios_firewall_policy:
         vdom: "root"
@@ -57,9 +198,3 @@
             name: "redes-remotas"  # name: "red-harso-remota"
           service: 
            - name: "ALL"
-#Crear ruta estatica entre las lans    
-
-#crear los objetos de las redes locales y remotas
-
-                     
-
