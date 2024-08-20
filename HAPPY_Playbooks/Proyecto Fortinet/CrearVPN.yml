@@ -14,8 +14,29 @@
    lan_subnet1: "192.168.3.0/24"
    lan_subnet2: "192.168.4.0/24" 
    objects_name1: "red-harso"
-   objects_name2: "red-corpo"
+   objects_name2: "red-corpo" 
+   
+   # Definición de los objetos que se crearán
+  firewall_addresses1:
+      - name: "{{ objects_name1 }}-local1"
+        subnet: "{{ lan_subnet1 }}"
+        type: "subnet"
+        comment: "Subred local para Harso"
+      - name: "{{ objects_name2 }}-remota1"
+        subnet: "{{ lan_subnet2 }}"
+        type: "subnet"
+        comment: "Dirección para la lan remota del corporativo"
 
+  firewall_addresses2:
+      - name: "{{ objects_name2 }}-local1"
+        subnet: "{{ lan_subnet2 }}"
+        type: "subnet"
+        comment: "Subred local para Corp"
+      - name: "{{ objects_name1 }}-remota1"
+        subnet: "{{ lan_subnet1 }}"
+        type: "subnet"
+        comment: "Dirección para la lan remota de Harso"      
+ 
   tasks:
   #Configura los peers
     - name: Configure IPsec Phase 1 Interface fw1
@@ -67,38 +88,23 @@
           keylifeseconds: "3600"
   
   #Crea objetos de las redes locales y remotas 
-
-    - name: Create multiple subnet and IP address objects fw1
-      fortios_firewall_address:
-        vdom: "root"
+    - name: Crear múltiples objetos de dirección IP para fw1
+      fortinet.fortios.fortios_firewall_address:
+        vdom: "{{ vdom }}"
         state: "present"
         firewall_address: "{{ item }}"
-        with_items:
-          - name: "{{ objects_name1 }}-local1"
-            subnet: "{{ lan_subnet1 }}"
-            type: "subnet"
-            comment: "Subred local para Harso"
-          - name: "{{ objects_name2}}-remota1"
-            subnet: "{{ lan_subnet2 }}"
-            type: "subnet"
-            comment: "Dirección para la lan remota del corporativo"
+      loop: "{{ firewall_addresses1 }}"
       when: ansible_host == local_gw
-
-    - name: Create multiple subnet and IP address objects fw2
-      fortios_firewall_address:
-        vdom: "root"
+    
+    - name: Crear múltiples objetos de dirección IP para fw1
+      fortinet.fortios.fortios_firewall_address:
+        vdom: "{{ vdom }}"
         state: "present"
         firewall_address: "{{ item }}"
-        with_items:
-           - name: "{{ objects_name2 }}-local1"
-             subnet: "{{ lan_subnet2 }}"
-             type: "subnet"
-             comment: "Subred local para Harso"
-           - name: "{{ objects_name2 }}-remota1"
-             subnet:  "{{ lan_subnet1 }}"
-             type: "subnet"
-             comment: "Dirección para la lan remota del corporativo"
+      loop: "{{ firewall_addresses2 }}"
       when: not ansible_host == local_gw
+    
+
   #Crea objetos de las redes locales y remotas y las meta a un grupo
     - name: Create multiple address groups fw1
       fortios_firewall_addrgrp:
