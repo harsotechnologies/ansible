@@ -89,7 +89,7 @@
   
   #Crea objetos de las redes locales y remotas 
     - name: Crear múltiples objetos de dirección IP para fw1
-      fortinet.fortios.fortios_firewall_address:
+      fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: "present"
         firewall_address: "{{ item }}"
@@ -97,7 +97,7 @@
       when: ansible_host == local_gw
     
     - name: Crear múltiples objetos de dirección IP para fw1
-      fortinet.fortios.fortios_firewall_address:
+      fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: "present"
         firewall_address: "{{ item }}"
