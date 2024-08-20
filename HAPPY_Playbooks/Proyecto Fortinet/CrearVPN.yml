@@ -116,7 +116,7 @@
 
     #Crea objetos de las redes locales y remotas y las meta a un grupo     /// en este caso hay modificar que esta pasando
     - name: Crear múltiples grupos de direcciones fw1
-      fortinet.fortios.fortios_firewall_addrgrp:
+      fortios_firewall_addrgrp:
         vdom: "root"
         state: "present"
         firewall_addrgrp:
