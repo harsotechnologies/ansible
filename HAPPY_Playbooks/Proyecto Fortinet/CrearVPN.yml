@@ -48,7 +48,6 @@
             member:
             - name: "{{ objects_name2 }}-remota"
             comment: "Grupo que incluye la subred remota"
-
       addrgrp_list2:
           - name: "redes-locales"
             member: 
@@ -59,8 +58,39 @@
               - name: "{{ objects_name1 }}-remota"
             comment: "Grupo que incluye la subred remotas"
       
-  
-  
+      firewall_policies:
+          - 
+              policyid: "{{ next_policyid }}"
+              name: "Política pruebas automatización {{next_policyid}}"
+              nat: "disable"
+              action: "accept"
+              schedule: "always"
+              srcintf: 
+                - name: "vpn_phase1"
+              dstintf: 
+                - name: "port1"
+              srcaddr:
+                - name: "redes-locales"
+              dstaddr: 
+                - name: "redes-remotas"
+              service: 
+                - name: "ALL"
+          - 
+              policyid: "{{ next_policyid }}"
+              name: "Política pruebas automatización  {{next_policyid}} "
+              nat: "disable"
+              action: "accept"
+              schedule: "always"
+              srcintf: 
+                - name: "vpn_phase1"
+              dstintf: 
+                - name: "port1"
+              srcaddr:
+                - name: "redes-remotas"
+              dstaddr: 
+                - name: "redes-locales"
+              service: 
+                - name: "ALL"
   tasks:
   #Configura los peers
     - name: Configure IPsec Phase 1 Interface fw1
@@ -171,26 +201,27 @@
           pfs: "enable"
           keylifeseconds: "3600"
          
- #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT   
-    - name: Create a firewall policy to allow VPN traffic fw1
-      fortios_firewall_policy:
+
+ #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT 
+    - name: Obtener la lista de políticas de firewall
+      fortinet.fortios.fortios_firewall_policy_fact:
+      vdom: "root"
+      register: firewall_policies
+    
+    - name: Calcular el siguiente policyid disponible
+      set_fact:
+      next_policyid: "{{ (firewall_policies.meta.result | map(attribute='policyid') | map('int') | max) + 1 }}"
+    
+    - name: Crear políticas de firewall
+      fortinet.fortios.fortios_firewall_policy:
         vdom: "root"
         state: "present"
-        firewall_policy:
-          policyid: "7"
-          name: "Poltica pruebas automatizacion"
-          nat: "disable"
-          action: "accept"
-          schedule: "always"
-          srcintf: 
-           - name: "vpn_phase1"
-          dstintf: 
-           - name: "port1"
-          srcaddr:
-           - 
-             name: "redes-locales"  # name: "red-corpo-remota" algo esta causando el any
-          dstaddr: 
-           - 
-            name: "redes-remotas"  # name: "red-harso-remota"
-          service: 
-           - name: "ALL"
+        firewall_policy:  "{{item}}"
+      loop: "{{ firewall_policies }}"
+      loop_control:
+        index_var: idx
+      vars:
+        next_policyid: "{{ next_policyid + idx }}"
+
+
+   
