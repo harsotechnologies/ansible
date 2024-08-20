@@ -18,23 +18,23 @@
       
       # Definición de los objetos que se crearán
       firewall_addresses1:
-          - name: "{{ objects_name1 }}-local1"
+          - name: "{{ objects_name1 }}-local"
             subnet: "{{ lan_subnet1 }}"
-            type: "subnet"
+            type: "ipmask"
             comment: "Subred local para Harso"
-          - name: "{{ objects_name2 }}-remota1"
+          - name: "{{ objects_name2 }}-remota"
             subnet: "{{ lan_subnet2 }}"
-            type: "subnet"
+            type: "ipmask"
             comment: "Dirección para la lan remota del corporativo"
 
       firewall_addresses2:
           - name: "{{ objects_name2 }}-local1"
             subnet: "{{ lan_subnet2 }}"
-            type: "subnet"
+            type: "ipmask"
             comment: "Subred local para Corp"
           - name: "{{ objects_name1 }}-remota1"
             subnet: "{{ lan_subnet1 }}"
-            type: "subnet"
+            type: "ipmask"
             comment: "Dirección para la lan remota de Harso"      
     
   tasks:
@@ -82,7 +82,7 @@
       loop: "{{ firewall_addresses1 }}"
       when: ansible_host == local_gw
     
-    - name: Crear múltiples objetos de dirección IP para fw1
+    - name: Crear múltiples objetos de dirección IP para fw2
       fortios_firewall_address:
         vdom: "root"
         state: "present"
