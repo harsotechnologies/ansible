@@ -38,16 +38,14 @@
             comment: "Dirección para la lan remota de Harso"      
     
       addrgrp_list1:
-      -
-         name: "redes-locales"
-         member:
+      - name: "redes-locales"
+        member:
            - "{{objects_name1}}-local"
-         comment: "Grupo que incluye la subred local"
-      -   
-         name: "redes-remotas"
-         member:
+        comment: "Grupo que incluye la subred local"
+      - name: "redes-remotas"
+        member:
            - "{{objects_name2}}-remota"
-         comment: "Grupo que incluye la subred remota"
+        comment: "Grupo que incluye la subred remota"
 
       addrgrp_list2:
           - name: "redes-locales"
