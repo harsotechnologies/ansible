@@ -50,7 +50,7 @@
           peertype: "any"
           net_device: "enable"
           proposal: "aes256-sha1"
-      when: not  ansible_host == local_gateway         
+      when: not  ansible_host == local_gw        
 
 #Configura la vpn
     - name: Configure IPsec Phase 2 Interface ambos fw1
