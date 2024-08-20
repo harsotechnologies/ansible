@@ -161,7 +161,7 @@
       loop: "{{ addrgrp_list2 }}"
       when: not ansible_host == local_gw
    
-#Crear ruta estatica entre las lans  (una que vaya haci la red-lan remota usando la vpn)
+#Crear ruta estatica entre las lans  (una que vaya haci la red-lan remota usando la vpn)f
 # y otra la por defecto para que el trafico lo mande a internet
     - name: Configure a static route fw1
       fortios_router_static:
