@@ -193,8 +193,8 @@
         vdom: "root"
         state: "present"
         vpn_ipsec_phase2_interface:
-          phase1name: "{{  name_phase1 }}"
-          name: "{{name_phase2 }}"
+          phase1name: "{{ name_phase2  }}"
+          name: "{{name_phase1 }}"
           src_name: "redes-locales"
           dst_name: "redes-remotas"
           proposal: "aes256-sha1"
