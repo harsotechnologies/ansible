@@ -15,7 +15,7 @@ ansible_httpapi_validate_certs=no
 #all: 
  #hosts:
   #host1:
-   #ansible_host: 192.168.1.11
+   #ansible_host: 192.168.1.11e
    #ansible_user: admin
    #ansible_password: admin
 
