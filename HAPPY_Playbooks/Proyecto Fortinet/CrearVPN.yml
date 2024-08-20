@@ -43,7 +43,7 @@
             comment: "Grupo que incluye la subred local"
           - name: "redes-remotas"
             member: "{{ objects_name2 }}-remota"
-            comment: "Grupo que incluye la subred remotas "
+            comment: "Grupo que incluye la subred remotas"
 
       addrgrp_list2:
           - name: "redes-locales"
@@ -121,7 +121,7 @@
       fortios_firewall_addrgrp:
           vdom: "root"
           state: "present"
-          firewall_addrgrp: "{{ item}}"
+          firewall_addrgrp: "{{ item }}"
       loop: "{{ addrgrp_list2 }}"
       when: not ansible_host == local_gw
    
@@ -164,11 +164,6 @@
           proposal: "aes256-sha1"
           pfs: "enable"
           keylifeseconds: "3600"
-  
- 
-    
-
- 
          
  #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT   
     - name: Create a firewall policy to allow VPN traffic fw1
