@@ -218,12 +218,12 @@
       fortios_firewall_policy:
         vdom: "root"
         state: "present"
-        firewall_policy:  "{{item}}"
-        loop: "{{ firewall_policies }}"
-        loop_control:
-          index_var: idx
-        vars:
-          next_policyid: "{{ next_policyid + idx }}"
+        firewall_policy:  "{{ item }}"
+      loop: "{{ firewall_policies }}"
+      loop_control:
+         index_var: idx
+      vars:
+        next_policyid: "{{ next_policyid + idx }}"
 
 
    
