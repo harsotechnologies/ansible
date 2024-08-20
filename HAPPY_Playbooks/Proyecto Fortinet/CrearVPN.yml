@@ -66,9 +66,9 @@
               action: "accept"
               schedule: "always"
               srcintf: 
-                - name: "vpn_phase1"
+                - name: "port2"
               dstintf: 
-                - name: "port1"
+                - name: "vpn_phase1"
               srcaddr:
                 - name: "redes-locales"
               dstaddr: 
@@ -84,7 +84,7 @@
               srcintf: 
                 - name: "vpn_phase1"
               dstintf: 
-                - name: "port1"
+                - name: "port2"
               srcaddr:
                 - name: "redes-remotas"
               dstaddr: 
