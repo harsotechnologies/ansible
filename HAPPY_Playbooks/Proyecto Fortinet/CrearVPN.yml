@@ -101,17 +101,16 @@
       fortios_firewall_address:
         vdom: "root"
         state: "present"
-      firewall_address: "{{ item }}"
-      with_items:
-        - name: "{{ objects_name2 }}-local1"
-          subnet: "{{ lan_subnet2 }}"
-          type: "subnet"
-          comment: "Subred local para Harso"
-
-        - name: "{{ objects_name2 }}-remota1"
-          subnet:  "{{ lan_subnet1 }}"
-          type: "subnet"
-          comment: "Dirección para la lan remota del corporativo"
+        firewall_address: "{{ item }}"
+        with_items:
+           - name: "{{ objects_name2 }}-local1"
+             subnet: "{{ lan_subnet2 }}"
+             type: "subnet"
+             comment: "Subred local para Harso"
+           - name: "{{ objects_name2 }}-remota1"
+             subnet:  "{{ lan_subnet1 }}"
+             type: "subnet"
+             comment: "Dirección para la lan remota del corporativo"
       when: not ansible_host == local_gateway
   #Crea objetos de las redes locales y remotas y las meta a un grupo
     - name: Create multiple address groups fw1
