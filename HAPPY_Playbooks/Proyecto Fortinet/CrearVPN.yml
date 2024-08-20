@@ -117,10 +117,7 @@
       fortios_firewall_addrgrp:
           vdom: "root"
           state: "present"
-          firewall_addrgrp: 
-            name: "{{ item.name }}"
-            member: "{{ item.member }}"
-            comment: "{{ item.comment }}"
+          firewall_addrgrp: "{{ item }}"
       loop: "{{ addrgrp_list1 }}"
       when: ansible_host == local_gw
    
