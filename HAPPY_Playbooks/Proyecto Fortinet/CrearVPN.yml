@@ -37,6 +37,28 @@
             type: "ipmask"
             comment: "Dirección para la lan remota de Harso"      
     
+      addrgrp_list1:
+      - name: "redes-locales"
+        member:
+          - "{{ objects_name1 }}-local1"
+        comment: "Grupo que incluye la subred local"
+      - name: "redes-remotas"
+        member:
+          - "{{ objects_name2 }}-remota1"
+        comment: "Grupo que incluye la subred remotas "
+
+      addrgrp_list2:
+          - name: "redes-locales"
+            member:
+              - "{{ objects_name2}}-local"
+            comment: "Grupo que incluye la subred local"
+          - name: "redes-remotas"
+            member:
+              - "{{ objects_name1 }}-remota"
+            comment: "Grupo que incluye la subred remotas"
+      
+  
+  
   tasks:
   #Configura los peers
     - name: Configure IPsec Phase 1 Interface fw1
@@ -73,7 +95,7 @@
           proposal: "aes256-sha1"
       when: not  ansible_host == local_gw 
 
-  #Crea objetos de las redes locales y remotas 
+  #Crea objetos de las redes locales y remotas (listo)
     - name: Crear múltiples objetos de dirección IP para fw1
       fortios_firewall_address:
         vdom: "root"
@@ -91,45 +113,21 @@
       when: not ansible_host == local_gw  
 
     #Crea objetos de las redes locales y remotas y las meta a un grupo
-    - name: Create multiple address groups fw1
-      fortios_firewall_addrgrp:
-        vdom: "root"
+    - name: Crear múltiples grupos de direcciones fw1
+      fortinet.fortios.fortios_firewall_addrgrp:
+        vdom: "{{ vdom }}"
         state: "present"
-        firewall_addrgrp:
-          name: "{{ item.name }}"
-          member: "{{ item.member }}"
-          comment: "{{ item.comment }}"
-      with_items:
-        - name: "redes-locales1"
-          member:
-            - "{{objects_name1}}-local1"
-          comment: "Grupo que incluye la subred local"
-
-        - name: "redes-remotas"
-          member:
-            - "{{objects_name2}}-remota1"
-          comment: "Grupo que incluye la subred corporativa"
-      when: ansible_host ==  local_gw
-
-    - name: Create multiple address groups fw2
-      fortios_firewall_addrgrp:
-        vdom: "root"
+        firewall_addrgrp: "{{ item }}"
+      loop: "{{ addrgrp_list1 }}"
+      when: ansible_host == local_gw
+   
+    - name: Crear múltiples grupos de direcciones fw1
+      fortinet.fortios.fortios_firewall_addrgrp:
+        vdom: "{{ vdom }}"
         state: "present"
-        firewall_addrgrp:
-          name: "{{ item.name }}"
-          member: "{{ item.member }}"
-          comment: "{{ item.comment }}"
-      with_items:
-        - name: "redes-locales1"
-          member:
-            - "{{objects_name2}}-local1"
-          comment: "Grupo que incluye la subred local"
-
-        - name: "redes-remotas"
-          member:
-            - "{{objects_name1}}-remota1"
-          comment: "Grupo que incluye la subred corporativa"
-      when: not ansible_host ==  local_gw
+        firewall_addrgrp: "{{ item }}"
+      loop: "{{ addrgrp_list2}}"
+      when: not ansible_host == local_gw
 
 #Crear ruta estatica entre las lans  (una que vaya haci la red-lan remota usando la vpn)
 # y otra la por defecto para que el trafico lo mande a internet
