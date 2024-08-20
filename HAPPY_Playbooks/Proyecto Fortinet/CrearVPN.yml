@@ -40,11 +40,11 @@
       addrgrp_list1:
           - name: "redes-locales"
             member: 
-               "{{ objects_name1 }}-local"
+             -  "{{ objects_name1 }}-local"
             comment: "Grupo que incluye la subred local"
           - name: "redes-remotas"
             member: 
-               "{{ objects_name2 }}-remota"
+              - "{{ objects_name2 }}-remota"
             comment: "Grupo que incluye la subred remotas "
 
       addrgrp_list2:
