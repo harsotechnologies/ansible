@@ -90,7 +90,7 @@
   #Crea objetos de las redes locales y remotas 
     - name: Crear múltiples objetos de dirección IP para fw1
       fortios_firewall_address:
-        vdom: "{{ vdom }}"
+        vdom: "root"
         state: "present"
         firewall_address: "{{ item }}"
       loop: "{{ firewall_addresses1 }}"
@@ -98,7 +98,7 @@
     
     - name: Crear múltiples objetos de dirección IP para fw1
       fortios_firewall_address:
-        vdom: "{{ vdom }}"
+        vdom: "root"
         state: "present"
         firewall_address: "{{ item }}"
       loop: "{{ firewall_addresses2 }}"
