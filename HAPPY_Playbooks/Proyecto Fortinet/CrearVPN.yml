@@ -41,14 +41,12 @@
           - 
             name: "redes-locales"
             member:
-              - 
-               "{{ objects_name1 }}-local"
+              - "{{ objects_name1 }}-local"
             comment: "Grupo que incluye la subred local"
           - 
             name: "redes-remotas"
             member:
-              - 
-               "{{ objects_name2 }}-remota"
+            - "{{ objects_name2 }}-remota"
             comment: "Grupo que incluye la subred remota"
 
       addrgrp_list2:
@@ -121,8 +119,11 @@
       fortinet.fortios.fortios_firewall_addrgrp:
         vdom: "root"
         state: "present"
-        firewall_addrgrp: "{{ item }}"
-      loop: "{{ addrgrp_list1 }}"
+        firewall_addrgrp:
+          name: "redes-locales"
+          member:
+              - "{{ objects_name1 }}-local"
+          comment: "Grupo que incluye la subred local"
       when: ansible_host == local_gw
       
     - name: Crear múltiples grupos de direcciones fw2
