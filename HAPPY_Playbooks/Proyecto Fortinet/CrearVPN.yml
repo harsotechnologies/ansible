@@ -71,22 +71,8 @@
           peertype: "any"
           net_device: "enable"
           proposal: "aes256-sha1"
-      when: not  ansible_host == local_gw        
+      when: not  ansible_host == local_gw 
 
-#Configura la vpn
-    - name: Configure IPsec Phase 2 Interface ambos fw1
-      fortios_vpn_ipsec_phase2_interface:
-        vdom: "root"
-        state: "present"
-        vpn_ipsec_phase2_interface:
-          phase1name: "{{ name_phase1 }}"
-          name: "{{ name_phase2 }}"
-          src_name: "redes-locales"
-          dst_name: "redes-remotas"
-          proposal: "aes256-sha1"
-          pfs: "enable"
-          keylifeseconds: "3600"
-  
   #Crea objetos de las redes locales y remotas 
     - name: Crear múltiples objetos de dirección IP para fw1
       fortios_firewall_address:
@@ -102,10 +88,9 @@
         state: "present"
         firewall_address: "{{ item }}"
       loop: "{{ firewall_addresses2 }}"
-      when: not ansible_host == local_gw
-    
+      when: not ansible_host == local_gw  
 
-  #Crea objetos de las redes locales y remotas y las meta a un grupo
+    #Crea objetos de las redes locales y remotas y las meta a un grupo
     - name: Create multiple address groups fw1
       fortios_firewall_addrgrp:
         vdom: "root"
@@ -170,7 +155,26 @@
           #gateway: "{{ name_phase1  }}"  
           device: "{{ name_phase1 }}"  
           comment: "Ruta estática a la red 192.168.2.0/24" 
-      when: not ansible_host == local_gw
+      when: not ansible_host == local_gw             
+
+#Configura la vpn
+    - name: Configure IPsec Phase 2 Interface ambos fw1
+      fortios_vpn_ipsec_phase2_interface:
+        vdom: "root"
+        state: "present"
+        vpn_ipsec_phase2_interface:
+          phase1name: "{{ name_phase1 }}"
+          name: "{{ name_phase2 }}"
+          src_name: "redes-locales"
+          dst_name: "redes-remotas"
+          proposal: "aes256-sha1"
+          pfs: "enable"
+          keylifeseconds: "3600"
+  
+ 
+    
+
+ 
          
  #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT   
     - name: Create a firewall policy to allow VPN traffic fw1
