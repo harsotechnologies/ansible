@@ -5,38 +5,38 @@
   collections:
     - fortinet.fortios
   vars: 
-   local_gw: "192.168.1.13"
-   remote_gw: "192.168.2.11"
-   psksecret: "PruebasMilton123"
-   name_phase1: "vpn_phase1"
-   int_id: "port1"
-   name_phase2: "vpn_phase2"
-   lan_subnet1: "192.168.3.0/24"
-   lan_subnet2: "192.168.4.0/24" 
-   objects_name1: "red-harso"
-   objects_name2: "red-corpo" 
-   
-   # Definición de los objetos que se crearán
-  firewall_addresses1:
-      - name: "{{ objects_name1 }}-local1"
-        subnet: "{{ lan_subnet1 }}"
-        type: "subnet"
-        comment: "Subred local para Harso"
-      - name: "{{ objects_name2 }}-remota1"
-        subnet: "{{ lan_subnet2 }}"
-        type: "subnet"
-        comment: "Dirección para la lan remota del corporativo"
+      local_gw: "192.168.1.13"
+      remote_gw: "192.168.2.11"
+      psksecret: "PruebasMilton123"
+      name_phase1: "vpn_phase1"
+      int_id: "port1"
+      name_phase2: "vpn_phase2"
+      lan_subnet1: "192.168.3.0/24"
+      lan_subnet2: "192.168.4.0/24" 
+      objects_name1: "red-harso"
+      objects_name2: "red-corpo" 
+      
+      # Definición de los objetos que se crearán
+      firewall_addresses1:
+          - name: "{{ objects_name1 }}-local1"
+            subnet: "{{ lan_subnet1 }}"
+            type: "subnet"
+            comment: "Subred local para Harso"
+          - name: "{{ objects_name2 }}-remota1"
+            subnet: "{{ lan_subnet2 }}"
+            type: "subnet"
+            comment: "Dirección para la lan remota del corporativo"
 
-  firewall_addresses2:
-      - name: "{{ objects_name2 }}-local1"
-        subnet: "{{ lan_subnet2 }}"
-        type: "subnet"
-        comment: "Subred local para Corp"
-      - name: "{{ objects_name1 }}-remota1"
-        subnet: "{{ lan_subnet1 }}"
-        type: "subnet"
-        comment: "Dirección para la lan remota de Harso"      
- 
+      firewall_addresses2:
+          - name: "{{ objects_name2 }}-local1"
+            subnet: "{{ lan_subnet2 }}"
+            type: "subnet"
+            comment: "Subred local para Corp"
+          - name: "{{ objects_name1 }}-remota1"
+            subnet: "{{ lan_subnet1 }}"
+            type: "subnet"
+            comment: "Dirección para la lan remota de Harso"      
+    
   tasks:
   #Configura los peers
     - name: Configure IPsec Phase 1 Interface fw1
