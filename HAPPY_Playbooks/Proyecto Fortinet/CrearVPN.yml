@@ -15,12 +15,10 @@
    lan_subnet2: "192.168.4.0/24" 
    objects_name1: "red-harso"
    objects_name2: "red-corpo"
-  
 
   tasks:
-
   #Configura los peers
-    - name: Configure IPsec Phase 1 Interface
+    - name: Configure IPsec Phase 1 Interface fw1
       fortios_vpn_ipsec_phase1_interface:
         vdom: "root"
         state: "present"
@@ -37,7 +35,7 @@
           proposal: "aes256-sha1"
       when: ansible_host == local_gateway
 
-    - name: Configure IPsec Phase 1 Interface
+    - name: Configure IPsec Phase 1 Interface fw2
       fortios_vpn_ipsec_phase1_interface:
         vdom: "root"
         state: "present"
@@ -55,7 +53,7 @@
       when: not  ansible_host == local_gateway         
 
 #Configura la vpn
-    - name: Configure IPsec Phase 2 Interface
+    - name: Configure IPsec Phase 2 Interface ambos fw
       fortios_vpn_ipsec_phase2_interface:
         vdom: "root"
         state: "present"
@@ -70,7 +68,7 @@
 
 
   #Crea objetos de las redes locales y remotas 
-    - name: Create multiple subnet and IP address objects
+    - name: Create multiple subnet and IP address objects fw1
       fortios_firewall_address:
         vdom: "root"
         state: "present"
@@ -88,7 +86,7 @@
       when: ansible_host == local_gateway
 
 
-    - name: Create multiple subnet and IP address objects
+    - name: Create multiple subnet and IP address objects fw2
       fortios_firewall_address:
         vdom: "root"
         state: "present"
@@ -107,7 +105,7 @@
 
 
   #Crea objetos de las redes locales y remotas y las meta a un grupo
-    - name: Create multiple address groups
+    - name: Create multiple address groups fw1
       fortios_firewall_addrgrp:
         vdom: "root"
         state: "present"
@@ -127,7 +125,7 @@
           comment: "Grupo que incluye la subred corporativa"
       when: ansible_host ==  local_gateway
 
-    - name: Create multiple address groups
+    - name: Create multiple address groups fw2
       fortios_firewall_addrgrp:
         vdom: "root"
         state: "present"
@@ -150,7 +148,7 @@
 
 #Crear ruta estatica entre las lans  (una que vaya haci la red-lan remota usando la vpn)
 # y otra la por defecto para que el trafico lo mande a internet
-    - name: Configure a static route
+    - name: Configure a static route fw1
       fortios_router_static:
         vdom: "root"
         state: "present"
@@ -162,7 +160,7 @@
           comment: "Ruta estática a la red 192.168.2.0/24" 
       when: ansible_host == local_gateway
     
-    - name: Configure a static route
+    - name: Configure a static route fw2
       fortios_router_static:
         vdom: "root"
         state: "present"
@@ -176,14 +174,14 @@
          
 
  #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT   
-    - name: Create a firewall policy to allow VPN traffic
+    - name: Create a firewall policy to allow VPN traffic fw1
       fortios_firewall_policy:
         vdom: "root"
         state: "present"
         firewall_policy:
-          policyid: "3"
+          policyid: "7"
           name: "Poltica pruebas automatizacion"
-          nat: "enable"
+          nat: "disable"
           action: "accept"
           schedule: "always"
           srcintf: 
