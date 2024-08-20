@@ -61,7 +61,7 @@
       firewall_policies:
           - 
               policyid: "{{ next_policyid }}"
-              name: "Política pruebas automatización {{next_policyid}}"
+              name: "Política pruebas automatización entrada"
               nat: "disable"
               action: "accept"
               schedule: "always"
@@ -77,7 +77,7 @@
                 - name: "ALL"
           - 
               policyid: "{{ next_policyid }}"
-              name: "Política pruebas automatización  {{next_policyid}} "
+              name: "Política pruebas automatización reverso"
               nat: "disable"
               action: "accept"
               schedule: "always"
