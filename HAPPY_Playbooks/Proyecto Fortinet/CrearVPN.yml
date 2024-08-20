@@ -202,7 +202,7 @@
           keylifeseconds: "3600"
          
 
- #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT 
+ #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT, el id de la  politca lo crea autimaticamente 
     - name: Obtener la lista de políticas de firewall usando fortios_configuration_fact
       fortios_configuration_fact:
         vdom: "root"
