@@ -41,22 +41,22 @@
           - 
             name: "redes-locales"
             member:
-              - "{{ objects_name1 }}-local"
+              - name: "{{ objects_name1 }}-local"
             comment: "Grupo que incluye la subred local"
           - 
             name: "redes-remotas"
             member:
-            - "{{ objects_name2 }}-remota"
+            - name: "{{ objects_name2 }}-remota"
             comment: "Grupo que incluye la subred remota"
 
       addrgrp_list2:
           - name: "redes-locales"
             member: 
-               - "{{ objects_name2}}-local"
+               -name: "{{ objects_name2}}-local"
             comment: "Grupo que incluye la subred local"
           - name: "redes-remotas"
             member:
-              -  "{{ objects_name1 }}-remota"
+              - name: "{{ objects_name1 }}-remota"
             comment: "Grupo que incluye la subred remotas"
       
   
@@ -115,15 +115,12 @@
       when: not ansible_host == local_gw  
 
     #Crea objetos de las redes locales y remotas y las meta a un grupo     /// en este caso hay modificar que esta pasando
-    - name: Crear múltiples grupos de direcciones fw1 
-      fortios_firewall_addrgrp:
+    - name: Crear múltiples grupos de direcciones fw1
+      fortinet.fortios.fortios_firewall_addrgrp:
         vdom: "root"
         state: "present"
-        firewall_addrgrp:
-          name: "redes-locales"
-          member:
-            - name:  'red-harso-local'
-          comment: 'Grupo que incluye la subred local'
+        firewall_addrgrp: "{{ item }}"
+      loop: "{{ addrgrp_list1 }}"
       when: ansible_host == local_gw
       
     - name: Crear múltiples grupos de direcciones fw2
