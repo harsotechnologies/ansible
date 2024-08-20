@@ -68,13 +68,13 @@
   #Crea objetos de las redes locales y remotas 
     - name: Create multiple subnet and IP address objects fw1
       fortios_firewall_address:
-       vdom: "root"
-       state: "present"
-      firewall_address:
-      - name: "{{ objects_name1 }}-local1"
-        subnet: "{{ lan_subnet1 }}"
-        type: "subnet"
-        comment: "Subred local para Harso"
+        vdom: "root"
+        state: "present"
+        firewall_address:
+         - name: "{{ objects_name1 }}-local1"
+           subnet: "{{ lan_subnet1 }}"
+           type: "subnet"
+           comment: "Subred local para Harso"
      # - name: "{{ objects_name2 }}-remota1"
       #  subnet: "{{ lan_subnet2 }}"
       #  type: "subnet"
