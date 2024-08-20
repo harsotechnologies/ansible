@@ -40,11 +40,11 @@
       addrgrp_list1:
        - name: "redes-locales"
          member:
-           - "{{objects_name1}}-local"
+           - "red-harso-local"
          comment: "Grupo que incluye la subred local"
        - name: "redes-remotas"
          member:
-           - "{{objects_name2}}-remota"
+           - "red-corpo-remota"
          comment: "Grupo que incluye la subred remota"
 
       addrgrp_list2:
@@ -117,10 +117,7 @@
       fortinet.fortios.fortios_firewall_addrgrp:
         vdom: "root"
         state: "present"
-        firewall_addrgrp:
-          name: "{{ item.name }}"
-          member: "{{ item.member }}"  # Asegúrate de que los miembros sean listas de cadenas
-          comment: "{{ item.comment }}"  # Asegúrate de que el comentario sea una cadena de texto
+        firewall_addrgrp: "{{ item }}" 
       loop: "{{ addrgrp_list1 }}"
       when: ansible_host == local_gw
 
