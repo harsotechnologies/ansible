@@ -75,10 +75,10 @@
            subnet: "{{ lan_subnet1 }}"
            type: "subnet"
            comment: "Subred local para Harso"
-     # - name: "{{ objects_name2 }}-remota1"
-      #  subnet: "{{ lan_subnet2 }}"
-      #  type: "subnet"
-      #  comment: "Dirección para la lan remota del corporativo"
+         - name: "{{ objects_name2 }}-remota1"
+           subnet: "{{ lan_subnet2 }}"
+           type: "subnet"
+           comment: "Dirección para la lan remota del corporativo"
       when: ansible_host == local_gateway
 
     - name: Create multiple subnet and IP address objects fw1
