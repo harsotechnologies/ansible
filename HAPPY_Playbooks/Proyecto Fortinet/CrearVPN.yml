@@ -65,21 +65,8 @@
           proposal: "aes256-sha1"
           pfs: "enable"
           keylifeseconds: "3600"
+  
   #Crea objetos de las redes locales y remotas 
-    - name: Create multiple subnet and IP address objects fw1
-      fortios_firewall_address:
-        vdom: "root"
-        state: "present"
-        firewall_address:
-         - name: "{{ objects_name1 }}-local1"
-           subnet: "{{ lan_subnet1 }}"
-           type: "subnet"
-           comment: "Subred local para Harso"
-         - name: "{{ objects_name2 }}-remota1"
-           subnet: "{{ lan_subnet2 }}"
-           type: "subnet"
-           comment: "Dirección para la lan remota del corporativo"
-      when: ansible_host == local_gw
 
     - name: Create multiple subnet and IP address objects fw1
       fortios_firewall_address:
