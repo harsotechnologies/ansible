@@ -112,16 +112,22 @@
       loop: "{{ firewall_addresses2 }}"
       when: not ansible_host == local_gw  
 
-    #Crea objetos de las redes locales y remotas y las meta a un grupo
+    #Crea objetos de las redes locales y remotas y las meta a un grupo     /// en este caso hay modificar que esta pasando
     - name: Crear múltiples grupos de direcciones fw1
       fortinet.fortios.fortios_firewall_addrgrp:
         vdom: "root"
         state: "present"
-        firewall_addrgrp: "{{ item }}" 
-      loop: "{{ addrgrp_list1 }}"
+        firewall_addrgrp: 
+         - name: "redes-locales"
+           members:
+            - "{{objects_name1}}-local"
+           comment: "Grupo que incluye las subredes locales"
+         - name: "redes-remotas"
+           members:
+           - "{{objects_name2}}-remota"
+           comment: "Grupo que incluye las subredes exteriores"
       when: ansible_host == local_gw
-
-
+      
     - name: Crear múltiples grupos de direcciones fw2
       fortios_firewall_addrgrp:
           vdom: "root"
