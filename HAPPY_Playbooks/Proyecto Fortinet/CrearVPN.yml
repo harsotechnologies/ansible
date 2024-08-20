@@ -76,7 +76,7 @@
               service: 
                 - name: "ALL"
           - 
-              policyid: "{{ (next_policyid + 1) | string }}"
+              policyid: "{{ (next_policyid | int) + 1 }}"
               name: "Política pruebas automatización reverso"
               nat: "disable"
               action: "accept"
