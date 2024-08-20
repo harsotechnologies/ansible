@@ -66,7 +66,7 @@
               action: "accept"
               schedule: "always"
               srcintf: 
-                - name: "port2"  #red local
+                - name: "port2"
               dstintf: 
                 - name: "vpn_phase1"
               srcaddr:
@@ -84,7 +84,7 @@
               srcintf: 
                 - name: "vpn_phase1"
               dstintf: 
-                - name: "port2"  #red local
+                - name: "port2"
               srcaddr:
                 - name: "redes-remotas"
               dstaddr: 
@@ -162,7 +162,7 @@
       when: not ansible_host == local_gw
    
 #Crear ruta estatica entre las lans  (una que vaya haci la red-lan remota usando la vpn)
-# y otra la por defecto para que el trafico lo mande a internetd
+# y otra la por defecto para que el trafico lo mande a internet
     - name: Configure a static route fw1
       fortios_router_static:
         vdom: "root"
@@ -193,8 +193,8 @@
         vdom: "root"
         state: "present"
         vpn_ipsec_phase2_interface:
-          phase1name: "{{ name_phase2  }}"
-          name: "{{name_phase1 }}"
+          phase1name: "{{ name_phase1 }}"
+          name: "{{ name_phase2 }}"
           src_name: "redes-locales"
           dst_name: "redes-remotas"
           proposal: "aes256-sha1"
@@ -212,6 +212,7 @@
     - name: Calcular el siguiente policyid disponible
       set_fact:
         next_policyid: "{{ (firewall_policy_data.meta.results | map(attribute='policyid') | map('int') | max | default(0)) + 1 }}"
+
     
     - name: Crear políticas de firewall
       fortios_firewall_policy:
