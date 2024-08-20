@@ -204,7 +204,7 @@
 
  #Falta crear la poltica bidireccional. (que vaya hacia las redes remotas y viceversa) desactivando NAT 
     - name: Obtener la lista de políticas de firewall
-      fortinet.fortios.fortios_firewall_policy_fact:
+      fortios_firewall_policy_fact:
       vdom: "root"
       register: firewall_policies
     
@@ -213,10 +213,10 @@
       next_policyid: "{{ (firewall_policies.meta.result | map(attribute='policyid') | map('int') | max) + 1 }}"
     
     - name: Crear políticas de firewall
-      fortinet.fortios.fortios_firewall_policy:
-        vdom: "root"
-        state: "present"
-        firewall_policy:  "{{item}}"
+      fortios_firewall_policy:
+      vdom: "root"
+      state: "present"
+      firewall_policy:  "{{item}}"
       loop: "{{ firewall_policies }}"
       loop_control:
         index_var: idx
