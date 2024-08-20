@@ -122,6 +122,7 @@
             member: "{{ item.member }}"
             comment: "{{ item.comment }}"
       loop: "{{ addrgrp_list1 }}"
+      when: ansible_host == local_gw
    
     - name: Crear múltiples grupos de direcciones fw2
       fortinet.fortios.fortios_firewall_addrgrp:
@@ -132,6 +133,8 @@
             member: "{{ item.member }}"
             comment: "{{ item.comment }}"
       loop: "{{ addrgrp_list2 }}"
+      when: not ansible_host == local_gw
+   
 #Crear ruta estatica entre las lans  (una que vaya haci la red-lan remota usando la vpn)
 # y otra la por defecto para que el trafico lo mande a internet
     - name: Configure a static route fw1
