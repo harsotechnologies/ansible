@@ -115,7 +115,7 @@
     #Crea objetos de las redes locales y remotas y las meta a un grupo
     - name: Crear múltiples grupos de direcciones fw1
       fortinet.fortios.fortios_firewall_addrgrp:
-        vdom: "{{ vdom }}"
+        vdom: "root"
         state: "present"
         firewall_addrgrp:
           name: "{{ item.name }}"
@@ -124,7 +124,7 @@
       loop: "{{ addrgrp_list1 }}"
       when: ansible_host == local_gw
 
-      
+
     - name: Crear múltiples grupos de direcciones fw2
       fortios_firewall_addrgrp:
           vdom: "root"
