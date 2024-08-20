@@ -28,11 +28,11 @@
             comment: "Dirección para la lan remota del corporativo"
 
       firewall_addresses2:
-          - name: "{{ objects_name2 }}-local1"
+          - name: "{{ objects_name2 }}-local"
             subnet: "{{ lan_subnet2 }}"
             type: "ipmask"
             comment: "Subred local para Corp"
-          - name: "{{ objects_name1 }}-remota1"
+          - name: "{{ objects_name1 }}-remota"
             subnet: "{{ lan_subnet1 }}"
             type: "ipmask"
             comment: "Dirección para la lan remota de Harso"      
@@ -40,11 +40,11 @@
       addrgrp_list1:
       - name: "redes-locales"
         member:
-          - "{{ objects_name1 }}-local1"
+          - "{{ objects_name1 }}-local"
         comment: "Grupo que incluye la subred local"
       - name: "redes-remotas"
         member:
-          - "{{ objects_name2 }}-remota1"
+          - "{{ objects_name2 }}-remota"
         comment: "Grupo que incluye la subred remotas "
 
       addrgrp_list2:
