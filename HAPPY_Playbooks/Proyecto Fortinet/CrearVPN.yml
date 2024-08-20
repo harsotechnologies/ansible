@@ -51,7 +51,7 @@
       addrgrp_list2:
           - name: "redes-locales"
             member: 
-               -name: "{{ objects_name2}}-local"
+               - name: "{{ objects_name2}}-local"
             comment: "Grupo que incluye la subred local"
           - name: "redes-remotas"
             member:
@@ -212,7 +212,6 @@
     - name: Calcular el siguiente policyid disponible
       set_fact:
         next_policyid: "{{ (firewall_policy_data.meta.results | map(attribute='policyid') | map('int') | max | default(0)) + 1 }}"
-
     
     - name: Crear políticas de firewall
       fortios_firewall_policy:
