@@ -1,10 +1,10 @@
 ---
 - name: Backup FortiGate configurations and send to TFTP server
-  hosts: fortigates
+  hosts: all
   gather_facts: no
 
   vars:
-    tftp_server: "192.25.10.42"
+    tftp_server: "192.25.10.44"
     backup_dir: "/tftpboot/fortigate_backups"
     date: "{{ lookup('pipe', 'date +%Y%m%d') }}"
 
