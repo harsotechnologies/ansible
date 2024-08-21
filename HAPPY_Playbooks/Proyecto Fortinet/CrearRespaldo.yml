@@ -6,7 +6,7 @@
     - fortinet.fortios
   tasks:
     - name: Realizar backup de la configuración y enviarlo al servidor TFTP
-      fortios_system_config_backup:
+      fortios_system_config:
         vdom: "root"  # Cambiar si utilizas un VDOM diferente
         backup: "enable"
         tftp_server: "192.168.10.46"  # IP del servidor TFTP
