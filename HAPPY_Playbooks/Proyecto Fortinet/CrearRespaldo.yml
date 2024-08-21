@@ -1,6 +1,6 @@
 ---
 - name: Recuperar el archivo de backup de un FortiGate y guardarlo en un servidor TFTP
-  hosts: fortigate
+  hosts: fortigates
   gather_facts: no
   collections:
     - fortinet.fortios
@@ -9,7 +9,7 @@
       fortios_system_config_backup:
         vdom: "root"  # Cambiar si utilizas un VDOM diferente
         backup: "enable"
-        tftp_server: "192.168.10.45"  # IP del servidor TFTP
+        tftp_server: "192.168.10.46"  # IP del servidor TFTP
         filename: "backup_fortigate.cfg"  # Nombre del archivo de respaldo
       register: backup_result
 
