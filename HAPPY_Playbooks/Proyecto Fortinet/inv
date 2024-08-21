@@ -11,7 +11,7 @@ ansible_httpapi_validate_certs=no
 
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 [Server]
-server01 ansible_host=172.25.10.60 ansible_user="root" ansible_password="gns3" 
+server01 ansible_host=172.25.10.40 ansible_user="root" ansible_password="gns3" 
 [Server:vars]
 ansible_connection=ssh
 #all: 
@@ -23,3 +23,4 @@ ansible_connection=ssh
 
 
 
+cle
