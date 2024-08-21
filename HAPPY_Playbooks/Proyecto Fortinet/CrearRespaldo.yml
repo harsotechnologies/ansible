@@ -11,6 +11,7 @@
   tasks:
     - name: Ensure backup directory exists on TFTP server
       ansible.builtin.file:
+      ansible_user: "root"
         path: "{{ backup_dir }}"
         state: directory
         mode: '0755'
