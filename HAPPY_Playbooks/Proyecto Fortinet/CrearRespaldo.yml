@@ -10,8 +10,6 @@
 
   tasks:
     - name: Ensure backup directory exists on TFTP server
-      ansible_user: "root"
-      ansible_password: "gns3"
       ansible.builtin.file:
         path: "{{ backup_dir }}"
         state: directory
