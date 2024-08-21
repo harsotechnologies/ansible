@@ -1,7 +1,7 @@
 ---
 - name: Backup FortiGate configurations and send to TFTP server
-  hosts: fortigates, Server
-  gather_facts: yes
+  hosts: Server
+  gather_facts: no
 
   vars:
     tftp_server: "172.25.10.45"
