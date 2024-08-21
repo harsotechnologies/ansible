@@ -4,7 +4,7 @@
   gather_facts: no
 
   vars:
-    tftp_server: "192.168.3.15"
+    tftp_server: "192.25.10.42"
     backup_dir: "/tftpboot/fortigate_backups"
     date: "{{ lookup('pipe', 'date +%Y%m%d') }}"
 
