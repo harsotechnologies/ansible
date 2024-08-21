@@ -15,7 +15,7 @@
         path: "{{ backup_dir }}"
         state: directory
         mode: '0755'
-      delegate_to: "{{ tftp_server }}"
+    
 
     - name: Backup FortiGate configuration
       fortinet.fortios.fortios_configuration_fact:
