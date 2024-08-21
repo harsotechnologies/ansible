@@ -6,7 +6,7 @@
     - fortinet.fortios
   tasks:
     - name: Realizar backup de la configuración y enviarlo al servidor TFTP
-      system_config_backup_restore:
+      fortios_system_config_backup_restore:
         vdom: "root"  # Cambiar si utilizas un VDOM diferente
         https: true
         system_console:
