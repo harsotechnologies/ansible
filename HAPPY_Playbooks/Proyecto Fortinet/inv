@@ -11,7 +11,6 @@
 [Server]
   server01 ansible_host=172.25.10.45 ansible_user="root" ansible_password="gns3" 
 [Server:vars]
-  server01=172.25.10.45
   ansible_connection=ssh
 #all: 
  #hosts:
