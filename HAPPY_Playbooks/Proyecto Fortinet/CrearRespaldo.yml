@@ -1,0 +1,40 @@
+---
+- name: Backup FortiGate configurations and send to TFTP server
+  hosts: fortigates
+  gather_facts: no
+
+  vars:
+    tftp_server: "192.168.1.100"
+    backup_dir: "/tftpboot/fortigate_backups"
+    date: "{{ lookup('pipe', 'date +%Y%m%d') }}"
+
+  tasks:
+    - name: Ensure backup directory exists on TFTP server
+      ansible.builtin.file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: '0755'
+      delegate_to: "{{ tftp_server }}"
+
+    - name: Backup FortiGate configuration
+      fortinet.fortios.fortios_configuration_fact:
+        vdom: "root"
+        config_type: "system_config"
+      register: config_backup
+
+    - name: Save FortiGate configuration to TFTP server
+      ansible.builtin.copy:
+        content: "{{ config_backup.ansible_facts.fortios_configuration }}"
+        dest: "{{ backup_dir }}/{{ inventory_hostname }}_config_{{ date }}.conf"
+      delegate_to: "{{ tftp_server }}"
+
+    - name: Verify that the backup was successful
+      ansible.builtin.stat:
+        path: "{{ backup_dir }}/{{ inventory_hostname }}_config_{{ date }}.conf"
+      register: backup_file
+      delegate_to: "{{ tftp_server }}"
+
+    - name: Fail if backup file is missing
+      ansible.builtin.fail:
+        msg: "Backup failed for {{ inventory_hostname }}."
+      when: not backup_file.stat.exists
