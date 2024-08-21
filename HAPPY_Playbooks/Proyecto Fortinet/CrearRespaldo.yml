@@ -8,7 +8,7 @@
     - name: Realizar backup de la configuración y enviarlo al servidor TFTP
       fortios_system_config_backup_restore:
         vdom: "root"  # Cambiar si utilizas un VDOM diferente
-        https: true
+        https: false
         system_console:
           cmd: "execute backup config tftp backup_fortigate.cfg 172.25.10.46"  # Cambia la IP del TFTP y nombre del archivo
       register: backup_result
