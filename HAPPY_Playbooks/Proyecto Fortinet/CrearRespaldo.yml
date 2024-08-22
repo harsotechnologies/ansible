@@ -3,6 +3,15 @@
   hosts: fortigates
   gather_facts: no
   tasks:
+    - name: Obtener la fecha actual
+      delegate_to: localhost
+      ansible.builtin.date:
+        format: "%Y-%m-%d"  # Formato de fecha: Año-Mes-Día
+      register: current_date
+
+    - name: Mostrar la fecha actual
+      debug:
+        var: current_date
     - name: Ejecutar comando para hacer backup al servidor TFTP
       ansible.builtin.command:
         cmd: "execute backup config tftp backup_fortigate.conf 172.25.10.48"
