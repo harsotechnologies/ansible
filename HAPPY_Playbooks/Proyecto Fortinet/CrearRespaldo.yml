@@ -17,7 +17,7 @@
         ansible_python_interpreter: /bin/false
         ansible_ssh_extra_args: "-o ControlMaster=no"
       ansible.builtin.shell:
-        cmd: execute backup config tftp backup_fortigate.conf 172.25.10.48
+        cmd: "execute backup config tftp backup_fortigate.conf 172.25.10.48"
       register: backup_result
   
     - name: Mostrar el resultado del backup
