@@ -4,8 +4,7 @@
   gather_facts: no
   tasks:
     - name: Obtener la fecha actual
-      ansible.builtin.date:
-        format: "%Y-%m-%d"  # Formato de fecha: Año-Mes-Día
+      ansible.builtin.shell: "date +'%Y-%m-%d'"
       register: current_date
       delegate_to: localhost
 
