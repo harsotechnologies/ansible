@@ -1,22 +1,13 @@
 ---
-- name: Recuperar el archivo de backup de un FortiGate y guardarlo en un servidor TFTP
+- name: Respaldar la configuración de FortiGate a un servidor TFTP
   hosts: fortigates
   gather_facts: no
-  collections:
-    - fortinet.fortios
   tasks:
-    - name: Realizar backup de la configuración y enviarlo al servidor TFTP
-      fortios_system_config_backup_restore:
-        vdom: "root"  # Cambiar si utilizas un VDOM diferente
-        https: false
-        system_console:
-          cmd: "execute backup config tftp backup_fortigate.cfg 172.25.10.46"  # Cambia la IP del TFTP y nombre del archivo
+    - name: Ejecutar comando para hacer backup al servidor TFTP
+      ansible.builtin.command:
+        cmd: "execute backup config tftp backup_fortigate.conf 172.25.10.48"
       register: backup_result
 
-    - name: Verificar resultado del backup
-      debug:
-        var: backup_result
-
-    - name: Verificar el resultado del backup
+    - name: Mostrar el resultado del backup
       debug:
         var: backup_result
