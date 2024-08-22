@@ -10,12 +10,10 @@
 
     - name: Mostrar la fecha actual
       debug:
-        var: current_date
+        var: current_date.stdout
     - name: Ejecutar comando para hacer backup al servidor TFTP
       ansible.builtin.command:
         cmd: "execute backup config tftp backup_fortigate.conf 172.25.10.48"
-      environment:
-       ANSIBLE_HOST_KEY_CHECKING: "False" 
       register: backup_result
   
     - name: Mostrar el resultado del backup
