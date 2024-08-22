@@ -13,7 +13,7 @@
     
     - name: Mostrar la salida del comando
       debug:
-        var: backup_result.stdout
+        var: current_date.stdout
   
           
     - name: Ejecutar comando para hacer backup al servidor TFTP
