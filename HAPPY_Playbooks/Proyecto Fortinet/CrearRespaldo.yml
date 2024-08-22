@@ -15,6 +15,10 @@
         cmd: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.48"
       register: backup_result
   
-    - name: Mostrar el resultado del backup
+    - name: Mostrar la salida del comando
       debug:
-        var: backup_result
+        var: backup_result.stdout
+
+    - name: Mostrar el error del comando
+      debug:
+        var: backup_result.stderr
