@@ -2,25 +2,20 @@
 - name: Respaldar la configuración de FortiGate a un servidor TFTP
   hosts: fortigates
   gather_facts: no
-  vars: 
-     ansible_python_interpreter: /bin/false
   tasks:
     - name: Obtener la fecha actual
       ansible.builtin.shell: "date +'%Y-%m-%d'"
       register: current_date
       delegate_to: localhost
 
-    
-    - name: Mostrar la salida del comando
+    - name: Mostrar la fecha actual
       debug:
         var: current_date.stdout
-  
-          
     - name: Ejecutar comando para hacer backup al servidor TFTP
       ansible.builtin.command:
-        cmd: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.48"
+        cmd: "execute backup config tftp backup_fortigate.conf 172.25.10.48"
       register: backup_result
   
-    - name: Mostrar el error del comando
+    - name: Mostrar el resultado del backup
       debug:
-        var: backup_result.stderr
+        var: backup_result
