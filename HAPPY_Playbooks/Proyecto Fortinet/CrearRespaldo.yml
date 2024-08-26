@@ -13,7 +13,7 @@
         var: current_date.stdout
     
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
-      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.48"
+      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.49"
       register: backup_result
   
     - name: Mostrar el resultado del backup
