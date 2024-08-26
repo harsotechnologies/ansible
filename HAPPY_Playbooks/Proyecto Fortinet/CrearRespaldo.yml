@@ -1,6 +1,6 @@
 ---
 - name: Respaldar la configuración de FortiGate a un servidor TFTP
-  hosts: fortigates
+  hosts: forti-pruebas
   gather_facts: no
   tasks:
     - name: Obtener la fecha actual
