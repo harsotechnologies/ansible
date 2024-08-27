@@ -91,7 +91,79 @@
                 - name: "redes-locales"
               service: 
                 - name: "ALL"
+
+      firewall_policies_servicio_web:
+          - 
+              policyid: "{{ next_policyid }}"
+              name: "Política para servicio web entrada"
+              nat: "disable"
+              action: "accept"
+              schedule: "always"
+              srcintf: 
+                - name: "port2"   #puerto de lan  
+              dstintf: 
+                - name: "port1"
+              srcaddr:
+                - name: "redes-locales"
+              dstaddr: 
+                - name: "redes-remotas"
+              service: 
+                - name: "ALL"
+          - 
+              policyid: "{{ (next_policyid | int) + 1 }}"
+              name: "Política para servicio web reverso"
+              nat: "disable"
+              action: "accept"
+              schedule: "always"
+              srcintf: 
+                - name: "port1"
+              dstintf: 
+                - name: "port2"  #puerto lan
+              srcaddr:
+                - name: "redes-remotas"
+              dstaddr: 
+                - name: "redes-locales"
+              service: 
+                - name: "ALL"
+      
+  firewall_policies_servicio_tftp:
+          - 
+              policyid: "{{ next_policyid }}"
+              name: "Política para servicio tftp entrada"
+              nat: "disable"
+              action: "accept"
+              schedule: "always"
+              srcintf: 
+                - name: "port2"   #puerto de lan  
+              dstintf: 
+                - name: "port1"
+              srcaddr:
+                - name: "redes-locales"
+              dstaddr: 
+                - name: "redes-remotas"
+              service: 
+                - name: "ALL"
+          - 
+              policyid: "{{ (next_policyid | int) + 1 }}"
+              name: "Política para servicio tftp reverso"
+              nat: "disable"
+              action: "accept"
+              schedule: "always"
+              srcintf: 
+                - name: "port1"
+              dstintf: 
+                - name: "port2"  #puerto lan
+              srcaddr:
+                - name: "redes-remotas"
+              dstaddr: 
+                - name: "redes-locales"
+              service: 
+                - name: "ALL"          
+
+              
   tasks:
+
+#CREACION DE UNA VPN
   #Configura los peers
     - name: Configure IPsec Phase 1 Interface fw1
       fortios_vpn_ipsec_phase1_interface:
@@ -187,12 +259,13 @@
           comment: "Ruta estática a la red {{lan_subnet1}}" 
       when: not ansible_host == local_gw             
 
-#Configura la vpn
+#Configura la vpn //esta fallando al asignar los objetos
     - name: Configure IPsec Phase 2 Interface ambos fw1
       fortios_vpn_ipsec_phase2_interface:
         vdom: "root"
         state: "present"
         vpn_ipsec_phase2_interface:
+          #add_route: "phase1"
           phase1name: "{{ name_phase1 }}"
           name: "{{ name_phase2 }}"
           src_name: "redes-locales"
@@ -220,7 +293,62 @@
         state: "present"
         firewall_policy:  "{{ item }}"
       loop: "{{ firewall_policies }}"
+
+
+#FILTRADO DE TRAFICO CON BASE A POLITICAS 
+
+# PC2 y PC5 en la red corporativo tnedran accceso al servidor TFTP, browser solo tendra acceso al servidor web.
+    - name: Obtener la lista de políticas de firewall usando fortios_configuration_fact 
+      fortios_configuration_fact:
+        vdom: "root"
+        selector: "firewall_policy"
+      register: firewall_policy_data
+ 
+    - name: Calcular el siguiente policyid disponible
+      set_fact:
+        next_policyid: "{{ (firewall_policy_data.meta.results | map(attribute='policyid') | map('int') | max | default(0)) + 1 }}"
+
+    - name: Crear políticas de filtrado servicio web
+      fortios_firewall_policy:
+        vdom: "root"
+        state: "present"
+        firewall_policy:  "{{ item }}"
+      loop: "{{ firewall_policies_servicio_web }}"
+
+    - name: Obtener la lista de políticas de firewall usando fortios_configuration_fact 
+      fortios_configuration_fact:
+        vdom: "root"
+        selector: "firewall_policy"
+      register: firewall_policy_data
+ 
+    - name: Calcular el siguiente policyid disponible
+      set_fact:
+        next_policyid: "{{ (firewall_policy_data.meta.results | map(attribute='policyid') | map('int') | max | default(0)) + 1 }}"
+        
+
+    - name: Crear políticas de filtrado servicio tftp
+      fortios_firewall_policy:
+        vdom: "root"
+        state: "present"
+        firewall_policy:  "{{ item }}"
+      loop: "{{ firewall_policies_servicio_tftp }}"
      
+#RESPALDO DE CONFIGURACION EN SERVIDOR TFTP
+    - name: Obtener la fecha actual
+      ansible.builtin.shell: "date +'%Y-%m-%d'"
+      register: current_date
+      delegate_to: localhost
+
+    - name: Mostrar la fecha actual
+      debug:
+        var: current_date.stdout
+    
+    - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
+      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.49"
+      register: backup_result
+
+
+
 
 
    
