@@ -314,6 +314,7 @@
         state: "present"
         firewall_policy:  "{{ item }}"
       loop: "{{ firewall_policies_servicio_web }}"
+      
 
     - name: Obtener la lista de políticas de firewall usando fortios_configuration_fact 
       fortios_configuration_fact:
@@ -346,7 +347,7 @@
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
       vars: 
         ansible_connection: ssh
-      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.51"
+      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.52"
       register: backup_result
 
 
