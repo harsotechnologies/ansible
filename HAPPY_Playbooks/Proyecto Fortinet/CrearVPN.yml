@@ -344,6 +344,8 @@
         var: current_date.stdout
     
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
+      vars: 
+        ansible_connection: ssh
       raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.51"
       register: backup_result
 
