@@ -126,7 +126,7 @@
               service: 
                 - name: "ALL"
       
-  firewall_policies_servicio_tftp:
+      firewall_policies_servicio_tftp:
           - 
               policyid: "{{ next_policyid }}"
               name: "Política para servicio tftp entrada"
