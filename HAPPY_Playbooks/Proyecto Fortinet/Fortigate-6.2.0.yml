@@ -1,9 +1,9 @@
 ---
 - name: Configure FortiGate with Ansible
   hosts: fortigates
-  gather_facts: yes
-  collections:
-   - fortinet.fortios
+  gather_facts: no
+  #collections:
+   #- fortinet.fortios
   connection: httpapi
   vars:
    vdom: "root"
