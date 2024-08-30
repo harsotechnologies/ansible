@@ -1,6 +1,6 @@
 ---
 - name: Respaldar la configuración de FortiGate a un servidor TFTP
-  hosts: fortigates
+  hosts: forti-pruebas
   gather_facts: no
   tasks:
     - name: Obtener la fecha actual
@@ -13,9 +13,10 @@
         var: current_date.stdout
     
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
-      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.49"
+      raw: "execute backup config tftp /RESPALDOS_AWX/backup_fortigate-{{current_date.stdout}}.conf 172.19.51.11"
       register: backup_result
   
     - name: Mostrar el resultado del backup
+
       debug:
         var: backup_result.stdout
