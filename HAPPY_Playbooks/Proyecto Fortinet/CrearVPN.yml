@@ -2,8 +2,6 @@
 - name: Configure VPN on FortiGate using HTTPAPI
   hosts: fortigates
   gather_facts: no
-  collection:
-    - name: fortinet.fortios
   vars: 
       local_gw: "192.168.1.12"
       remote_gw: "192.168.2.11"
@@ -218,7 +216,7 @@
 
     #Crea objetos de las redes locales y remotas y las meta a un grupo  (listo)
     - name: Crear múltiples grupos de direcciones fw1
-      fortinet.fortios.fortios_firewall_addrgrp:
+      fortios_firewall_addrgrp:
         vdom: "root"
         state: "present"
         firewall_addrgrp: "{{ item }}"
