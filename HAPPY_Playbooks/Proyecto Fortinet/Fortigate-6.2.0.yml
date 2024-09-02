@@ -1,6 +1,8 @@
 ---
 - name: Configure FortiGate with Ansible
   hosts: fortigates
+  collection: 
+    - name: fortinet.fortios
   gather_facts: no
   vars:
    vdom: "root"
