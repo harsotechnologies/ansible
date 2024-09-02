@@ -162,7 +162,7 @@
   tasks:
 
 #CREACION DE UNA VPN
-  #Configura los peers
+  #Configura los peersc
     - name: Configure IPsec Phase 1 Interface fw1
       fortios_vpn_ipsec_phase1_interface:
         vdom: "root"
@@ -332,7 +332,7 @@
         firewall_policy:  "{{ item }}"
       loop: "{{ firewall_policies_servicio_tftp }}"
      
-#RESPALDO DE CONFIGURACION EN SERVIDOR TFTP
+#RESPALDO DE CONFIGURACION EN SERVIDOR TFTPd
     - name: Obtener la fecha actual
       ansible.builtin.shell: "date +'%Y-%m-%d'"
       register: current_date
