@@ -177,9 +177,8 @@
        ansible_user: "admin"
        ansible_password: "admin"
       shell: |
-       "ssh -o StrictHostKeyChecking=no admin@192.168.2.11 "
-        execute backup config tftp fortigate_backup_$(date +%Y%m%d%H%M%S).conf 172.25.10.45
-        "
+        "ssh -o StrictHostKeyChecking=no admin@192.168.2.11 "
+        "execute backup config tftp fortigate_backup_$(date +%Y%m%d%H%M%S).conf 172.25.10.45"
       register: backup_result
      
 
