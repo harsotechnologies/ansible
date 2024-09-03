@@ -174,8 +174,8 @@
       delegate_to: "192.168.1.12"
       vars: 
         ansible_connection:  network_cli
-        ansible_user: "admin"
-        ansible_password: "admin"
+        ansible_ssh_user: "admin"
+        ansible_ssh_password: "admin"
       cli_command:
         command: "execute backup config tftp backup_fortigate_{{ current_date.stdout }}.conf 172.25.10.45"
       register: backup_result
