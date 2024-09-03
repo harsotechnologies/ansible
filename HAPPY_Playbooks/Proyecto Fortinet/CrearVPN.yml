@@ -178,6 +178,8 @@
       delegate_to: "192.168.1.12"
       vars: 
         ansible_connection: ssh
+        ansible_ssh_user: "{{ ansible_user }}"
+        ansible_ssh_pass: "{{ ansible_password }}"
         #ansible_user: "{{ansible_user}}"
         #ansible_password: "{{ansible_password}}"
       raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
