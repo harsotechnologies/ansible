@@ -174,7 +174,7 @@
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
       delegate_to: "192.168.2.11"
       vars: 
-        ansible_connection: ssh
+        ansible_connection: network_cli
         ansible_ssh_user: "admin"
         ansible_ssh_password: "admin"
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
