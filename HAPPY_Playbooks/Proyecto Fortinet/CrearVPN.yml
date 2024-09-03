@@ -173,11 +173,8 @@
        
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
       delegate_to: "localhost"
-      vars:
-       ansible_user: "admin"
-       ansible_password: "admin"
       shell: |
-        "ssh -o StrictHostKeyChecking=no admin@192.168.2.11 "
+        "sshpass -p 'admin' ssh -o StrictHostKeyChecking=no admin@192.168.2.11 "
         "execute backup config tftp fortigate_backup_{{current_date.stdout}}.conf 172.25.10.45"
       register: backup_result
      
