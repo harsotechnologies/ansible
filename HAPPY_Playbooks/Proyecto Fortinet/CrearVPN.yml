@@ -177,7 +177,7 @@
         ansible_connection: ssh
         ansible_user: "admin"
         ansible_password: "admin"
-      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
+      ansible.builtin.shell: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
       register: backup_result
      
 
