@@ -177,7 +177,7 @@
         command: "ssh admin@192.168.1.12"
         responses:
           'password:': 'admin'
-          #"execute backup config tftp fortigate_backup_{{current_date.stdout}}.conf 172.25.10.45"
+          'fortigate#': 'execute backup config tftp fortigate_backup_{{ current_date.stdout }}.conf 172.25.10.45\n'
       timeout: 120  
       register: backup_result
      
