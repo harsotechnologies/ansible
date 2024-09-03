@@ -15,6 +15,7 @@
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
       vars: 
        ansible_connection: ssh
+       ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
       raw: "execute backup config tftp /RESPALDOS_AWX/backup_fortigate-{{ ansible_host }}-{{current_date.stdout}}.conf 172.25.10.47"
       register: backup_result
   
