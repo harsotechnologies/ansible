@@ -164,24 +164,7 @@
   tasks:
 
        
-#RESPALDO DE CONFIGURACION EN SERVIDOR TFTPd
-    - name: Obtener la fecha actual
-      ansible.builtin.shell: "date +'%Y-%m-%d'"
-      register: current_date
-      delegate_to: localhost
 
-    - name: Mostrar la fecha actual
-      debug:
-        var: current_date.stdout
-
-    - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
-      delegate_to: "{{ansible_host}}"
-      vars: 
-        ansible_connection: ssh
-        ansible_user: "admin"
-        ansible_password: "admin"
-      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
-      register: backup_result
 
    
 #CREACION DE UNA VPN
@@ -354,6 +337,26 @@
         state: "present"
         firewall_policy:  "{{ item }}"
       loop: "{{ firewall_policies_servicio_tftp }}"
+
+
+      #RESPALDO DE CONFIGURACION EN SERVIDOR TFTPd
+    - name: Obtener la fecha actual
+      ansible.builtin.shell: "date +'%Y-%m-%d'"
+      register: current_date
+      delegate_to: localhost
+
+    - name: Mostrar la fecha actual
+      debug:
+        var: current_date.stdout
+
+    - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
+      delegate_to: "{{ansible_host}}"
+      vars: 
+        ansible_connection: ssh
+        ansible_user: "admin"
+        ansible_password: "admin"
+      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
+      register: backup_result
      
 
 
