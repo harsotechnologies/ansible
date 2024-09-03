@@ -297,7 +297,7 @@
 
 # PC2 y PC5 en la red corporativo tnedran accceso al servidor TFTP, browser solo tendra acceso al servidor web.
     - name: Obtener la lista de políticas de firewall usando fortios_configuration_fact 
-      fortios_configuration_fact:
+      fortinet.fortios.fortios_configuration_fact:
         vdom: "root"
         selector: "firewall_policy"
       register: firewall_policy_data
@@ -315,7 +315,7 @@
       
 
     - name: Obtener la lista de políticas de firewall usando fortios_configuration_fact 
-      fortios_configuration_fact:
+      fortinet.fortios.fortios_configuration_fact:
         vdom: "root"
         selector: "firewall_policy"
       register: firewall_policy_data
