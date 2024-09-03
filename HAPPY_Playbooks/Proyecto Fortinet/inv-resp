@@ -1,7 +1,6 @@
 [fortigates]
-  fortigate01 ansible_host=192.168.1.12 
+  fortigate01 ansible_host=192.168.1.12   ansible_user="admin" ansible_password="admin" 
 [fortigates:vars]
    ansible_connection=ssh
-   ansible_user="admin"
-   ansible_password="admin" 
+  
    
