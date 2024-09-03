@@ -158,7 +158,8 @@
               service: 
                 - name: "ALL"          
 
-              
+  collection:
+  - name: fortinet.fortios            
   tasks:
 
 #CREACION DE UNA VPN
