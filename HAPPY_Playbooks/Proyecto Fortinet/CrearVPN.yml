@@ -171,11 +171,12 @@
       delegate_to: localhost
 
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
-      delegate_to: "192.168.1.12"
+      delegate_to: "192.168.1.12" 
       vars: 
         ansible_connection:  network_cli
         ansible_ssh_user: "admin"
         ansible_ssh_password: "admin"
+        ansible_network_os:  ansible.netcommon
       cli_command:
         command: "execute backup config tftp backup_fortigate_{{ current_date.stdout }}.conf 172.25.10.45"
       register: backup_result
