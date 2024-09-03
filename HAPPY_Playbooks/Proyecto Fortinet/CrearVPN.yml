@@ -167,6 +167,7 @@
       delegate_to: "192.168.1.12"
       vars: 
         ansible_connection: network_cli
+        ansible_network_os: fortinet.fortios
         ansible_host: "192.168.1.12"
       cli_command:
         command: "execute backup config tftp fortigate_backup_$(date +%Y%m%d%H%M%S).conf 172.25.10.45"
