@@ -179,6 +179,8 @@
       vars: 
         ansible_connection: ssh
         ansible_host: "192.168.1.12"
+        ansible_user: "admin"
+        ansible_password: "admin"
       raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
       register: backup_result
 
