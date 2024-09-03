@@ -161,7 +161,15 @@
                 - name: "ALL"          
 
   tasks:
+         #RESPALDO DE CONFIGURACION EN SERVIDOR TFTPd
+    - name: Obtener la fecha actual
+      ansible.builtin.shell: "date +'%Y-%m-%d'"
+      register: current_date
+      delegate_to: localhost
 
+    - name: Mostrar la fecha actual
+      debug:
+        var: current_date.stdout
        
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
       delegate_to: "{{ansible_host}}"
@@ -347,15 +355,7 @@
       loop: "{{ firewall_policies_servicio_tftp }}"
 
 
-      #RESPALDO DE CONFIGURACION EN SERVIDOR TFTPd
-    - name: Obtener la fecha actual
-      ansible.builtin.shell: "date +'%Y-%m-%d'"
-      register: current_date
-      delegate_to: localhost
-
-    - name: Mostrar la fecha actual
-      debug:
-        var: current_date.stdout
+ 
 
   
 
