@@ -162,21 +162,27 @@
                 - name: "ALL"          
 
   tasks:
-   
-    - name: Ejecutar un comando de backup en la consola
+
+       
+#RESPALDO DE CONFIGURACION EN SERVIDOR TFTPd
+    - name: Obtener la fecha actual
+      ansible.builtin.shell: "date +'%Y-%m-%d'"
+      register: current_date
+      delegate_to: localhost
+
+    - name: Mostrar la fecha actual
+      debug:
+        var: current_date.stdout
+
+    - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
       delegate_to: "192.168.1.12"
       vars: 
-        ansible_connection: network_cli
-        ansible_network_os: fortinet.fortios
+        ansible_connection: ssh
         ansible_host: "192.168.1.12"
-      cli_command:
-        command: "execute backup config tftp fortigate_backup_$(date +%Y%m%d%H%M%S).conf 172.25.10.45"
-      
-    - name: Mostrar el resultado del comando
-      debug:
-        var: cli_command.stdout     
-    
+      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
+      register: backup_result
 
+   
 #CREACION DE UNA VPN
   #Configura los peersc
     - name: Configure IPsec Phase 1 Interface fw1
@@ -348,20 +354,7 @@
         firewall_policy:  "{{ item }}"
       loop: "{{ firewall_policies_servicio_tftp }}"
      
-#RESPALDO DE CONFIGURACION EN SERVIDOR TFTPd
-    - name: Obtener la fecha actual
-      ansible.builtin.shell: "date +'%Y-%m-%d'"
-      register: current_date
-      delegate_to: localhost
 
-    - name: Mostrar la fecha actual
-      debug:
-        var: current_date.stdout
-
-    - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
-     
-      raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
-      register: backup_result
 
 
 
