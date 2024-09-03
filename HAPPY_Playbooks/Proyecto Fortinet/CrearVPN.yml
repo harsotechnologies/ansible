@@ -173,9 +173,12 @@
        
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
       delegate_to: "localhost"
-      shell: |
-        "sshpass -p 'admin' ssh -o StrictHostKeyChecking=no admin@192.168.2.11 "
-        "execute backup config tftp fortigate_backup_{{current_date.stdout}}.conf 172.25.10.45"
+      expect:
+      command: "ssh admin@192.168.2.11"
+      responses:
+        'password:': 'admin'
+      #  "execute backup config tftp fortigate_backup_{{current_date.stdout}}.conf 172.25.10.45"
+      timeout: 120  
       register: backup_result
      
 
