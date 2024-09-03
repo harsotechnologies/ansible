@@ -172,12 +172,13 @@
         var: current_date.stdout
        
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
-      delegate_to: "{{ansible_host}}"
+      delegate_to: "localhost"
       vars: 
         ansible_connection: ssh
         ansible_user: "admin"
         ansible_password: "admin"
-      ansible.builtin.shell: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
+      ansible.builtin.shell: |
+       "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
       register: backup_result
      
 
