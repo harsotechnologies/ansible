@@ -176,6 +176,7 @@
       vars:
        ansible_user: "admin"
        ansible_password: "admin"
+       ansible_network_os: fortinet.fortios.fortios
       shell: 'execute backup config tftp fortigate_backup_{{current_date.stdout}}.conf 172.25.10.45'
       register: backup_result
      
