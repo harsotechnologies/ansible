@@ -179,7 +179,6 @@
         ansible_ssh_password: "admin"
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
       ansible.builtin.shell: |
-       "ssh "
        "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
       register: backup_result
      
