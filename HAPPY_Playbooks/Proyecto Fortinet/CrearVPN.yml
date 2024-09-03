@@ -175,8 +175,8 @@
       delegate_to: "localhost"
       vars: 
         ansible_connection: ssh
-        ansible_user: "admin"
-        ansible_password: "admin"
+        ansible_ssh_user: "admin"
+        ansible_ssh_password: "admin"
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
       ansible.builtin.shell: |
        "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
