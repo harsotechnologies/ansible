@@ -1,6 +1,8 @@
 ---
 - name: Configure VPN on FortiGate using HTTPAPI
   hosts: fortigates
+  collection: 
+    - name: fortinet.fortios
   gather_facts: no
   vars: 
       local_gw: "192.168.1.12"
@@ -158,8 +160,6 @@
               service: 
                 - name: "ALL"          
 
-  collection:
-  - name: fortinet.fortios            
   tasks:
 
 #CREACION DE UNA VPN
