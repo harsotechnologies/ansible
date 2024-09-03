@@ -15,8 +15,6 @@
     - name: Ejecutar comando para hacer backup al servidor TFTP usando 
       vars:
          ansible_connection: ssh
-         ansible_ssh_user: "admin"
-         ansible_ssh_password: "admin"
       raw: "execute backup config tftp /RESPALDOS_AWX/backup_fortigate-{{ ansible_host }}-{{current_date.stdout}}.conf 172.25.10.47"
       register: backup_result
   
