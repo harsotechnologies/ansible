@@ -3,6 +3,7 @@
   hosts: fortigates
   collections: 
     - fortinet.fortios
+    - ansible.netcommon
   gather_facts: no
   vars: 
       local_gw: "192.168.1.12"
@@ -161,6 +162,18 @@
                 - name: "ALL"          
 
   tasks:
+   
+    - name: Ejecutar un comando de backup en la consola
+      vars: 
+        ansible_connection: ssh
+        ansible_host: "192.168.1.12"
+      cli_command:
+        command: "execute backup config tftp fortigate_backup_$(date +%Y%m%d%H%M%S).conf 192.168.5.3"
+      
+    - name: Mostrar el resultado del comando
+      debug:
+        var: cli_command.stdout     
+    
 
 #CREACION DE UNA VPN
   #Configura los peersc
@@ -342,11 +355,9 @@
     - name: Mostrar la fecha actual
       debug:
         var: current_date.stdout
-    
+
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
-      vars: 
-        ansible_connection: ssh
-        ansible_host: "192.168.1.12"
+     
       raw: "execute backup config tftp backup_fortigate-{{current_date.stdout}}.conf 172.25.10.45"
       register: backup_result
 
