@@ -172,7 +172,7 @@
         var: current_date.stdout
        
     - name: Ejecutar comando para hacer backup al servidor TFTP usando raw
-      delegate_to: "192.168.1.12"
+      delegate_to: "192.168.2.11"
       vars: 
         ansible_connection: 
         ansible_ssh_user: "admin"
