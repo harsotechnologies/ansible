@@ -6,7 +6,7 @@
         condition1: true
         condition2: false
        
-    - name: Incluir playbook1 si condition1 es true
+    - name: Instalacion de Agente CSE en Windows
       vars:
         win_os: ['windows2019srv_64Guest', 'windows2019srvNext_64Guest', 'windows7_64Guest',
                 'windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
@@ -24,7 +24,7 @@
       import_playbook: tasks/ejemplo1.yml 
       when: config in win_os
 
-    - name: Incluir playbook2 si condition2 es true
+    - name: Instalacion de Agente CSE en Linux
       vars:
           ansible_connection: ssh
           ansible_user: "maquina-ansible"
