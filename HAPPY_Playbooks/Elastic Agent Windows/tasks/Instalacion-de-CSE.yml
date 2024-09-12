@@ -1,6 +1,6 @@
 ---
 - name: playbook1
-  hosts: all
+  hosts: Pruebas-CSE
   gather_facts: true
   tasks:
     - name: Descargar e instalar Cisco Security Endpoint en PCs Windows

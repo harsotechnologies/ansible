@@ -1,6 +1,6 @@
 ---
     - name: Playbook Principal
-      hosts: all
+      hosts: Pruebas-CSE
       gather_facts: false
       vars:
         condition1: true
@@ -27,7 +27,7 @@
     - name: Incluir playbook2 si condition2 es true
       vars:
           ansible_connection: ssh
-          ansible_user: "pruebasubuntu"
+          ansible_user: "maquina-ansible"
           ansible_password: "Emalacm1pt$"
           fleetserver_fqdn: 'fleetserver.harso.com'
           elastic_version: '8.13.4' 
