@@ -1,6 +1,6 @@
 ---
 - name: Playbook 2
-  hosts: all
+  hosts: Pruebas-CSE
   tasks:
     - name: Tarea en Playbook 2
       debug:
