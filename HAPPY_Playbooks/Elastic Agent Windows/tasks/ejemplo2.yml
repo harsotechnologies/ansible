@@ -2,6 +2,6 @@
 - name: Playbook 2
   hosts: Pruebas-CSE
   tasks:
-    - name: Tarea en Playbook 2
+    - name: Pruebas Linux
       debug:
         msg: "Ejecutando Playbook 2"
