@@ -8,10 +8,6 @@
     local_installer_path: '/tmp/cse-agent/amp_Monitoreo_Semanal_ubuntu-20-04-amd64.deb'
     become: true
   tasks:
-    - name: Verificar sistema operativo
-      debug:
-        msg: "El sistema operativo que está instalado es {{ ansible_os_family }}"
-
     - name: Instalar curl si no está instalado
       apt:
         name: curl
