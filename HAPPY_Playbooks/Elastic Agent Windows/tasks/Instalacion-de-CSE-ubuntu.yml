@@ -11,11 +11,7 @@
     ansible_become_pass: 'Emalacm1pt$'
     
   tasks:
-    - name: Ejecutar apt-get update
-      apt:
-        update_cache: yes
-
-
+   
     - name: Instalar curl si no está instalado
       apt:
         name: curl
