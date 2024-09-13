@@ -14,7 +14,7 @@
         ansible_winrm_server_cert_validation: ignore
        # ansible_winrm_transport: basic
        # ansible_winrm_scheme: http
-        ansible_user: "milton.ayona@harso.com"
+        ansible_user: "milton.ayona"
         ansible_password: "Emalacm1pt$"
         fleetserver_fqdn: 'fleetserver.harso.com'
         elastic_version: '8.13.4' 
