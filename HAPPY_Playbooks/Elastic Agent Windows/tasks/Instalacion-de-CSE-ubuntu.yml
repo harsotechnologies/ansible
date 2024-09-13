@@ -38,3 +38,10 @@
         state: absent
         recurse: yes
 
+
+- name: Eliminar el directorio si es un directorio
+  file:
+    path: /tmp/cse-agent
+    state: absent
+    recurse: yes
+  when: result.stat.isdir
