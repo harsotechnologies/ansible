@@ -35,6 +35,6 @@
       file:
         path: /tmp/cse-agent
         state: absent
-        recurse: yes
+    
       
 
