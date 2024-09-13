@@ -14,7 +14,7 @@
         ansible_winrm_server_cert_validation: ignore
        # ansible_winrm_transport: basic
        # ansible_winrm_scheme: http
-        ansible_winrm_transport: ntlm
+       # ansible_winrm_transport: ntlm
         ansible_user: 'HARSO\Administrator'
         ansible_password: "Harso1234"
         fleetserver_fqdn: 'fleetserver.harso.com'
