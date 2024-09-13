@@ -2,7 +2,7 @@
 #Versiones ubuntu 20.04-22.04
 - name: playbook1
   hosts: Pruebas-CSE
-  gather_facts: true
+  gather_facts: false
   vars: 
     url_installer: 'https://console.amp.cisco.com/install_packages/393061cf-f40a-4153-8b7f-2fbbe453ed6a/download?product=LinuxProduct&product_variant_id=a1ef784e-3aea-41ae-8725-9d4ad08eb4ea'
     local_installer_path: '/tmp/cse-agent/amp_Monitoreo_Semanal_ubuntu-20-04-amd64.deb'

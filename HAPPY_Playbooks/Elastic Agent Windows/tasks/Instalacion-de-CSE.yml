@@ -1,20 +1,13 @@
 ---
 - name: playbook1
   hosts: Pruebas-CSE
-  gather_facts: true
-  tasks:
-    - name: Descargar e instalar Cisco Security Endpoint en PCs Windows
-      debug:
-        msg: "Es sistema operativo que  está instalado es  {{ ansible_os_family }}"
-
-- name: Distribuciones basadas en windows
-  hosts: Windows
   gather_facts: false
   vars:
     url_installer: 'https://console.amp.cisco.com/install_packages/143609d3-a2f5-4053-b334-4efd54b35ee8/download?product=WindowsProduct'
     local_installer_path: 'C:\\Users\\Administrator\\Desktop\\amp_HSO_Group.exe'
     installer_arguments: '/S /quiet /norestart'
   tasks:
+        
         - name: Verificar si el servicio Cisco Secure Endpoint está instalado
           win_service:
             name: "CiscoAMP"
