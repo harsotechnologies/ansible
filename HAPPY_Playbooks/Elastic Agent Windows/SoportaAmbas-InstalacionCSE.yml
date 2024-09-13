@@ -35,5 +35,5 @@
           awx_url: 'http://10.1.1.15/'
           lin_os:  ['centos7_64Guest', 'centos8_64Guest', 'debian10_64Guest', 'debian11_64Guest', 'freebsd13_64Guest', 'other26xLinux64Guest' ,
                     'other3xLinux64Guest' , 'other4xLinux64Guest' , 'otherLinux64Guest' , 'ubuntu64Guest']
-      import_playbook: tasks/ejemplo2.yml 
+      import_playbook: tasks/Instalacion-de-CSE-ubuntu.yml 
       when: config.guestId in lin_os
