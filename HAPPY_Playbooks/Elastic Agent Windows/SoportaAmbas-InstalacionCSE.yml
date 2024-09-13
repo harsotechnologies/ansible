@@ -12,8 +12,8 @@
                 'windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
         ansible_connection: winrm
         ansible_winrm_server_cert_validation: ignore
-        ansible_winrm_transport: basic
-        ansible_winrm_scheme: http
+       # ansible_winrm_transport: basic
+       # ansible_winrm_scheme: http
         ansible_user: "Administrator"
         ansible_password: "Harso1234"
         fleetserver_fqdn: 'fleetserver.harso.com'
