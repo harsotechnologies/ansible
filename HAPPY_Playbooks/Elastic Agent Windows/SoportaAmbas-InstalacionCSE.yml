@@ -11,7 +11,7 @@
         win_os: ['windows2019srv_64Guest', 'windows2019srvNext_64Guest', 'windows7_64Guest',
                 'windows8Server64Guest', 'windows9_64Guest', 'windows9Server64Guest']
         ansible_connection: winrm
-        #ansible_winrm_server_cert_validation: ignore
+        ansible_winrm_server_cert_validation: ignore
         ansible_winrm_transport: ntlm
         ansible_user: 'HARSO\Administrator'
         ansible_password: "Harso1234"
