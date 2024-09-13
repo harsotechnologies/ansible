@@ -11,7 +11,6 @@
     ansible_become_pass: 'Emalacm1pt$'
     
   tasks:
-   
     - name: Instalar curl si no está instalado
       apt:
         name: curl
@@ -37,11 +36,5 @@
         path: /tmp/cse-agent
         state: absent
         recurse: yes
+      
 
-
-- name: Eliminar el directorio si es un directorio
-  file:
-    path: /tmp/cse-agent
-    state: absent
-    recurse: yes
-  when: result.stat.isdir
