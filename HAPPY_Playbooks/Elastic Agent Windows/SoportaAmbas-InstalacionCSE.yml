@@ -16,6 +16,7 @@
        # ansible_winrm_scheme: http
         ansible_user: "Administrator"
         ansible_password: "Harso1234"
+        ansible_port: 5985
         fleetserver_fqdn: 'fleetserver.harso.com'
         elastic_version: '8.13.4' 
         enrollment_token: 'YTBFN2w0OEIwWXhlYVV2VEFyblY6NzdTT2JQLW9UeW10Nmo2YVhWa092QQ=='
