@@ -12,20 +12,7 @@
     
   tasks:
    
-    - name: Obtener información sobre los servicios
-      service_facts:
-
-    - name: Verificar si el servicio cisco-amp está activo
-      debug:
-        msg: "El servicio Cisco AMP está activo."
-      when: "'cisco-amp.service' in ansible_facts.services and ansible_facts.services['cisco-amp.service'].state == 'running'"
-
-    - name: Iniciar el servicio si no está activo
-      service:
-        name: cisco-amp
-        state: started
-      when: "'cisco-amp.service' not in ansible_facts.services or ansible_facts.services['cisco-amp.service'].state != 'running'"
-
+    
     - name: Instalar curl si no está instalado
       apt:
         name: curl
