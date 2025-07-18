@@ -1,16 +1,13 @@
-# wait_ping.yml
-- name: Verificar si el host responde ICMP
+# ping_icmp.yml
+- name: Hacer ping ICMP a 192.168.122.228
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: Esperar a que responda ping (máx 10s)
-      ansible.builtin.wait_for:
-        host: 192.168.122.228
-        port: 22  # Puedes poner 7 o ICMP (no todos lo soportan)
-        timeout: 10
-      register: resultado
+    - name: Hacer ping con shell
+      ansible.builtin.shell: ping -c 2 192.168.122.228
+      register: resultado_ping
       ignore_errors: yes
 
-    - name: Mostrar resultado
+    - name: Mostrar resultado del ping
       debug:
-        var: resultado
+        var: resultado_ping.stdout
