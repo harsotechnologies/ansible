@@ -1,13 +1,12 @@
-# cisco_ping_and_hostname.yml
 - name: Verificar conectividad y cambiar hostname en Cisco IOS
-  hosts: 192.168.122.228
+  hosts: cisco
   gather_facts: no
   collections:
-  - name: cisco.ios
+     - cisco.ios
   connection: network_cli
   tasks:
-    - name: Hacer ping desde el controlador a 192.168.122.228
-      ansible.builtin.shell: ping -c 2 192.168.122.228
+    - name: Hacer ping desde el controlador a 192.168.122.190
+      ansible.builtin.shell: ping -c 2 192.168.122.190
       register: resultado_ping
       delegate_to: localhost
       ignore_errors: yes
@@ -19,4 +18,5 @@
     - name: Cambiar hostname en dispositivo Cisco
       cisco.ios.ios_config:
         lines:
-          - hostname milton_ansible
+          - hostname milton_ansible24
+
