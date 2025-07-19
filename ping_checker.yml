@@ -16,7 +16,7 @@
         var: resultado_ping.stdout
 
     - name: Cambiar hostname en dispositivo Cisco
-      cisco.ios.ios_config:
+      ios_config:
         lines:
           - hostname milton_ansible24
 
